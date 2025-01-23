@@ -2,13 +2,13 @@ name: Build Frontend
 
 on:
   push:
-    paths: "brainPop/Frontend/**"
+    paths: "brainPop/Frontend"
   workflow_dispatch:
 jobs:
   build:
     defaults:
       run:
-        working-directory: brainPop/Frontend/**
+        working-directory: brainPop/Frontend
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

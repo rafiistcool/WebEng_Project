@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - "main"
-    paths: "brainPop/Frontend/**"
+    paths: "brainPop/Frontend"
   workflow_dispatch:
 
 permissions:
@@ -20,7 +20,7 @@ jobs:
   publish:
     defaults:
       run:
-        working-directory: brainPop/Frontend/**
+        working-directory: brainPop/Frontend
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
