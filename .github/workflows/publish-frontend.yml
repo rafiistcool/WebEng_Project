@@ -20,7 +20,7 @@ jobs:
   publish:
     defaults:
       run:
-        working-directory: Frontend
+        working-directory: brainPop/Frontend/**
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

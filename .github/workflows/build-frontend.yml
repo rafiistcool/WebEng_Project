@@ -8,7 +8,7 @@ jobs:
   build:
     defaults:
       run:
-        working-directory: Frontend
+        working-directory: brainPop/Frontend/**
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
