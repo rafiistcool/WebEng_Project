@@ -2,7 +2,7 @@ name: Build Frontend
 
 on:
   push:
-    paths: "Frontend/**"
+    paths: "brainPop**"
   workflow_dispatch:
 jobs:
   build:
