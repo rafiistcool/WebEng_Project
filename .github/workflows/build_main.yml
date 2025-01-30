@@ -3,14 +3,14 @@ name: Build Main Frontend
 on:
   push:
     paths:
-      - "brainPop/**"  # Ensure correct path matching
+      - "brainPop/Frontend/**"  # Ensure correct path matching
   workflow_dispatch:
 
 jobs:
   build:
     defaults:
       run:
-        working-directory: brainPop
+        working-directory: brainPop/Frontend
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
