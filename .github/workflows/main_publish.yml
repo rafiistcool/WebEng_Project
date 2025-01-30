@@ -19,9 +19,6 @@ concurrency:
 
 jobs:
   publish:
-    defaults:
-      run:
-        working-directory: brainPop
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -33,10 +30,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"  # Use a stable Node.js version
+          node-version: "20"  # Verwende eine stabile Node.js-Version
 
       - name: Install Dependencies and Build
         run: |
+          cd brainPop/Frontend
           npm ci
           npm run build
 
