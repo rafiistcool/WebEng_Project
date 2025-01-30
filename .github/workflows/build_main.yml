@@ -10,7 +10,7 @@ jobs:
   build:
     defaults:
       run:
-        working-directory: brainPop/Frontend
+        working-directory: brainPop
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
