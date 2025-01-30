@@ -2,8 +2,10 @@ name: Build Main Frontend
 
 on:
   push:
-    paths: "brainPop/Frontend"
+    paths:
+      - "brainPop/Frontend/**"  # Ensure correct path matching
   workflow_dispatch:
+
 jobs:
   build:
     defaults:
@@ -11,13 +13,16 @@ jobs:
         working-directory: brainPop/Frontend
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Node
-        uses: actions/setup-node@v1
+      - name: Checkout Repository
+        uses: actions/checkout@v4  # Updated to latest version
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4  # Updated to latest version
         with:
-          node-version: "22"
-      - name: Install Packages
-        run: npm ci --force
-      - name: Build
+          node-version: "20"  # Use a stable Node.js version
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Project
         run: npm run build
