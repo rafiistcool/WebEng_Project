@@ -1,1 +1,1 @@
-I want to delete everything. Pls approve
+I want to delete everything. Please approve
