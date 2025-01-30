@@ -3,7 +3,7 @@ name: Build Main Frontend
 on:
   push:
     paths:
-      - "brainPop/Frontend/**"  # Ensure correct path matching
+      - "brainPop/**"  # Ensure correct path matching
   workflow_dispatch:
 
 jobs:
