@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue/dist/vue.mjs';
+import { ref } from 'vue';
 
 const visible = ref(false);
 const imageUrl = ref("https://via.placeholder.com/150");
