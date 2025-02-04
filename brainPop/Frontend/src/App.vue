@@ -1,13 +1,10 @@
-<template>
-  <h1>Hello Vue!</h1>
-</template>
-
 <script setup>
+import { RouterLink, RouterView } from 'vue-router';
 </script>
 
-<style>
-h1 {
-  text-align: center;
-  color: #42b983;
-}
-</style>
+<template>
+  <h1>Hello Vue!</h1>
+  <router-link to="/">Home</router-link>
+  <router-link to="/card">Card</router-link>
+  <router-view />
+</template>
