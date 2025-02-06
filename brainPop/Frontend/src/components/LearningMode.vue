@@ -15,18 +15,30 @@ const configureContentOfFlashcard = () => {
 
 <template>
 <body>
+
 <div class="learning-mode-window">
   <h1 id="learnMode-h1">Learn-Mode</h1>
-  <div class="flashcard-container" @click="toggleVisible">
-    <div class="flashcard" :class="{ flipped: visible }">
-      <div class="flashcardFront" v-if="visible">
+  <div class="learning-mode-window-content">
+    <div class="left-learning-mode-window">
+      <img src="../assets/icons/arrowIcon.png" alt="arrow left" id="leftArrow">
+    </div>
 
-        <p class="userContent">Hier sollte später Text stehen</p>
-      </div>
-      <div class="flashcardBack" v-else>
-        <p class="userContent">Hier sollte der zweite Text stehen</p>
+
+    <div class="flashcard-container" @click="toggleVisible">
+      <div class="flashcard" :class="{ flipped: visible }">
+        <div class="flashcardFront" v-if="visible">
+
+          <p class="userContent">Hier sollte später Text stehen</p>
+        </div>
+        <div class="flashcardBack" v-else>
+          <p class="userContent">Hier sollte der zweite Text stehen</p>
+        </div>
       </div>
     </div>
+    <div class="right-learning-mode-window">
+      <img src="../assets/icons/arrowIcon.png" alt="arrow right" id="rightArrow"/>
+    </div>
+
   </div>
   <div class="configure">
     <button class="baseButtonLayout" @click="configureContentOfFlashcard">Configure Content</button>

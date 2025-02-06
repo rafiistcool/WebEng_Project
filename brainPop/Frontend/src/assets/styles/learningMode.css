@@ -50,8 +50,8 @@
             3px 3px 10px rgba(0, 0, 0, 0.3),
             -3px -3px 10px rgba(255, 255, 255, 0.2);
 
-
 }
+
 .userContent{
     color: #021C1E;
     font-size: 2rem;
@@ -59,6 +59,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.left-learning-mode-window, .right-learning-mode-window{
+    background-color: #004445;
+}
+#leftArrow{
+    transform: scaleX(-1) scaleY(-1);
+}
+.learning-mode-window-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 
-
+    gap: 30px;
+    align-items: center;
 }
