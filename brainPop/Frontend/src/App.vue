@@ -6,5 +6,6 @@ import { RouterLink, RouterView } from 'vue-router';
   <h1>Hello Vue!</h1>
   <router-link to="/">Home</router-link>
   <router-link to="/card">Card</router-link>
+  <router-link to="/desktop">Desktop</router-link>
   <router-view />
 </template>
