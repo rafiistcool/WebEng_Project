@@ -9,52 +9,35 @@
     justify-content: center;
     align-items: center;
     height: 85vh;
-    background-color: #021C1E;
+    gap: 1rem;
+
+    background: linear-gradient(to bottom, #021C1E, #004445);
 }
-.flashcard{
+.flashcard {
+    width: 60vw;
+    height: 30vh;
     background-color: #004445;
-    min-height: 30vh;
-    min-width: 60vw;
-    padding: 20px;
     border-radius: 20px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-
-    cursor: pointer;
 }
-.flashcard-container{
 
+.flashcard.flipped {
+    transform: rotateY(180deg);
 }
-.flashcardFront, .flashcardBack {
-    background-color: #2C7873;
-    border-radius: 20px;
-    text-align: center;
-    display: flex;
-    align-items: stretch;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
 
-
-
-}
-.flashcardBack:hover{
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-.baseButtonLayout {
-    background-color: #2C7873;
+.flashcard-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 10px;
-    box-shadow:
-            3px 3px 10px rgba(0, 0, 0, 0.3),
-            -3px -3px 10px rgba(255, 255, 255, 0.2);
+
+}
+.flashcardFront,
+.flashcardBack {
+    border-radius: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2C7873;
 
 }
 
@@ -62,16 +45,8 @@
     color: #021C1E;
     font-size: 2rem;
     font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
-.left-learning-mode-window, .right-learning-mode-window{
-    background-color: #004445;
-}
-#leftArrow{
-    transform: scaleX(-1) scaleY(-1);
-}
+
 .learning-mode-window-content{
     display: flex;
     flex-direction: row;
@@ -80,6 +55,7 @@
     gap: 30px;
     align-items: center;
 }
+
 .arrow-container {
     display: flex;
     align-items: center;
@@ -110,3 +86,29 @@
     stroke-width: 2;
     fill: none;
 }
+
+.content-below-flashcard{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.counter{
+    color: #6fB98F;
+    font-size: 1.2rem;
+}
+
+.baseButtonLayout{
+    background-color: #2C7873;
+    border: #021C1E;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    padding: 0.2rem 2rem;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+
+}
+.baseButtonLayout:hover{
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.7);
+    transform: scale(1.1);
+}
+
