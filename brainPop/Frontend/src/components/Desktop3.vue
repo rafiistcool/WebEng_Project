@@ -1,164 +1,88 @@
 <template>
   <div class="desktop-3">
-    <img class="box-1" src="../assets/icons/box.png" alt = "" />
-    <img class="box-4" src="../assets/icons/box.png" alt = ""/>
-    <img class="box-5" src="../assets/icons/box.png" alt = ""/>
-    <img class="box-6" src="../assets/icons/box.png" alt = ""/>
-    <img class="plus-2-1" src="../assets/icons/box.png" alt = ""/>
-    <div class="brainpop">Brainpop</div>
-    <div class="set-1">Set 1</div>
-    <div class="set-4">Set 4</div>
-    <div class="flashcards-1">Flashcards 1</div>
-    <div class="set-2">Set 2</div>
-    <div class="set-3">Set 3</div>
-    <img class="brain-process-1" src="../assets/icons/brain-process.png" alt = ""/>
-      <img class="karteikarten-zum-lernen-1" src="../assets/icons/karteikarten-zum-lernen.png" alt = ""/>
-    />
+    <div class="box_set_container">
+      <img class="box" src="../assets/icons/box.png" alt="" />
+      <div class="set">Set 1</div>
+    </div>
+    <div class="flashcards_Box_flashcards_container">
+      <div class="flashcards">Flashcards 1</div>
+      <img class="flashcards_Box" src="../assets/icons/karteikarten-zum-lernen.png" alt="" />
+    </div>
+  </div>
+  <div class="brainpop_Title">Brainpop</div>
+  <img class="add" src="../assets/icons/plus.png" alt="" @click="openModal" />
+  <img class="brain-process" src="../assets/icons/brain-process.png" alt="" />
+
+  <div v-if="isModalOpen" class="modal-overlay">
+    <div class="modal">
+      <h2>Select what to add</h2>
+      <button @click="addBox">Add Box</button>
+      <button @click="addFlashcardSet">Add Flashcard Set</button>
+      <button @click="closeModal">Cancel</button>
+    </div>
   </div>
 </template>
+
 <script>
 export default {
   name: "Desktop3",
-  components: {},
-  props: {},
-  data() {},
+  data() {
+    return {
+      isModalOpen: false,
+    };
+  },
+  methods: {
+    openModal() {
+      this.isModalOpen = true;
+    },
+    closeModal() {
+      this.isModalOpen = false;
+    },
+    addBox() {
+      this.closeModal();
+    },
+    addFlashcardSet() {
+
+      this.closeModal();
+    }
+  }
 };
 </script>
+
 <style scoped>
-.desktop-3,
-.desktop-3 * {
-  box-sizing: border-box;
-}
-.desktop-3 {
-  background: #302c34;
-  height: 1024px;
-  position: relative;
-  overflow: hidden;
-}
-.box-1 {
-  width: 144px;
-  height: 141px;
-  position: absolute;
-  left: 88px;
-  top: 223px;
-  object-fit: cover;
-}
-.box-4 {
-  width: 144px;
-  height: 141px;
-  position: absolute;
-  left: 360px;
-  top: 223px;
-  object-fit: cover;
-}
-.box-5 {
-  width: 145px;
-  height: 141px;
-  position: absolute;
-  left: 631px;
-  top: 223px;
-  object-fit: cover;
-}
-.box-6 {
-  width: 143px;
-  height: 141px;
-  position: absolute;
-  left: 904px;
-  top: 223px;
-  object-fit: cover;
-}
-.plus-2-1 {
-  width: 75px;
-  height: 75px;
-  position: absolute;
-  left: 1281px;
-  top: 882px;
-  object-fit: cover;
-}
-.brainpop {
-  color: #ffffff;
-  text-align: left;
-  font-family: "Bayon-Regular", sans-serif;
-  font-size: 96px;
-  font-weight: 400;
-  position: absolute;
-  left: 70px;
+@import "../assets/styles/style_Desktop3.css";
+
+.modal-overlay {
+  position: fixed;
   top: 0;
-  width: 770px;
-  height: 98px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.set-1 {
-  color: #ffffff;
-  text-align: left;
+
+.modal {
+  background: #2C7873;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+.modal h2{
   font-family: "Bayon-Regular", sans-serif;
-  font-size: 32px;
-  font-weight: 400;
-  position: absolute;
-  left: 133px;
-  top: 391px;
-  width: 99px;
-  height: 40px;
+  color: white;
+
 }
-.set-4 {
-  color: #ffffff;
-  text-align: left;
-  font-family: "Bayon-Regular", sans-serif;
-  font-size: 32px;
-  font-weight: 400;
-  position: absolute;
-  left: 944px;
-  top: 391px;
-}
-.flashcards-1 {
-  color: #ffffff;
-  text-align: left;
-  font-family: "Bayon-Regular", sans-serif;
-  font-size: 32px;
-  font-weight: 400;
-  position: absolute;
-  left: 1146px;
-  top: 392px;
-  width: 173px;
-  height: 40px;
-}
-.set-2 {
-  color: #ffffff;
-  text-align: left;
-  font-family: "Bayon-Regular", sans-serif;
-  font-size: 32px;
-  font-weight: 400;
-  position: absolute;
-  left: 413px;
-  top: 391px;
-  width: 84px;
-  height: 40px;
-}
-.set-3 {
-  color: #ffffff;
-  text-align: left;
-  font-family: "Bayon-Regular", sans-serif;
-  font-size: 32px;
-  font-weight: 400;
-  position: absolute;
-  left: 665px;
-  top: 391px;
-  width: 78px;
-  height: 40px;
-}
-.brain-process-1 {
-  width: 125px;
-  height: 125px;
-  position: absolute;
-  left: 1256px;
-  top: 17px;
-  object-fit: cover;
-}
-.karteikarten-zum-lernen-1 {
-  width: 144px;
-  height: 141px;
-  position: absolute;
-  left: 1157px;
-  top: 223px;
-  object-fit: cover;
+
+.modal button {
+  margin: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  background: #6fB98F;
+  color: white;
+  border: none;
+  border-radius: 10px;
 }
 </style>

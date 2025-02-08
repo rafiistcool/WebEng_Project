@@ -1,0 +1,88 @@
+.desktop-3,
+.desktop-3 * {
+    box-sizing: border-box;
+}
+.desktop-3 {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    background: #004445;
+    height: 100vh;
+
+}
+.box_set_container {
+    .box {
+
+        width: 7.5%;
+        height: 15%;
+        position: absolute;
+        left: 7.3%;
+        top: 50%;
+        object-fit: cover;
+
+    }
+    .set{
+        color: #ffffff;
+        font-family: "Bayon-Regular", sans-serif;
+        font-size: 1em;
+        font-weight: 400;
+        position: absolute;
+        left: 10%;
+        top: 70%;
+
+    }
+
+
+}
+
+.flashcards_Box_flashcards_container {
+    .flashcards {
+        color: #ffffff;
+        text-align: left;
+        font-family: "Bayon-Regular", sans-serif;
+        font-size: 1em;
+        font-weight: 400;
+        position: absolute;
+        left: 21%;
+        top: 70%;
+    }
+    .flashcards_Box {
+        width: 7.5%;
+        height: 15%;
+        position: absolute;
+        left: 20% ;
+        top: 50%;
+        object-fit: cover;
+    }
+}
+
+
+.add {
+    width: 6%;
+    height: 12.8%;
+    position: absolute;
+    right: 5%;
+    bottom: -10%;
+    object-fit: cover;
+}
+.brainpop_Title {
+    color: #ffffff;
+    text-align: left;
+    font-family: "Bayon-Regular", sans-serif;
+    font-size: 96px;
+    font-weight: 400;
+    position: absolute;
+    left: 5%;
+    top: 18%;
+    width: 770px;
+    height: 98px;
+}
+
+.brain-process {
+    width: 7.5%;
+    height: 15%;
+    position: absolute;
+    right: 5%;
+    top: 20%;
+    object-fit: cover;
+}
