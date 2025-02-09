@@ -23,7 +23,10 @@ const known = () => {
 
 <template>
   <div class="learning-mode-window">
-    <h1 id="learnMode-h1">Learn-Mode</h1>
+    <div class="learn-mode-heading">
+      <h1 id="learnMode-h1">Learn-Mode</h1>
+    </div>
+
     <div class="learning-mode-window-content">
 
       <!-- Linke Pfeil-Schaltfläche -->

@@ -1,15 +1,19 @@
 #learnMode-h1{
     text-align: center;
     color: #6fB98F;
+    font-family: "Bayon-Regular", sans-serif;
+    font-size: 3rem;
+}
+.learn-mode-heading{
+    text-align: center;
+    margin-bottom: 5rem;
 }
 
 .learning-mode-window{
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     height: 85vh;
-    gap: 1rem;
 
     background: linear-gradient(to bottom, #021C1E, #004445);
 }
@@ -25,7 +29,7 @@
     padding: 10px 20px;
 
     position: relative;
-    transition: transform 0.8s;
+    transition: transform 0.5s;
     transform-style: preserve-3d;
 }
 
@@ -63,6 +67,7 @@
     color: #021C1E;
     font-size: 2rem;
     font-weight: bold;
+    font-family: "Bayon-Regular", sans-serif;
 }
 
 .learning-mode-window-content{
