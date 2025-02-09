@@ -37,11 +37,11 @@ const known = () => {
 
 
       <div class="flashcard-container">
-        <div class="flashcard" @click="isFlipped">
-            <div class="flashcardFront" v-if="flipped">
+        <div class="flashcard" @click="isFlipped"  :class="{flipped: flipped}">
+            <div class="flashcardFront">
               <p class="userContent" >Hier sollte später Text stehen</p>
             </div>
-            <div class="flashcardBack" v-else>
+            <div class="flashcardBack">
               <p class="userContent">Hier steht der zweite Text</p>
             </div>
         </div>
