@@ -38,7 +38,7 @@ const known = () => {
       <div class="arrow-container">
         <div class="arrow arrow-left" @click="notKnown">
           <svg viewBox="0 0 24 24" class="arrow-svg">
-            <path d="M15 18l-6-6 6-6"/>
+            <path d="M15 20l-8-8 8-8" stroke-width="3"/>
           </svg>
         </div>
       </div>
@@ -55,7 +55,7 @@ const known = () => {
       <div class="arrow-container">
         <div class="arrow arrow-right" @click="known">
           <svg viewBox="0 0 24 24" class="arrow-svg">
-            <path d="M9 18l6-6-6-6"/>
+            <path d="M9 20l8-8-8-8" stroke-width="3"/>
           </svg>
         </div>
       </div>
