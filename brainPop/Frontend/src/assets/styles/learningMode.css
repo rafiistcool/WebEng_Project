@@ -1,0 +1,152 @@
+#learnMode-h1{
+    text-align: center;
+    color: #6fB98F;
+    font-family: "Bayon-Regular", sans-serif;
+    font-size: 3rem;
+}
+.learn-mode-heading{
+    text-align: center;
+    margin-bottom: 5rem;
+}
+.end-button{
+    text-align: center;
+    position: absolute;
+    top: 5vh;
+    left: 43vw;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+}
+.end-button-container{
+    position: relative;
+}
+.end-button:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+.learning-mode-window{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 85vh;
+
+    background: linear-gradient(to bottom, #021C1E, #004445);
+}
+.flashcard {
+    width: 50vw;
+    height: 40vh;
+    background-color: #004445;
+    border-radius: 20px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    padding: 10px 20px;
+
+    position: relative;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
+}
+
+.flashcard.flipped {
+    transform: rotateY(180deg);
+}
+
+.flashcard-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+}
+.flashcardFront,
+.flashcardBack {
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+
+
+    border-radius: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2C7873;
+
+}
+.flashcardBack {
+    transform: rotateY(180deg);
+}
+
+.userContent{
+    color: #021C1E;
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: "Bayon-Regular", sans-serif;
+}
+
+.learning-mode-window-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.arrow-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.arrow {
+    background-color: #004445;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.arrow:hover {
+   transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.arrow-svg {
+    width: 24px;
+    height: 24px;
+    stroke: #2C7873;
+    stroke-width: 2;
+    fill: none;
+}
+
+.content-below-flashcard{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.counter{
+    color: #6fB98F;
+    font-size: 1.2rem;
+}
+
+.baseButtonLayout{
+    background-color: #2C7873;
+    border: #021C1E;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    padding: 0.2rem 2rem;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+
+}
+.baseButtonLayout:hover{
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.7);
+    transform: scale(1.1);
+}
+
