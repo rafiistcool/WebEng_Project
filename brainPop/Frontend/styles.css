@@ -1,0 +1,25 @@
+html{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom right, #021C1E, #004445);
+}
+
+.sidebar-page-wrapper{
+    display: flex;
+    flex-direction: row;
+
+}
+.sidebar-background{
+    background: #6fB98F;
+    position: absolute;
+
+}
+.page-content{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+
+}
