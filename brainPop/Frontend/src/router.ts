@@ -1,11 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '@/components/Home.vue';
 import Card from '@/components/LearningMode.vue';
+import StartScreen from "@/components/StartScreen.vue";
 
 
 const routes = [
   { path: '/', component: Home },
-  { path: '/card', component: Card }
+  { path: '/card', component: Card } ,
+  { path: '/startscreen', component: StartScreen}
 ];
 
 const router = createRouter({
