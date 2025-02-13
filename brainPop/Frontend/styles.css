@@ -13,7 +13,7 @@ html{
 }
 .sidebar-background{
     background: #6fB98F;
-    position: absolute;
+
 
 }
 .page-content{
@@ -21,5 +21,4 @@ html{
     height: 100%;
     margin: 0;
     padding: 0;
-
 }

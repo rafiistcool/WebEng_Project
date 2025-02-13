@@ -1,5 +1,6 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterLink, RouterView} from 'vue-router';
+
 </script>
 
 <template>
@@ -13,17 +14,23 @@ import { RouterLink, RouterView } from 'vue-router';
           <div class="sidebar-content">
             <div class="router-links">
               <div class="home-link">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" fill="black">
-                  <polygon points="20,50 50,15 80,50" stroke="black" stroke-width="4" fill="none"/>
-                  <rect x="25" y="50" width="50" height="40" stroke="black" stroke-width="4" fill="none" rx="5" ry="5"/>
-                  <rect x="50" y="70" width="10" height="20" stroke="black" stroke-width="4" fill="none" rx="2" ry="2"/>
-                  <rect x="32" y="58" width="10" height="10" stroke="black" stroke-width="4" fill="none" rx="2" ry="2"/>
-                </svg>
+                <router-link to="/">
+                  <button class="home-link">
+                    suii
+                  </button>
+                </router-link>
               </div>
-              <router-link to="/">Home</router-link>
-              <router-link to="/card">Card</router-link>
+              <div class="card-link">
+                <router-link to="/card">
+                  <button>
+                    suiiiii
+                  </button>
+                </router-link>
+              </div>
+
             </div>
           </div>
+
         </div>
         <div class="page-content">
           <router-view />
