@@ -19,8 +19,12 @@ const closeSidebar = () => {
       <div class="sidebar-content">
         <h2>Menu</h2>
         <ul>
+
           <li><router-link to="/">Home</router-link></li>
           <li><router-link to="/Card">Card</router-link></li>
+          <li><router-link to="/startscreen"></router-link></li>
+          <li><router-link to="/login"></router-link></li>
+          <li><router-link to="/register"></router-link></li>
         </ul>
       </div>
     </div>
