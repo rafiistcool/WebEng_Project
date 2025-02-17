@@ -25,5 +25,5 @@ const toggleVisible = () => {
 </template>
 
 <style>
-@import "../assets/styles/style_Desktop3.css";
+@import "../assets/styles/style.css";
 </style>

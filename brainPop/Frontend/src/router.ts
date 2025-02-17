@@ -5,7 +5,7 @@ import Desktop3 from "@/components/Desktop3.vue";
 
 const routes = [
   { path: '/', component: Home },
-  { path: '/card', component: Card },
+  { path: '/Card', component: Card },
   {path: '/desktop',component: Desktop3}
 ];
 
