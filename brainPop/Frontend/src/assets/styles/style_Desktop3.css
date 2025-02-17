@@ -1,0 +1,193 @@
+.desktop-3,
+.desktop-3 * {
+    box-sizing: border-box;
+}
+.desktop-3 {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    background: linear-gradient(to bottom right, #021C1E, #004445);
+
+    height: 100vh;
+
+}
+.box_set_container {
+    .box {
+        width: 5%;
+        height: 10%;
+        position: absolute;
+        left: 7.3%;
+        top: 40%;
+        object-fit: cover;
+    }
+    .box_text{
+        color: #ffffff;
+        font-family: "Bayon-Regular", sans-serif;
+        font-size: 1em;
+        font-weight: 400;
+        position: absolute;
+        left: 8.9%;
+        top: 52%;
+    }
+}
+
+.flashcards_Box_flashcards_container {
+    .flashcards_text {
+        color: #ffffff;
+        text-align: left;
+        font-family: "Bayon-Regular", sans-serif;
+        font-size: 1em;
+        font-weight: 400;
+        position: absolute;
+        left: 18%;
+        top: 52%;
+    }
+    .flashcards_Box {
+        width: 5%;
+        height: 10%;
+        position: absolute;
+        left: 17.5% ;
+        top: 40%;
+        object-fit: cover;
+    }
+}
+
+.add {
+    width: 4.6%;
+    height: 10%;
+    position: absolute;
+    right: 5%;
+    bottom: -9%;
+    object-fit: cover;
+}
+.brainpop_Title {
+    color: #ffffff;
+    text-align: left;
+    font-family: "Bayon-Regular", sans-serif;
+    font-size: 96px;
+    font-weight: 400;
+    position: absolute;
+    left: 5%;
+    top: 18%;
+    width: 770px;
+    height: 98px;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.toggleContainer {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    border: 3px solid #343434;
+    border-radius: 20px;
+    background: #343434;
+    font-weight: bold;
+    color: #343434;
+    cursor: pointer;
+
+
+}
+.toggleContainer::before {
+    content: '';
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    left: 0;
+    border-radius:20px;
+    background: #6fB98F;
+    transition: all 0.3s;
+}
+.toggleCheckbox:checked + .toggleContainer::before {
+    left: 50%;
+}
+.toggleContainer div {
+    font-family: "Bayon-Regular", sans-serif;
+    padding: 6px;
+    text-align: center;
+    z-index: 1;
+}
+.toggleCheckbox {
+    display: none;
+}
+.toggleCheckbox:checked + .toggleContainer div:first-child{
+    color: #6fB98F;
+    transition: color 0.3s;
+}
+.toggleCheckbox:checked + .toggleContainer div:last-child{
+    color: #343434;
+    transition: color 0.3s;
+}
+.toggleCheckbox + .toggleContainer div:first-child{
+    color: #343434;
+    transition: color 0.3s;
+}
+.toggleCheckbox + .toggleContainer div:last-child{
+    color: #6fB98F;
+    transition: color 0.3s;
+}
+
+.modal {
+    background: #2C7873;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 50%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.modal h2{
+    font-family: "Bayon-Regular", sans-serif;
+    color: white;
+}
+
+.modal button {
+    margin: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background: #343434;
+    color: #6fB98F;
+    border: none;
+    border-radius: 10px;
+}
+.context-menu {
+    position: absolute;
+    background: #2C7873;
+    border: 1px solid #6FB98F;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.context-menu button {
+    background: #343434;
+    border: none;
+    color: #6FB98F;
+    font-weight: bold;
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.context-menu button:hover {
+    background: #6FB98F;
+    color: #021C1E;
+}
+
