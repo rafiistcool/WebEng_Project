@@ -22,9 +22,10 @@ const closeSidebar = () => {
 
           <li><router-link to="/">Home</router-link></li>
           <li><router-link to="/Card">Card</router-link></li>
-          <li><router-link to="/startscreen"></router-link></li>
-          <li><router-link to="/login"></router-link></li>
-          <li><router-link to="/register"></router-link></li>
+          <li><router-link to="/startscreen">Startscreen</router-link></li>
+          <li><router-link to="/login">login</router-link></li>
+          <li><router-link to="/register">register</router-link></li>
+          <li><router-link to="/desktop">Desktop</router-link></li>
         </ul>
       </div>
     </div>
