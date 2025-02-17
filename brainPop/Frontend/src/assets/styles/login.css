@@ -20,18 +20,24 @@ body {
 .login-container h2 {
     margin-bottom: 1rem;
     color: white;
+    text-align: center;
 }
 
 .input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 1rem;
     text-align: left;
 }
 
 .input-group label {
     display: block;
+    text-align: left;
     font-size: 0.9rem;
     color: #6fB98F;
     margin-bottom: 5px;
+    width: 100%;
 }
 
 .input-group input {
@@ -58,12 +64,31 @@ body {
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s;
+    margin-bottom: 15px;
 }
 
 .login-button:hover {
     background: #2C7873;
     color: white;
 }
+
+.register-button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #6fB98F;
+    color: #021C1E;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.register-button:hover {
+    background: #2C7873;
+    color: white;
+}
+
 
 .forgot-password {
     display: block;
