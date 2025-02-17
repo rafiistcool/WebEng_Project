@@ -1,12 +1,14 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterView } from 'vue-router';
+import SideBar from "@/components/SideBar.vue";
 </script>
 
 <template>
-  <h1>Hello Vue!</h1>
-  <router-link to="/">Home</router-link>
-  <router-link to="/card">Card</router-link>
-  <router-link to="/startscreen">startscreen</router-link>
-  <router-link to="/login">Login</router-link>
+
+  <SideBar/>
   <router-view />
 </template>
+
+<style scoped>
+/*@import '../src/assets/styles/app_styles.css'; */
+</style>
