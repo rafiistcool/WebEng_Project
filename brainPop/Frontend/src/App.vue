@@ -8,5 +8,6 @@ import { RouterLink, RouterView } from 'vue-router';
   <router-link to="/card">Card</router-link>
   <router-link to="/startscreen">startscreen</router-link>
   <router-link to="/login">Login</router-link>
+  <router-link to="/register">Register</router-link>
   <router-view />
 </template>
