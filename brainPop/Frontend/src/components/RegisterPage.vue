@@ -5,7 +5,7 @@
 <template>
   <body>
   <div class="login-container">
-    <h2>Login</h2>
+    <h2>Registrieren</h2>
     <form>
       <div class="input-group">
         <label for="email">E-Mail</label>
@@ -15,16 +15,16 @@
         <label for="password">Passwort</label>
         <input type="password" id="password" name="password" required>
       </div>
-      <button type="submit" class="login-button">Login</button>
-      <router-link to="/register" class="register-button" custom v-slot="{ navigate }">
-        <button @click="navigate">Registrieren</button>
-      </router-link>
+      <div class="input-group">
+        <label for="password">Passwort wiederholen</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <button type="submit" class="register-button">Registrieren</button>
     </form>
-    <a href="#" style="color: #6fB98F" class="forgot-password">Passwort vergessen?</a>
   </div>
   </body>
 </template>
 
 <style scoped>
-@import "../assets/styles/login.css";
+@import "../assets/styles/register.css";
 </style>
