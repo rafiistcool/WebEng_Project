@@ -8,7 +8,7 @@ import Register from './components/RegisterPage.vue';
 import Desktop3 from "@/components/Desktop3.vue";
 
 const routes = [
-  { path: '/', component: Home },
+  { path: '/', component: StartScreen },
   { path: '/card', component: Card } ,
   { path: '/startscreen', component: StartScreen} ,
   { path: '/login', component: Login},
