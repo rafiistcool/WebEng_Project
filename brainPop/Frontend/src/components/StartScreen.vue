@@ -12,8 +12,12 @@
     <main class="main-content">
       <h1 class="title">BrainPop</h1>
       <div class="button-group">
-        <a href="/login" class="button login-button">Anmelden</a>
-        <a href="/guest" class="button guest-button">Ohne Anmeldung fortfahren</a>
+        <router-link to="/login" class="button login-button" custom v-slot="{ navigate }">
+          <button @click="navigate">Anmelden</button>
+        </router-link>
+        <router-link to="/desktop" class="button guest-button" custom v-slot="{ navigate }">
+          <button @click="navigate">Gast</button>
+        </router-link>
       </div>
     </main>
   </div>
