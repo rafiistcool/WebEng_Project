@@ -15,9 +15,13 @@ const configureContentOfFlashcard = () => {
 }
 
 const notKnown = () => {
+  userContentFront.value = "dylan";
+  userContentBack.value = "stinkt";
   console.log('Not Known');
 }
 const known = () => {
+  userContentFront.value = "suiii";
+  userContentBack.value = "rückseite wahr";
   console.log('Known');
 }
 </script>
