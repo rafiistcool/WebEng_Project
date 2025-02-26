@@ -8,7 +8,7 @@
         @touchstart="startPress($event, 'box', $event.target)"
         @touchend="cancelPress"
     >
-      <img class="box" src="../assets/icons/box.png" alt="" />
+      <img class="box" src="../assets/icons/folder.svg" alt="" />
       <div class="box_text">Set 1</div>
     </div>
 
@@ -21,13 +21,12 @@
         @touchend="cancelPress"
     >
       <div class="flashcards_text">Cards 1</div>
-      <img class="flashcards_Box" src="../assets/icons/karteikarten-zum-lernen.png" alt="" />
+      <img class="flashcards_Box" src="../assets/icons/set.svg" alt="" />
     </div>
   </div>
 
   <div class="brainpop_Title">Brainpop</div>
-  <img class="add" src="../assets/icons/plus.png" alt="" @click="openModal" />
-  <img class="brain-process" src="../assets/icons/brain-process.png" alt="" />
+  <img class="add" src="../assets/icons/plus.svg" alt="" @click="openModal" />
 
   <!-- Add Set Modal -->
   <div v-if="isModalOpen" class="modal-overlay" @click="closeModal">
@@ -42,13 +41,14 @@
       </label>
 
       <!-- Input Field for Set Name -->
-      <div v-if="isSetSelected" class="input-container">
-        <label for="setName">Set Name:</label>
-        <input type="text" id="setName" v-model="setName" placeholder="Enter set name" />
+      <div  class="input-container">
+        <label class = "name" for="setName" >Name:</label>
+        <input type="text" id="setName" v-model="setName" placeholder="Enter name" />
       </div>
-
-      <button @click="confirmSelection">Confirm</button>
-      <button @click="closeModal">Cancel</button>
+      <div class="modal-buttons">
+        <button class ="confirm-button" @click="confirmSelection">Confirm</button>
+        <button class = "cancel-button" @click="closeModal">Cancel</button>
+      </div>
     </div>
   </div>
 
@@ -61,6 +61,7 @@
 </template>
 
 <script>
+
 export default {
   name: "Desktop3",
   data() {
@@ -87,7 +88,7 @@ export default {
         alert("Please enter a set name!");
         return;
       }
-      alert(`${this.isSetSelected ? `Flashcard Set "${this.setName}"` : "Box"} added!`);
+      alert(`${this.isSetSelected ? `Set "${this.setName}"` : "Folder"} added!`);
       this.closeModal();
     },
     startPress(event, item, target) {
@@ -143,10 +144,12 @@ export default {
     },
   },
 };
+
+
 </script>
 
 <style scoped>
-@import "../assets/styles/style_Desktop3.css";
+@import '../assets/styles/style_Desktop3.css';
 
 
 </style>
