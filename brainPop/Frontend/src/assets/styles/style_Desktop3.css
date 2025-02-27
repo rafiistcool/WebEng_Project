@@ -11,60 +11,14 @@
     height: 100vh;
 
 }
-
-img.box,
-img.flashcards_Box,
-img.add {
-    transition: transform 0.2s ease-in-out;
+.Brainpop-Logo{
+    display: flex;
+    top: 5%;
+    right:5%;
+    position: absolute;
+    width: 10%;
+    height: auto;
 }
-
-img.box:hover,
-img.flashcards_Box:hover,
-img.add:hover {
-    transform: scale(1.1);
-}
-
-.box_set_container {
-    .box {
-        width: 7%;
-        height: auto;
-        position: absolute;
-        left: 12%;
-        top: 35%;
-        object-fit: cover;
-    }
-    .box_text{
-        color: #ffffff;
-        font-family: "Bayon-Regular", sans-serif;
-        font-size: 1em;
-        font-weight: 400;
-        position: absolute;
-        left: 13%;
-        top: 52%;
-    }
-}
-
-.flashcards_Box_flashcards_container {
-    .flashcards_text {
-        color: #ffffff;
-        text-align: left;
-        font-family: "Bayon-Regular", sans-serif;
-        font-size: 1em;
-        font-weight: 400;
-        position: absolute;
-        left: 28%;
-        top: 52%;
-    }
-    .flashcards_Box {
-        width: 7%;
-        height: auto;
-        position: absolute;
-        left: 27% ;
-        top: 35%;
-        object-fit: cover;
-    }
-}
-
 .add {
     width: 6%;
     height: auto;
@@ -74,7 +28,7 @@ img.add:hover {
     object-fit: cover;
 }
 .brainpop_Title {
-    color: #ffffff;
+    color: #6FB98F;
     text-align: left;
     font-family: "Bayon-Regular", sans-serif;
     font-size: 6rem;
@@ -204,7 +158,7 @@ img.add:hover {
 
 .name {
     font-family: "Bayon-Regular", sans-serif;
-    color: white;
+    color: #343434;
 }
 
 .confirm-button, .cancel-button {
@@ -216,10 +170,37 @@ img.add:hover {
     color: #6fB98F;
     border: none;
     border-radius: 10px;
+    transition: background-color 0.3s, color 0.3s;
 }
-.input-container{
+
+.confirm-button:hover, .cancel-button:hover {
+    background-color: #6FB98F;
+    color: #021C1E;
+}
+
+.item-container {
+    position: absolute;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.item-icon {
+    width: 9%;
+    height: auto;
+}
+.item-container:hover{
+    transform: scale(1.05);
+}
 
 
+.item-text {
+    color: #ffffff;
+    font-family: "Bayon-Regular", sans-serif;
+    font-size: 1em;
+    font-weight: 400;
+    margin-top: 5px;
 }
+
 
 
