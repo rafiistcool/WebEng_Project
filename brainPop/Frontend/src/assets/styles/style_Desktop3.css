@@ -11,64 +11,31 @@
     height: 100vh;
 
 }
-.box_set_container {
-    .box {
-        width: 5%;
-        height: 10%;
-        position: absolute;
-        left: 7.3%;
-        top: 40%;
-        object-fit: cover;
-    }
-    .box_text{
-        color: #ffffff;
-        font-family: "Bayon-Regular", sans-serif;
-        font-size: 1em;
-        font-weight: 400;
-        position: absolute;
-        left: 8.9%;
-        top: 52%;
-    }
+.Brainpop-Logo{
+    display: flex;
+    top: 5%;
+    right:5%;
+    position: absolute;
+    width: 10%;
+    height: auto;
 }
-
-.flashcards_Box_flashcards_container {
-    .flashcards_text {
-        color: #ffffff;
-        text-align: left;
-        font-family: "Bayon-Regular", sans-serif;
-        font-size: 1em;
-        font-weight: 400;
-        position: absolute;
-        left: 18%;
-        top: 52%;
-    }
-    .flashcards_Box {
-        width: 5%;
-        height: 10%;
-        position: absolute;
-        left: 17.5% ;
-        top: 40%;
-        object-fit: cover;
-    }
-}
-
 .add {
-    width: 4.6%;
-    height: 10%;
+    width: 6%;
+    height: auto;
     position: absolute;
     right: 5%;
-    bottom: -9%;
+    bottom: 5%;
     object-fit: cover;
 }
 .brainpop_Title {
-    color: #ffffff;
+    color: #6FB98F;
     text-align: left;
     font-family: "Bayon-Regular", sans-serif;
-    font-size: 96px;
+    font-size: 6rem;
     font-weight: 400;
     position: absolute;
-    left: 5%;
-    top: 18%;
+    left: 10%;
+    top: 5%;
     width: 770px;
     height: 98px;
 }
@@ -146,22 +113,20 @@
     height: 50%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-
+    position: relative;
 }
 .modal h2{
     font-family: "Bayon-Regular", sans-serif;
     color: white;
 }
 
-.modal button {
-    margin: 10px;
-    padding: 10px 20px;
-    cursor: pointer;
-    background: #343434;
-    color: #6fB98F;
-    border: none;
-    border-radius: 10px;
+.modal-buttons {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 30%;
 }
 .context-menu {
     position: absolute;
@@ -190,4 +155,52 @@
     background: #6FB98F;
     color: #021C1E;
 }
+
+.name {
+    font-family: "Bayon-Regular", sans-serif;
+    color: #343434;
+}
+
+.confirm-button, .cancel-button {
+    font-family: "Bayon-Regular", sans-serif;
+    width: 20%;
+    padding: 10px;
+    cursor: pointer;
+    background: #343434;
+    color: #6fB98F;
+    border: none;
+    border-radius: 10px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.confirm-button:hover, .cancel-button:hover {
+    background-color: #6FB98F;
+    color: #021C1E;
+}
+
+.item-container {
+    position: absolute;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.item-icon {
+    width: 9%;
+    height: auto;
+}
+.item-container:hover{
+    transform: scale(1.05);
+}
+
+
+.item-text {
+    color: #ffffff;
+    font-family: "Bayon-Regular", sans-serif;
+    font-size: 1em;
+    font-weight: 400;
+    margin-top: 5px;
+}
+
+
 

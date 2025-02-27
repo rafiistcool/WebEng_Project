@@ -19,7 +19,8 @@
     width: 250px;
     height: 100vh;
     background: #333;
-    color: white;
+    color: #6fB98F;
+    font-family: "Bayon-Regular", sans-serif;
     position: absolute;
     left: -250px;
     transition: left 0.3s ease;
@@ -46,7 +47,8 @@
 }
 
 .sidebar-content a {
-    color: white;
+    color: #6fB98F;
+    font-family: "Bayon-Regular", sans-serif;
     text-decoration: none;
 }
 
