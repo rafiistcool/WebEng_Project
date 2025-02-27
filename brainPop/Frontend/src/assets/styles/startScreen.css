@@ -64,7 +64,7 @@ body {
     display: flex;
     justify-content: center; /*centers the text*/
     align-items: center; /*centers the text*/
-    padding: 2% 5%;
+    padding: 5% 5%;
     background: #6FB98F;
     color: #021C1E;
     border: none;
