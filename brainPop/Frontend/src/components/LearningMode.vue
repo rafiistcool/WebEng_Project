@@ -2,7 +2,9 @@
 import { ref } from 'vue';
 
 const flipped = ref(false);
-const imageUrl = ref("https://placehold.co/600x400");
+
+const userContentFront = ref("Vorderseite");
+const userContentBack = ref("Rückseite");
 
 const isFlipped = () => {
   flipped.value = !flipped.value;
@@ -13,10 +15,13 @@ const configureContentOfFlashcard = () => {
 }
 
 const notKnown = () => {
+  userContentFront.value = "dylan";
+  userContentBack.value = "stinkt";
   console.log('Not Known');
 }
-
 const known = () => {
+  userContentFront.value = "suiii";
+  userContentBack.value = "rückseite wahr";
   console.log('Known');
 }
 </script>
@@ -51,10 +56,10 @@ const known = () => {
       <div class="flashcard-container">
         <div class="flashcard" @click="isFlipped"  :class="{flipped: flipped}">
             <div class="flashcardFront">
-              <p class="userContent" >Hier sollte später Text stehen</p>
+              <p class="userContent" >{{ userContentFront }}</p>
             </div>
             <div class="flashcardBack">
-              <p class="userContent">Hier steht der zweite Text</p>
+              <p class="userContent">{{ userContentBack }}</p>
             </div>
         </div>
       </div>
