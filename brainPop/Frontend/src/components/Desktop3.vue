@@ -1,16 +1,16 @@
 <template>
   <div class="desktop-3">
-    <div v-for="(item, index) in state.items" :key="index" :style="item.positionStyle" class="item-container">
-      <img :src="item.icon" class="item-icon" alt="" />
-      <div class="item-text">{{ item.name }}</div>
+    <div class="items-container">
+      <div v-for="(item, index) in state.items" :key="index" class="item-container">
+        <img :src="item.icon" class="item-icon" alt="" />
+        <div class="item-text">{{ item.name }}</div>
+      </div>
     </div>
 
     <div class="brainpop_Title">Brainpop</div>
     <img class="add" src="../assets/icons/plus.svg" alt="" @click="openModal" />
     <img class="Brainpop-Logo" src="../assets/icons/Temp-Logo-Sebastian.png" alt="" />
   </div>
-
-
 
   <!-- Modal -->
   <div v-if="state.isModalOpen" class="modal-overlay" @click="closeModal">
@@ -32,6 +32,8 @@
     </div>
   </div>
 </template>
+
+
 
 <script>
 import { reactive } from "vue";
@@ -65,17 +67,10 @@ export default {
         name: state.setName,
         icon: state.isSetSelected
             ? new URL('@/assets/icons/set.svg', import.meta.url).href
-            : new URL('@/assets/icons/folder.svg', import.meta.url).href,
-        positionStyle: {
-          position: "absolute",
-          left: `${(10 + state.items.length * 15)-30}%`,
-          top: "35%"
-        }
+            : new URL('@/assets/icons/folder.svg', import.meta.url).href
       };
 
-      console.log("Before unshift: ", state.items);
-      state.items.unshift(newItem);
-      console.log("After unshift: ", state.items);
+      state.items.push(newItem);
 
       state.setName = "";
       state.isModalOpen = false;
