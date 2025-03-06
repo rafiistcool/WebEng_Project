@@ -1,45 +1,36 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+import { useCardStore } from '../script/store.js';
+import { useRouter } from "vue-router";
 
-import {ref} from "vue";
+const cardStore = useCardStore();
+const router = useRouter();
 
-class Card {
-  id: number;
-  question: string;
-  answer: string;
-  category: string;
-
-  constructor(id: number, question: string, answer: string, category: string) {
-    this.id = id;
-    this.question = question;
-    this.answer = answer;
-    this.category = category;
-  }
-}
-
-const cards: Card[] = [];
 const showPopup = ref(false);
-
 const question = ref("");
 const answer = ref("");
 const category = ref("");
 
-const startLearningmode = () => {
-
-}
-
 const addCard = () => {
   showPopup.value = true;
 }
-const saveCard = () => {
-  cards.push(new Card(0, question.value, answer.value, category.value));
-  console.log(cards);
-}
-const edit = () => {
 
+const saveCard = () => {
+  cardStore.addCard(question.value, answer.value, category.value);
 }
+
 const closePopup = () => {
   showPopup.value = false;
 }
+
+const startLearningmode = () => {
+  router.push("/card");
+}
+
+const edit = () => {
+
+}
+
 </script>
 
 <template>
