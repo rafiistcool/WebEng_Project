@@ -1,0 +1,38 @@
+/* cardCreation.css */
+.card-creation {
+    margin-left: 100px;
+    padding: 20px; /* Rundum etwas Innenabstand für ein ansprechenderes Layout */
+    max-width: 800px;
+    margin-top: 20px; /* zusätzlicher Abstand zum oberen Seitenrand */
+}
+
+.content-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 50px; /* Abstand zwischen Buttons-Bereich und Content */
+}
+
+/* Button-Bereich neu gestalten */
+.card-creation-buttons {
+    display: flex;
+    flex-direction: column;
+    /* Hier wird eine feste Höhe (oder min-height) vergeben, damit der untere Bereich erkennbar ist */
+    height: 300px;
+    /* Alternativ: min-height: 300px; */
+}
+
+/* Der erste Button bleibt oben, der zweite (und der folgende) wird durch margin-top an den unteren Rand geschoben */
+.card-creation-button:nth-child(2) {
+    margin-top: auto;
+}
+
+/* Zusätzliche Abstände bei den Buttons für ein luftigeres Layout */
+.card-creation-button {
+    padding: 10px 20px;
+    margin: 5px 0;
+    border: 1px solid #ccc; /* leichte Umrandung */
+    border-radius: 4px;
+    background: white; /* Keine Hintergrundfarbe */
+    cursor: pointer;
+    font-size: 1rem;
+}

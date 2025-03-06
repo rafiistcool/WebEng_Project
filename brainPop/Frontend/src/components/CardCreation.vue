@@ -4,17 +4,15 @@
 
 <template>
 <div class="card-creation">
-  <div class="heading">
-
-  </div>
-  <div class="content-below-header">
-    <div class="left-buttons">
-      <button class="start">start</button>
-      <button class="add">Hinzufügen</button>
-      <button class="edit">Bearbeiten</button>
+  <h1>Card Creation</h1>
+  <div class="content-wrapper">
+    <div class="card-creation-buttons">
+      <button class="card-creation-button">Starten</button>
+      <button class="card-creation-button">Hinzufügen</button>
+      <button class="card-creation-button">Bearbeiten</button>
     </div>
-    <div class="right-content">
-
+    <div class="card-contents">
+      <p>Test Inhalt</p>
     </div>
   </div>
 
@@ -22,5 +20,5 @@
 </template>
 
 <style scoped>
-
+@import "../assets/styles/cardCreation.css";
 </style>
