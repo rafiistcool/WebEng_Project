@@ -43,7 +43,12 @@ const edit = () => {
       <button class="card-creation-button" @click="edit">Bearbeiten</button>
     </div>
     <div class="card-contents">
-      <p>Test Inhalt</p>
+      <div v-for="(card, index) in cardStore.cards" :key="index" class="card-item">
+        <h3>{{ card.question }}</h3>
+        <p>{{ card.answer }}</p>
+        <small>{{ card.category }}</small>
+      </div>
+
     </div>
   </div>
 
