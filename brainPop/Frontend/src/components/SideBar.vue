@@ -26,6 +26,7 @@ const closeSidebar = () => {
           <li><router-link to="/login">login</router-link></li>
           <li><router-link to="/register">register</router-link></li>
           <li><router-link to="/desktop">Desktop</router-link></li>
+          <li><router-link to="/cardcreation">Card Creation</router-link></li>
         </ul>
       </div>
     </div>
