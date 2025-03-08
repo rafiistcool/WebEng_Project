@@ -11,72 +11,103 @@ const question = ref("");
 const answer = ref("");
 const category = ref("");
 
+// Manage menu state
+const activeMenuIndex = ref<number | null>(null);
+const menuPosition = ref({ top: 0, left: 0 });
+
 const addCard = () => {
   showPopup.value = true;
-}
+};
 
 const saveCard = () => {
   cardStore.addCard(question.value, answer.value, category.value);
-}
+};
 
 const closePopup = () => {
   showPopup.value = false;
-}
+};
 
 const startLearningmode = () => {
   router.push("/card");
-}
+};
 
-const edit = () => {
+const toggleMenu = (event: MouseEvent, index: number) => {
+  if (activeMenuIndex.value === index) {
+    activeMenuIndex.value = null;
+  } else {
+    activeMenuIndex.value = index;
+    menuPosition.value = {
+      top: event.clientY + 5, // Position below the button
+      left: event.clientX - 60 // Slightly left for better alignment
+    };
+  }
+};
 
-}
+const editCard = (index: number) => {
+  console.log("Bearbeiten", index);
+  activeMenuIndex.value = null; // Close menu after action
+};
 
+const deleteCard = (index: number) => {
+  cardStore.cards.splice(index, 1);
+  activeMenuIndex.value = null;
+};
 </script>
 
+
 <template>
-<div class="card-creation">
-  <h1>Card Creation</h1>
-  <div class="content-wrapper">
-    <div class="card-creation-buttons">
-      <button class="card-creation-button" @click="startLearningmode">Starten</button>
-      <button class="card-creation-button" @click="addCard">Hinzufügen</button>
-      <button class="card-creation-button" @click="edit">Bearbeiten</button>
-    </div>
-    <div class="card-contents">
-      <div v-for="(card, index) in cardStore.cards" :key="index" class="card-item">
-        <h3>{{ card.question }}</h3>
-        <p>{{ card.answer }}</p>
-        <small>{{ card.category }}</small>
+  <div class="card-creation">
+    <h1 class="title">Card Creation</h1>
+    <button class="card-start-button" @click="startLearningmode">Starten</button>
+    <button class="card-creation-button" @click="addCard">Hinzufügen</button>
+
+    <div class="content-wrapper">
+      <div class="card-contents">
+        <div v-for="(card, index) in cardStore.cards" :key="index" class="card-item">
+          <div class="card-header">
+            <h3>{{ card.question }}</h3>
+            <button class="menu-button" @click="toggleMenu($event, index)">&#8226;&#8226;&#8226;</button>
+          </div>
+          <p>{{ card.answer }}</p>
+          <small>{{ card.category }}</small>
+        </div>
       </div>
+    </div>
 
+    <!-- Menu Popup (Positioned outside cards) -->
+    <div v-if="activeMenuIndex !== null" class="menu-popup" :style="{ top: menuPosition.top + 'px', left: menuPosition.left + 'px' }">
+      <button @click="editCard(activeMenuIndex)">Bearbeiten</button>
+      <button @click="deleteCard(activeMenuIndex)">Löschen</button>
+    </div>
+
+    <div v-if="showPopup" class="card-creation-popup">
+      <div class="popup-content">
+        <h2 class="popup-title">Karte erstellen</h2>
+        <form @submit.prevent="saveCard">
+          <div class="form-group">
+            <label for="question">Frage:</label>
+            <input type="text" id="question" v-model="question" />
+          </div>
+          <div class="form-group">
+            <label for="answer">Antwort:</label>
+            <input type="text" id="answer" v-model="answer" />
+          </div>
+          <div class="form-group">
+            <label for="category">Kategorie:</label>
+            <input type="text" id="category" v-model="category" />
+          </div>
+          <div class="popup-buttons">
+            <button class="save-button" type="submit">Speichern</button>
+            <button class="close-button" @click="closePopup">Schließen</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-
-  <div v-if="showPopup" class="card-creation-popup">
-    <div class="popup-content">
-      <h2>Karte erstellen</h2>
-      <form @submit.prevent="saveCard">
-        <div class="form-group" >
-          <label for="question">Frage:</label>
-          <input type="text" id="question" v-model="question"/>
-        </div>
-        <div class="form-group">
-          <label for="answer">Antwort:</label>
-          <input type="text" id="answer" v-model="answer"/>
-        </div>
-        <div class="form-group">
-          <label for="category">Kategorie:</label>
-          <input type="text" id="category" v-model="category"/>
-        </div>
-        <button type="submit">Speichern</button>
-      </form>
-      <button class="close-button" @click="closePopup">Schließen</button>
-    </div>
-  </div>
-
-</div>
 </template>
 
 <style scoped>
 @import "../assets/styles/cardCreation.css";
+
+
 </style>
