@@ -10,7 +10,7 @@ const userContentBack = ref("Rückseite");
 const cardStore = useCardStore();
 const currentIndex = ref(0);
 
-const isFlipped = () => {
+const flip = () => {
   flipped.value = !flipped.value;
 }
 
@@ -23,12 +23,18 @@ const updateContentOfFlashcard = () => {
 }
 
 const notKnown = () => {
-  currentIndex.value = (currentIndex.value - 1) % cardStore.cards.length;
+  if (currentIndex.value <= 0) {
+    currentIndex.value = cardStore.cards.length - 1;
+  }else {
+    currentIndex.value = (currentIndex.value - 1) % cardStore.cards.length;
+  }
+  flipped.value = false;
   updateContentOfFlashcard();
   console.log('Not Known');
 }
 const known = () => {
   currentIndex.value = (currentIndex.value + 1) % cardStore.cards.length;
+  flipped.value = false;
   updateContentOfFlashcard();
   console.log('Known');
 }
@@ -67,7 +73,7 @@ updateContentOfFlashcard();
         </div>
       </div>
       <div class="flashcard-container">
-        <div class="flashcard" @click="isFlipped"  :class="{flipped: flipped}">
+        <div class="flashcard" @click="flip" :class="{flipped: flipped}">
             <div class="flashcardFront">
               <p class="userContent" >{{ userContentFront }}</p>
             </div>
