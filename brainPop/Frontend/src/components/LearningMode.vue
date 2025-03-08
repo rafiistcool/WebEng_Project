@@ -14,7 +14,7 @@ const isFlipped = () => {
   flipped.value = !flipped.value;
 }
 
-const configureContentOfFlashcard = () => {
+const updateContentOfFlashcard = () => {
   if(cardStore.cards.length > 0) {
     const currentCard = cardStore.cards[currentIndex.value];
     userContentFront.value = currentCard.question;
@@ -24,18 +24,19 @@ const configureContentOfFlashcard = () => {
 
 const notKnown = () => {
   currentIndex.value = (currentIndex.value - 1) % cardStore.cards.length;
+  updateContentOfFlashcard();
   console.log('Not Known');
 }
 const known = () => {
   currentIndex.value = (currentIndex.value + 1) % cardStore.cards.length;
-  configureContentOfFlashcard();
+  updateContentOfFlashcard();
   console.log('Known');
 }
 
 const endLearningMode = () => {
   router.push("/cardcreation");
 }
-configureContentOfFlashcard();
+updateContentOfFlashcard();
 </script>
 
 <template>
@@ -88,7 +89,7 @@ configureContentOfFlashcard();
         <p class="counter">Hier sollte das stehen: (2)/(35)</p>
       </div>
       <div class="edit-button-container">
-        <button class="baseButtonLayout" @click="configureContentOfFlashcard">
+        <button class="baseButtonLayout" @click="updateContentOfFlashcard">
           Edit
         </button>
       </div>
