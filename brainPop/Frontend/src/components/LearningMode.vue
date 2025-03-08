@@ -47,8 +47,8 @@ configureContentOfFlashcard();
         <h1 id="learnMode-h1">Learn-Mode</h1>
       </div>
 
-      <div class="end-button-container" @click="endLearningMode">
-        <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class="end-button">
+      <div class="end-button-container" >
+        <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class="end-button" @click="endLearningMode">
           <circle cx="30" cy="30" r="28" fill="#004445" stroke="#004445" stroke-width="4"/>
           <line x1="18" y1="18" x2="42" y2="42" stroke="#2C7873" stroke-width="4" stroke-linecap="round"/>
           <line x1="18" y1="42" x2="42" y2="18" stroke="#2C7873" stroke-width="4" stroke-linecap="round"/>

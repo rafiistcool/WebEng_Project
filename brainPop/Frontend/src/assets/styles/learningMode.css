@@ -23,7 +23,7 @@
 .end-button:hover{
     cursor: pointer;
     transform: scale(1.1);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+
 }
 
 .end-button-container{
@@ -39,8 +39,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 85vh;
-
+    width: 99vw;
+    height: 99vh;
     background: linear-gradient(to bottom, #021C1E, #004445);
 }
 .flashcard {
