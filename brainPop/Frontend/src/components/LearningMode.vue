@@ -86,7 +86,7 @@ updateContentOfFlashcard();
     </div>
     <div class="content-below-flashcard">
       <div class="flashcard-counter">
-        <p class="counter">Hier sollte das stehen: (2)/(35)</p>
+        <p class="counter"> ({{ currentIndex+1 }})/({{ cardStore.cards.length }})</p>
       </div>
       <div class="edit-button-container">
         <button class="baseButtonLayout" @click="updateContentOfFlashcard">
