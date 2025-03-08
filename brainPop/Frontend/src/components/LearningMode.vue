@@ -23,7 +23,7 @@ const configureContentOfFlashcard = () => {
 }
 
 const notKnown = () => {
-
+  currentIndex.value = (currentIndex.value - 1) % cardStore.cards.length;
   console.log('Not Known');
 }
 const known = () => {
