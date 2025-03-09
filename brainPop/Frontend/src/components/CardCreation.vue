@@ -11,20 +11,44 @@ const question = ref("");
 const answer = ref("");
 const category = ref("");
 
-// Manage menu state
+
+const editMode = ref(false);
+const selectedCardIndex = ref<number | null>(null);
+
+// Menü-Status
 const activeMenuIndex = ref<number | null>(null);
 const menuPosition = ref({ top: 0, left: 0 });
 
 const addCard = () => {
+  question.value = "";
+  answer.value = "";
+  category.value = "";
+  editMode.value = false;
   showPopup.value = true;
 };
 
 const saveCard = () => {
-  cardStore.addCard(question.value, answer.value, category.value);
+  if (editMode.value && selectedCardIndex.value !== null) {
+    const existingCard = cardStore.cards[selectedCardIndex.value];
+
+    cardStore.cards[selectedCardIndex.value] = {
+      id: existingCard.id,
+      question: question.value,
+      answer: answer.value,
+      category: category.value,
+    };
+  } else {
+
+    cardStore.addCard(question.value, answer.value, category.value);
+  }
+
+  closePopup();
 };
 
 const closePopup = () => {
   showPopup.value = false;
+  selectedCardIndex.value = null;
+  editMode.value = false;
 };
 
 const startLearningmode = () => {
@@ -37,15 +61,23 @@ const toggleMenu = (event: MouseEvent, index: number) => {
   } else {
     activeMenuIndex.value = index;
     menuPosition.value = {
-      top: event.clientY + 5, // Position below the button
-      left: event.clientX - 60 // Slightly left for better alignment
+      top: event.clientY + 5,
+      left: event.clientX - 60
     };
   }
 };
 
 const editCard = (index: number) => {
-  console.log("Bearbeiten", index);
-  activeMenuIndex.value = null; // Close menu after action
+  const card = cardStore.cards[index];
+
+  question.value = card.question;
+  answer.value = card.answer;
+  category.value = card.category;
+
+  selectedCardIndex.value = index;
+  editMode.value = true;
+  showPopup.value = true;
+  activeMenuIndex.value = null;
 };
 
 const deleteCard = (index: number) => {
@@ -53,7 +85,6 @@ const deleteCard = (index: number) => {
   activeMenuIndex.value = null;
 };
 </script>
-
 
 <template>
   <div class="card-creation">
@@ -74,15 +105,16 @@ const deleteCard = (index: number) => {
       </div>
     </div>
 
-    <!-- Menu Popup (Positioned outside cards) -->
+    <!-- Menü Popup -->
     <div v-if="activeMenuIndex !== null" class="menu-popup" :style="{ top: menuPosition.top + 'px', left: menuPosition.left + 'px' }">
       <button @click="editCard(activeMenuIndex)">Bearbeiten</button>
       <button @click="deleteCard(activeMenuIndex)">Löschen</button>
     </div>
 
+    <!-- Popup zum Erstellen/Bearbeiten einer Karte -->
     <div v-if="showPopup" class="card-creation-popup">
       <div class="popup-content">
-        <h2 class="popup-title">Karte erstellen</h2>
+        <h2 class="popup-title">{{ editMode ? 'Karte bearbeiten' : 'Karte erstellen' }}</h2>
         <form @submit.prevent="saveCard">
           <div class="form-group">
             <label for="question">Frage:</label>
@@ -105,7 +137,6 @@ const deleteCard = (index: number) => {
     </div>
   </div>
 </template>
-
 <style scoped>
 @import "../assets/styles/cardCreation.css";
 
