@@ -5,7 +5,7 @@ import Card from '@/components/LearningMode.vue';
 import StartScreen from "@/components/StartScreen.vue";
 import Login from './components/LoginPage.vue';
 import Register from './components/RegisterPage.vue';
-import Desktop3 from "@/components/Desktop3.vue";
+import Explorer from "@/components/Explorer/Explorer_main.vue";
 
 const routes = [
   { path: '/', component: StartScreen },
@@ -13,7 +13,7 @@ const routes = [
   { path: '/startscreen', component: StartScreen} ,
   { path: '/login', component: Login},
   { path: '/register', component: Register},
-  {path: '/desktop',component: Desktop3}
+  {path: '/explorer',component: Explorer}
     
 
 ];
