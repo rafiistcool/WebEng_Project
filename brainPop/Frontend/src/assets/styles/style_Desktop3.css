@@ -3,12 +3,7 @@
     box-sizing: border-box;
 }
 .desktop-3 {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
     background: linear-gradient(to bottom right, #021C1E, #004445);
-
-    height: 100vh;
 
 }
 .Brainpop-Logo{
@@ -178,21 +173,43 @@
     color: #021C1E;
 }
 
-.item-container {
+.items-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10%;
+    justify-content: flex-start;
+    padding: 40px;
+    align-items: flex-start;
+    margin-top: 10%;
+    margin-left: 5%;
+    width: 94%;
+    height: 70%;
     position: absolute;
-    text-align: center;
+}
+
+.item-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     transition: transform 0.2s ease-in-out;
     cursor: pointer;
+    width: 6%;
+    height: auto;
+}
+.icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .item-icon {
-    width: 9%;
-    height: auto;
+    width: 100%;
+    height: 100%;
 }
 .item-container:hover{
     transform: scale(1.05);
 }
-
 
 .item-text {
     color: #ffffff;
