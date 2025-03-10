@@ -1,0 +1,67 @@
+/* cardCreation.css */
+.card-creation {
+    margin-left: 100px;
+    padding: 20px;
+    max-width: 800px;
+    margin-top: 20px;
+}
+
+.content-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+}
+
+.card-creation-buttons {
+    display: flex;
+    flex-direction: column;
+    min-height: 300px;
+}
+
+.card-creation-button:nth-child(2) {
+    margin-top: auto;
+}
+
+.card-creation-button {
+    padding: 10px 20px;
+    margin: 5px 0;
+    border: 1px solid #ccc; /* leichte Umrandung */
+    border-radius: 4px;
+    background: white; /* Keine Hintergrundfarbe */
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.card-creation-popup{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.popup-content{
+    background: #2C7873;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.card-contents {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.card-item {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    flex: 0 1 200px;
+    box-sizing: border-box;
+}
+

@@ -1,24 +1,48 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import {useCardStore} from "@/script/store.js";
+import router from "@/router.js";
 
 const flipped = ref(false);
-const imageUrl = ref("https://placehold.co/600x400");
 
-const isFlipped = () => {
+const userContentFront = ref("Vorderseite");
+const userContentBack = ref("Rückseite");
+const cardStore = useCardStore();
+const currentIndex = ref(0);
+
+const flip = () => {
   flipped.value = !flipped.value;
 }
 
-const configureContentOfFlashcard = () => {
-
+const updateContentOfFlashcard = () => {
+  if(cardStore.cards.length > 0) {
+    const currentCard = cardStore.cards[currentIndex.value];
+    userContentFront.value = currentCard.question;
+    userContentBack.value = currentCard.answer;
+  }
 }
 
 const notKnown = () => {
+  if (currentIndex.value <= 0) {
+    currentIndex.value = cardStore.cards.length - 1;
+  }else {
+    currentIndex.value = (currentIndex.value - 1) % cardStore.cards.length;
+  }
+  flipped.value = false;
+  updateContentOfFlashcard();
   console.log('Not Known');
 }
-
 const known = () => {
+  currentIndex.value = (currentIndex.value + 1) % cardStore.cards.length;
+  flipped.value = false;
+  updateContentOfFlashcard();
   console.log('Known');
 }
+
+const endLearningMode = () => {
+  router.push("/cardcreation");
+}
+updateContentOfFlashcard();
 </script>
 
 <template>
@@ -30,8 +54,8 @@ const known = () => {
         <h1 id="learnMode-h1">Learn-Mode</h1>
       </div>
 
-      <div class="end-button-container">
-        <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class="end-button">
+      <div class="end-button-container" >
+        <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class="end-button" @click="endLearningMode">
           <circle cx="30" cy="30" r="28" fill="#004445" stroke="#004445" stroke-width="4"/>
           <line x1="18" y1="18" x2="42" y2="42" stroke="#2C7873" stroke-width="4" stroke-linecap="round"/>
           <line x1="18" y1="42" x2="42" y2="18" stroke="#2C7873" stroke-width="4" stroke-linecap="round"/>
@@ -49,12 +73,12 @@ const known = () => {
         </div>
       </div>
       <div class="flashcard-container">
-        <div class="flashcard" @click="isFlipped"  :class="{flipped: flipped}">
+        <div class="flashcard" @click="flip" :class="{flipped: flipped}">
             <div class="flashcardFront">
-              <p class="userContent" >Hier sollte später Text stehen</p>
+              <p class="userContent" >{{ userContentFront }}</p>
             </div>
             <div class="flashcardBack">
-              <p class="userContent">Hier steht der zweite Text</p>
+              <p class="userContent">{{ userContentBack }}</p>
             </div>
         </div>
       </div>
@@ -68,10 +92,10 @@ const known = () => {
     </div>
     <div class="content-below-flashcard">
       <div class="flashcard-counter">
-        <p class="counter">Hier sollte das stehen: (2)/(35)</p>
+        <p class="counter"> ({{ currentIndex+1 }})/({{ cardStore.cards.length }})</p>
       </div>
       <div class="edit-button-container">
-        <button class="baseButtonLayout" @click="configureContentOfFlashcard">
+        <button class="baseButtonLayout" @click="updateContentOfFlashcard">
           Edit
         </button>
       </div>
