@@ -10,8 +10,8 @@
     </div>
 
     <div class="brainpop_Title">Brainpop</div>
-    <img class="add" src="../assets/icons/plus.svg" alt="" @click="openModal(null)" />
-    <img class="Brainpop-Logo" src="../assets/icons/Temp-Logo-Sebastian.png" alt="" />
+    <img class="add" src="@/assets/icons/plus.svg" alt="" @click="openModal(null)" />
+    <img class="Brainpop-Logo" src="@/assets/icons/Temp-Logo-Sebastian.png" alt="" />
   </div>
 
   <!-- Modal -->
