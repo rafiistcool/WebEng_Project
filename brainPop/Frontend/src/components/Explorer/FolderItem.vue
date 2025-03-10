@@ -3,7 +3,7 @@
     <div @click="toggleExpand" class="folder-item">
       <img :src="item.icon" class="item-icon" alt="" />
       <div class="item-text">{{ item.name }}</div>
-      <img v-if="!item.children" class="add-icon" src="../assets/icons/plus.svg" @click.stop="$emit('addItem', item)" />
+      <img v-if="!item.children" class="add-icon" src="@/assets/icons/plus.svg" @click.stop="$emit('addItem', item)" />
     </div>
     <div v-if="isExpanded" class="nested-items">
       <FolderItem

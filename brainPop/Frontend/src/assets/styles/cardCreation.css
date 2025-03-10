@@ -1,36 +1,58 @@
 /* cardCreation.css */
-.card-creation {
-    margin-left: 100px;
-    padding: 20px;
-    max-width: 800px;
-    margin-top: 20px;
+.card-creation{
+    min-height: 100vh;
+    background: linear-gradient(to bottom right, #021C1E, #004445);
+}
+.title{
+    color: #6FB98F;
+    font-family: "Bayon-Regular", sans-serif;
+    font-size: 3rem;
+    font-weight: 400;
+    margin-left: 5%;
+    top: 5%;
 }
 
 .content-wrapper {
     display: flex;
-    flex-direction: row;
-    gap: 50px;
+    text-align: center;
+    position: relative;
+    margin-left: 10%;
+    width: 100%;
+    height: 100%;
+
 }
 
-.card-creation-buttons {
-    display: flex;
-    flex-direction: column;
-    min-height: 300px;
-}
+
 
 .card-creation-button:nth-child(2) {
-    margin-top: auto;
+
 }
 
 .card-creation-button {
+    position: absolute;
     padding: 10px 20px;
-    margin: 5px 0;
-    border: 1px solid #ccc; /* leichte Umrandung */
+    border: 1px solid #ccc;
     border-radius: 4px;
-    background: white; /* Keine Hintergrundfarbe */
+    background: white;
     cursor: pointer;
     font-size: 1rem;
+    left:5%;
+    top: 30%
+
 }
+.card-start-button{
+    position: absolute;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    font-size: 1rem;
+    left:5%;
+    top: 20%
+
+}
+
 
 .card-creation-popup{
     position: fixed;
@@ -44,24 +66,92 @@
     align-items: center;
 
 }
+
+
 .popup-content{
     background: #2C7873;
     padding: 20px;
     border-radius: 10px;
+    text-align: center;
+    width: 50%;
+    height: 50%;
+
+}
+.popup-title{
+    font-family: "Bayon-Regular", sans-serif;
+    color: #343434;
+    font-size: 2rem;
+}
+.popup-buttons{
+    position: absolute;
+    bottom: 30%;
+    display: flex;
+    justify-content: flex-start;
+    gap: 30%;
+    width: 100%;
+
 }
 
+
+.close-button, .save-button{
+    font-family: "Bayon-Regular", sans-serif;
+    width: 10%;
+    padding: 10px;
+    cursor: pointer;
+    background: #343434;
+    color: #6fB98F;
+    border: none;
+    border-radius: 10px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.save-button:hover, .close-button:hover {
+    background-color: #6FB98F;
+    color: #021C1E;
+}
 .card-contents {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: center;
+    justify-content: flex-start;
+    width: 80%;
+    height: 100%;
+    margin-left: 10%;
+    color: white;
+    font-family: "Bayon-Regular", sans-serif;
 }
 
 .card-item {
-    border: 1px solid #ccc;
+    position: relative;
     border-radius: 4px;
     padding: 10px;
     flex: 0 1 200px;
     box-sizing: border-box;
+    background: #2C7873;
+}
+
+.menu-button{
+    position: absolute;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px;
+    top: 0;
+    right: 0;
+}
+.menu-button:hover{
+
+}
+.menu-popup{
+    position: fixed; /* Ensures it appears outside the card */
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    z-index: 1000;
 }
 
