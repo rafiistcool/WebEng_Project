@@ -1,9 +1,9 @@
+
 <template>
   <div class="item-container">
     <div @click="toggleExpand" class="folder-item">
       <img :src="item.icon" class="item-icon" alt="" />
       <div class="item-text">{{ item.name }}</div>
-      <img v-if="!item.children" class="add-icon" src="@/assets/icons/plus.svg" @click.stop="$emit('addItem', item)" />
     </div>
     <div v-if="isExpanded" class="nested-items">
       <FolderItem
@@ -14,9 +14,11 @@
       />
     </div>
   </div>
+
 </template>
 
 <script>
+
 import { ref } from "vue";
 
 export default {
@@ -38,9 +40,11 @@ export default {
     };
   }
 };
+
 </script>
 
 <style>
+
 .nested-items {
   padding-left: 20px;
 }
@@ -49,9 +53,6 @@ export default {
   align-items: center;
   cursor: pointer;
 }
-.add-icon {
-  margin-left: auto;
-  cursor: pointer;
-  width: 16px;
-}
+
+
 </style>
