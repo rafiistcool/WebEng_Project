@@ -7,7 +7,7 @@
   <div class="container">
     <header class="logo-container">
       <img class="logo"
-           src="../assets/icons/Temp-Logo-Sebastian_Zeichenflache_1.png" alt=""/>
+           src="../assets/icons/logo.png" alt=""/>
     </header>
     <main class="main-content">
       <h1 class="title">BrainPop</h1>
