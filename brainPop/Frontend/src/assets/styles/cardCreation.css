@@ -31,29 +31,31 @@
 .card-creation-button {
     position: absolute;
     padding: 10px 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background: white;
     cursor: pointer;
     font-size: 1rem;
+    background: #343434;
+    color: #6fB98F;
+    transition: background-color 0.3s, color 0.3s;
     left:5%;
-    top: 30%
-
+    top: 30%;
 }
 .card-start-button{
     position: absolute;
     padding: 10px 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background: white;
     cursor: pointer;
     font-size: 1rem;
+    background: #343434;
+    color: #6fB98F;
+    transition: background-color 0.3s, color 0.3s;
     left:5%;
-    top: 20%
+    top: 20%;
 
 }
 
-
+.card-creation-button:hover, .card-start-button:hover {
+    background-color: #6FB98F;
+    color: #021C1E;
+}
 .card-creation-popup{
     position: fixed;
     top: 0;
@@ -66,6 +68,11 @@
     align-items: center;
 
 }
+.form-group {
+    color: #343434;
+    font-family: 'Bayon-Regular', sans-serif;
+}
+
 
 
 .popup-content{
@@ -116,7 +123,7 @@
     justify-content: flex-start;
     width: 80%;
     height: 100%;
-    margin-left: 10%;
+    margin-left: 20%;
     color: white;
     font-family: "Bayon-Regular", sans-serif;
 }

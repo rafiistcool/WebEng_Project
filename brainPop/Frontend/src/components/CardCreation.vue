@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useCardStore } from '../script/store.js';
 import { useRouter } from "vue-router";
 
@@ -44,6 +44,8 @@ const saveCard = () => {
 
   closePopup();
 };
+
+
 
 const closePopup = () => {
   showPopup.value = false;
@@ -92,7 +94,6 @@ const deleteCard = (index: number) => {
     <button class="card-start-button" @click="startLearningmode">Starten</button>
     <button class="card-creation-button" @click="addCard">Hinzufügen</button>
 
-    <div class="content-wrapper">
       <div class="card-contents">
         <div v-for="(card, index) in cardStore.cards" :key="index" class="card-item">
           <div class="card-header">
@@ -103,7 +104,6 @@ const deleteCard = (index: number) => {
           <small>{{ card.category }}</small>
         </div>
       </div>
-    </div>
 
     <!-- Menü Popup -->
     <div v-if="activeMenuIndex !== null" class="menu-popup" :style="{ top: menuPosition.top + 'px', left: menuPosition.left + 'px' }">
