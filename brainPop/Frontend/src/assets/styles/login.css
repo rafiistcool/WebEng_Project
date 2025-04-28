@@ -1,15 +1,5 @@
 /* login.css */
 
-body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(to bottom right, #021C1E, #004445);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-}
-
 .login-container {
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
@@ -58,38 +48,17 @@ body {
 
 .login-button {
     width: 100%;
+    height : 3rem;
     padding: 10px;
-    border: none;
-    background-color: #6fB98F;
-    color: #021C1E;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-    margin-bottom: 15px;
 }
 
-.login-button:hover {
-    background: #2C7873;
-    color: white;
-}
 
 .register-button {
     width: 100%;
+    height : 3rem;
     padding: 10px;
-    border: none;
-    background-color: #6fB98F;
-    color: #021C1E;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
 }
 
-.register-button:hover {
-    background: #2C7873;
-    color: white;
-}
 
 
 .forgot-password {

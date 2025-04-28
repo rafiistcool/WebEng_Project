@@ -37,14 +37,7 @@
     flex: 1;
 }
 
-.learning-mode-window{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 99vw;
-    height: 99vh;
-    background: linear-gradient(to bottom, #021C1E, #004445);
-}
+
 .flashcard {
     width: 50vw;
     height: 40vh;

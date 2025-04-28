@@ -4,10 +4,7 @@
 .desktop-3 * {
     box-sizing: border-box;
 }
-.desktop-3 {
-    background: linear-gradient(to bottom right, #021C1E, #004445);
 
-}
 .Brainpop-Logo{
     display: flex;
     top: 5%;

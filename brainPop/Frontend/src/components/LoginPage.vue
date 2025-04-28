@@ -34,8 +34,8 @@ const login = () => {
         <label for="password">Passwort</label>
         <input type="password" id="password" v-model="password" required>
       </div>
-      <button type="submit" class="login-button" @click="login">Login</button>
-      <router-link to="/register" class="register-button" custom v-slot="{ navigate }">
+      <button type="submit" class="button login-button" @click="login">Login</button>
+      <router-link to="/register" class="button register-button" custom v-slot="{ navigate }">
         <button @click="navigate">Registrieren</button>
       </router-link>
     </form>
@@ -46,4 +46,5 @@ const login = () => {
 
 <style scoped>
 @import "../assets/styles/login.css";
+@import "../assets/styles/masterStyle.css";
 </style>
