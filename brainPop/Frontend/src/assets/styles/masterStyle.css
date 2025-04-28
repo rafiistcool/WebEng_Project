@@ -1,0 +1,32 @@
+/* MasterStyle.css*/
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to bottom right, #021C1E, #004445);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+.button:hover {
+    background: #2C7873;
+    color: white;
+}
+.button {
+    display: flex;
+    justify-content: center; /* Zentriert den Text */
+    align-items: center; /* Zentriert den Text */
+    background-color: #6FB98F;
+    color: #021C1E;
+    border: none;
+    border-radius: 10px;  /* Rundung des Buttons */
+    font-size: 1rem;      /* Schriftgröße */
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s; /* sanfte Übergänge */
+    min-width: 200px; /* Verhindert, dass Buttons zu klein werden */
+    text-align: center; /* Text zentrieren */
+    display: inline-block;
+    margin-top: 10px; /* Abstand oben */
+}

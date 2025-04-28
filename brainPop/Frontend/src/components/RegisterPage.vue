@@ -40,7 +40,7 @@ const register = () => {
         <label for="passwordConfirm">Passwort wiederholen</label>
         <input type="password" id="passwordConfirm" v-model="passwordConfirm" required>
       </div>
-      <button type="submit" class="register-button">Registrieren</button>
+      <button type="submit" class="button">Registrieren</button>
     </form>
   </div>
   </body>
@@ -49,4 +49,5 @@ const register = () => {
 
 <style scoped>
 @import "../assets/styles/register.css";
+@import "../assets/styles/masterStyle.css";
 </style>

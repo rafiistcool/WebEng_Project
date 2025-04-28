@@ -91,8 +91,8 @@ const deleteCard = (index: number) => {
 <template>
   <div class="card-creation">
     <h1 class="title">Card Creation</h1>
-    <button class="card-start-button" @click="startLearningmode">Starten</button>
-    <button class="card-creation-button" @click="addCard">Hinzufügen</button>
+    <button class="button card-start-button" @click="startLearningmode">Starten</button>
+    <button class="button card-creation-button" @click="addCard">Hinzufügen</button>
 
       <div class="card-contents">
         <div v-for="(card, index) in cardStore.cards" :key="index" class="card-item">
@@ -139,6 +139,6 @@ const deleteCard = (index: number) => {
 </template>
 <style scoped>
 @import "../assets/styles/cardCreation.css";
-
+@import "../assets/styles/masterStyle.css";
 
 </style>
