@@ -47,19 +47,16 @@
 }
 
 .login-button {
-    width: 100%;
+    width: 70%;
     height : 3rem;
     padding: 10px;
 }
-
 
 .register-button {
-    width: 100%;
+    width: 70%;
     height : 3rem;
     padding: 10px;
 }
-
-
 
 .forgot-password {
     display: block;
