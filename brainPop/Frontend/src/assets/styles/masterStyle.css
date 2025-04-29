@@ -14,9 +14,10 @@ body {
     color: white;
 }
 .button {
+    position : fixed;
     display: flex;
-    justify-content: center; /* Zentriert den Text */
-    align-items: center; /* Zentriert den Text */
+    justify-content: center;
+    align-items: center;
     background-color: #6FB98F;
     color: #021C1E;
     border: none;
@@ -27,6 +28,6 @@ body {
     transition: background 0.3s, color 0.3s; /* sanfte Übergänge */
     min-width: 200px; /* Verhindert, dass Buttons zu klein werden */
     text-align: center; /* Text zentrieren */
-    display: inline-block;
     margin-top: 10px; /* Abstand oben */
+    z-index: 1;
 }
