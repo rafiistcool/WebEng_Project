@@ -1,15 +1,14 @@
 /* cardCreation.css */
-.card-creation{
-    min-height: 100vh;
-    background: linear-gradient(to bottom right, #021C1E, #004445);
-}
-.title{
+
+.title {
+    position: absolute;
+    top: 5%;
+    left: 5%;
     color: #6FB98F;
-    font-family: "Bayon-Regular", sans-serif;
+    font-family: 'Arial', sans-serif;
     font-size: 3rem;
     font-weight: 400;
-    margin-left: 5%;
-    top: 5%;
+    margin: 0;
 }
 
 .content-wrapper {
@@ -22,25 +21,17 @@
 
 }
 
-
-
-.card-creation-button:nth-child(2) {
-
-}
-
 .card-creation-button {
     position: fixed;
     padding: 10px 20px;
     left:5%;
     top: 30%;
-    z-index: 1;
 }
 .card-start-button{
     position: fixed;
     padding: 10px 20px;
     left:5%;
     top: 20%;
-    z-index: 1;
 
 }
 
@@ -57,53 +48,41 @@
 
 }
 .form-group {
-    color: #343434;
-    font-family: 'Bayon-Regular', sans-serif;
+    color: white;
+    font-family: 'Arial', sans-serif;
 }
 
 
 
 .popup-content{
-    background: #2C7873;
+    background: linear-gradient(to bottom right, #004445, #2C7873);
     padding: 20px;
     border-radius: 10px;
     text-align: center;
     width: 50%;
     height: 50%;
+    z-index: 3;
+    justify-content: center;
 
 }
 .popup-title{
-    font-family: "Bayon-Regular", sans-serif;
-    color: #343434;
+    font-family: 'Arial', sans-serif;
+    color: white;
     font-size: 2rem;
 }
 .popup-buttons{
-    position: absolute;
+
     bottom: 30%;
+    justify-content: center;
     display: flex;
-    justify-content: flex-start;
-    gap: 30%;
+    gap: 10%;
     width: 100%;
-
 }
-
 
 .close-button, .save-button{
-    font-family: "Bayon-Regular", sans-serif;
-    width: 10%;
     padding: 10px;
-    cursor: pointer;
-    background: #343434;
-    color: #6fB98F;
-    border: none;
-    border-radius: 10px;
-    transition: background-color 0.3s, color 0.3s;
 }
 
-.save-button:hover, .close-button:hover {
-    background-color: #6FB98F;
-    color: #021C1E;
-}
 .card-contents {
     display: flex;
     flex-wrap: wrap;
@@ -113,7 +92,7 @@
     height: 100%;
     margin-left: 20%;
     color: white;
-    font-family: "Bayon-Regular", sans-serif;
+    font-family: 'Arial', sans-serif;
 }
 
 .card-item {
@@ -135,9 +114,7 @@
     top: 0;
     right: 0;
 }
-.menu-button:hover{
 
-}
 .menu-popup{
     position: fixed; /* Ensures it appears outside the card */
     background: white;

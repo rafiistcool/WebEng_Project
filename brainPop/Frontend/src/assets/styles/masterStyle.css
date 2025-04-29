@@ -14,7 +14,6 @@ body {
     color: white;
 }
 .button {
-    position : fixed;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -29,5 +28,4 @@ body {
     min-width: 200px; /* Verhindert, dass Buttons zu klein werden */
     text-align: center; /* Text zentrieren */
     margin-top: 10px; /* Abstand oben */
-    z-index: 1;
 }
