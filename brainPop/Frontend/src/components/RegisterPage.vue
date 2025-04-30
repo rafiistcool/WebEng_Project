@@ -24,7 +24,6 @@ const register = () => {
 </script>
 
 <template>
-  <body>
   <div class="login-container">
     <h2>Registrieren</h2>
     <form @submit.prevent="register">
@@ -43,7 +42,6 @@ const register = () => {
       <button type="submit" class="button">Registrieren</button>
     </form>
   </div>
-  </body>
 
 </template>
 

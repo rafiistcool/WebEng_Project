@@ -3,7 +3,6 @@
 </script>
 
 <template>
-  <body>
   <div class="container">
     <header class="logo-container">
       <img class="logo"
@@ -21,10 +20,9 @@
       </div>
     </main>
   </div>
-  </body>
 </template>
 
 <style scoped>
-@import "../assets/styles/startScreen.css";
 @import "../assets/styles/masterStyle.css";
+@import "../assets/styles/startScreen.css";
 </style>

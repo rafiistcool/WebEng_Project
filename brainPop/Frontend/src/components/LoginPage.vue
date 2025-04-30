@@ -22,7 +22,6 @@ const login = () => {
 </script>
 
 <template>
-  <body>
   <div class="login-container">
     <h2>Login</h2>
     <form>
@@ -41,7 +40,6 @@ const login = () => {
     </form>
     <a href="#" style="color: #6fB98F" class="forgot-password">Passwort vergessen?</a>
   </div>
-  </body>
 </template>
 
 <style scoped>
