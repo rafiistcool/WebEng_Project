@@ -33,5 +33,6 @@ const closeSidebar = () => {
 </template>
 
 <style scoped>
+@import "../assets/styles/masterStyle.css";
 @import "../assets/styles/sidebarStyles.css";
 </style>

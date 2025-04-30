@@ -8,8 +8,7 @@
 
 #learnMode-h1{
     text-align: center;
-    color: #6fB98F;
-    font-family: "Bayon-Regular", sans-serif;
+    color: var(--primary-color);
     font-size: 3rem;
 
 }
@@ -41,7 +40,7 @@
 .flashcard {
     width: 50vw;
     height: 40vh;
-    background-color: #004445;
+    background-color: var(--background-color2);
     border-radius: 20px;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
     display: flex;
@@ -77,7 +76,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #2C7873;
+    background-color: var(--secondary-color);
 
 }
 .flashcardBack {
@@ -85,10 +84,9 @@
 }
 
 .userContent{
-    color: #021C1E;
+    color: var(--background-color1);
     font-size: 3rem;
     font-weight: bold;
-    font-family: "Bayon-Regular", sans-serif;
 }
 
 .learning-mode-window-content{
@@ -106,7 +104,7 @@
 }
 
 .arrow {
-    background-color: #004445;
+    background-color: var(--background-color2);
     width: 70px;
     height: 70px;
     border-radius: 50%;
@@ -125,7 +123,7 @@
 .arrow-svg {
     width: 24px;
     height: 24px;
-    stroke: #2C7873;
+    stroke: var(--secondary-color);
     stroke-width: 2;
     fill: none;
 }
@@ -137,13 +135,13 @@
     align-items: center;
 }
 .counter{
-    color: #6fB98F;
+    color: var(--primary-color);
     font-size: 1.2rem;
 }
 
 .baseButtonLayout{
-    background-color: #2C7873;
-    border: #021C1E;
+    background-color: var(--secondary-color);
+    border: var(--background-color1);
     border-radius: 15px;
     font-size: 1.2rem;
     padding: 0.2rem 2rem;

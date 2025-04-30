@@ -46,6 +46,6 @@ const register = () => {
 </template>
 
 <style scoped>
-@import "../assets/styles/register.css";
 @import "../assets/styles/masterStyle.css";
+@import "../assets/styles/register.css";
 </style>

@@ -4,8 +4,7 @@
     position: absolute;
     top: 5%;
     left: 5%;
-    color: #6FB98F;
-    font-family: 'Arial', sans-serif;
+    color: var(--primary-color);
     font-size: 3rem;
     font-weight: 400;
     margin: 0;
@@ -47,15 +46,9 @@
     align-items: center;
 
 }
-.form-group {
-    color: white;
-    font-family: 'Arial', sans-serif;
-}
-
-
 
 .popup-content{
-    background: linear-gradient(to bottom right, #004445, #2C7873);
+    background: linear-gradient(to bottom right, var(--background-color2), var(--secondary-color));
     padding: 20px;
     border-radius: 10px;
     text-align: center;
@@ -66,8 +59,6 @@
 
 }
 .popup-title{
-    font-family: 'Arial', sans-serif;
-    color: white;
     font-size: 2rem;
 }
 .popup-buttons{
@@ -91,8 +82,6 @@
     width: 80%;
     height: 100%;
     margin-left: 20%;
-    color: white;
-    font-family: 'Arial', sans-serif;
 }
 
 .card-item {
@@ -101,7 +90,7 @@
     padding: 10px;
     flex: 0 1 200px;
     box-sizing: border-box;
-    background: #2C7873;
+    background: var(--secondary-color);
 }
 
 .menu-button{
@@ -117,7 +106,7 @@
 
 .menu-popup{
     position: fixed; /* Ensures it appears outside the card */
-    background: white;
+    background: var(--text-color);
     border: 1px solid #ccc;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     padding: 5px;

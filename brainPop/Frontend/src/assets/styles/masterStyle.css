@@ -1,26 +1,36 @@
 /* MasterStyle.css*/
 
+/*variables for colours*/
+:root {
+    --primary-color: #6FB98F;
+    --secondary-color: #2C7873;
+    --background-color1: #021C1E;
+    --background-color2: #004445;
+    --text-color: #FFF;
+}
+
+
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(to bottom right, #021C1E, #004445);
+    background: linear-gradient(to bottom right, var(--background-color1), var(--background-color2));
     min-height: 100vh;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: var(--text-color);
 }
 
 .button:hover {
-    background: #2C7873;
-    color: white;
+    background: var(--secondary-color);
+    color: var(--text-color);
 }
 .button {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #6FB98F;
-    color: #021C1E;
+    background-color: var(--primary-color);
+    color: var(--background-color1);
     border: none;
     border-radius: 10px;  /* Rundung des Buttons */
     font-size: 1rem;      /* Schriftgröße */

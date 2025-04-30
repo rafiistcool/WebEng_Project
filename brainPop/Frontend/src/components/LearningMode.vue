@@ -104,5 +104,6 @@ updateContentOfFlashcard();
 </template>
 
 <style>
+@import "../assets/styles/masterStyle.css";
 @import "../assets/styles/learningMode.css";
 </style>

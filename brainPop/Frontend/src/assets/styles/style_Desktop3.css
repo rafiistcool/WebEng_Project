@@ -17,9 +17,8 @@
     object-fit: cover;
 }
 .brainpop_Title {
-    color: #6FB98F;
+    color: var(--primary-color);
     text-align: left;
-    font-family: 'Arial', sans-serif;
     font-size: 6rem;
     font-weight: 400;
     position: absolute;
@@ -61,7 +60,7 @@
     height: 100%;
     left: 0;
     border-radius:20px;
-    background: #6fB98F;
+    background: var(--primary-color);
     transition: all 0.3s;
 }
 .toggleCheckbox:checked + .toggleContainer::before {
@@ -77,7 +76,7 @@
     display: none;
 }
 .toggleCheckbox:checked + .toggleContainer div:first-child{
-    color: #6fB98F;
+    color: var(--primary-color);
     transition: color 0.3s;
 }
 .toggleCheckbox:checked + .toggleContainer div:last-child{
@@ -89,12 +88,12 @@
     transition: color 0.3s;
 }
 .toggleCheckbox + .toggleContainer div:last-child{
-    color: #6fB98F;
+    color: var(--primary-color);
     transition: color 0.3s;
 }
 
 .modal {
-    background: linear-gradient(to bottom right, #004445, #2C7873);
+    background: linear-gradient(to bottom right, var(--background-color2), var(--secondary-color));
     padding: 20px;
     border-radius: 10px;
     text-align: center;
@@ -103,10 +102,6 @@
     display: flex;
     flex-direction: column;
     position: relative;
-}
-.modal h2{
-    font-family: 'Arial', sans-serif;
-    color: white;
 }
 
 .modal-buttons {
@@ -120,11 +115,6 @@
 
 .input-container{
     margin-top: 5%;
-}
-
-.name {
-    font-family: 'Arial', sans-serif;
-    color: white;
 }
 
 .confirm-button, .cancel-button {
@@ -170,8 +160,6 @@
 }
 
 .item-text {
-    color: #ffffff;
-    font-family: 'Arial', sans-serif;
     font-size: 1em;
     font-weight: 400;
     margin-top: 5px;

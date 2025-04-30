@@ -138,7 +138,8 @@ const deleteCard = (index: number) => {
   </div>
 </template>
 <style scoped>
-@import "../assets/styles/cardCreation.css";
 @import "../assets/styles/masterStyle.css";
+@import "../assets/styles/cardCreation.css";
+
 
 </style>

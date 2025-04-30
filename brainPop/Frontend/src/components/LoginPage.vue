@@ -43,6 +43,6 @@ const login = () => {
 </template>
 
 <style scoped>
-@import "../assets/styles/login.css";
 @import "../assets/styles/masterStyle.css";
+@import "../assets/styles/login.css";
 </style>
