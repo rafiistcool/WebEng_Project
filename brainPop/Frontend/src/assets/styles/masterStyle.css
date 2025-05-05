@@ -7,8 +7,12 @@
     --background-color1: #021C1E;
     --background-color2: #004445;
     --text-color: #FFF;
+    --blackBackground: #0000007F;
+    --boxShadow: #00000033;
+    --grayBackground: #FFFFFF26;
+    --sidebarBackground: #333;
+    --toggleContainer: #343434;
 }
-
 
 body {
     font-family: 'Arial', sans-serif;

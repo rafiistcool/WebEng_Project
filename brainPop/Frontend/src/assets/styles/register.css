@@ -1,7 +1,7 @@
 /* register.css */
 
 .login-container {
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--grayBackground);
     backdrop-filter: blur(10px);
     border-radius: 10px;
     padding: 3rem 5rem;
@@ -34,7 +34,7 @@
 .input-group input {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--text-color);
     border-radius: 5px;
     font-size: 1rem;
     transition: border 0.3s;

@@ -20,7 +20,7 @@
 .sidebar {
     width: 250px;
     height: 100vh;
-    background: #333;
+    background: var(--sidebarBackground);
     color: var(--primary-color);
     position: absolute;
     left: -250px;
