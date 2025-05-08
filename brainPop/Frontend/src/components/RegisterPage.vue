@@ -24,7 +24,6 @@ const register = () => {
 </script>
 
 <template>
-  <body>
   <div class="login-container">
     <h2>Registrieren</h2>
     <form @submit.prevent="register">
@@ -40,13 +39,13 @@ const register = () => {
         <label for="passwordConfirm">Passwort wiederholen</label>
         <input type="password" id="passwordConfirm" v-model="passwordConfirm" required>
       </div>
-      <button type="submit" class="register-button">Registrieren</button>
+      <button type="submit" class="button">Registrieren</button>
     </form>
   </div>
-  </body>
 
 </template>
 
 <style scoped>
+@import "../assets/styles/masterStyle.css";
 @import "../assets/styles/register.css";
 </style>

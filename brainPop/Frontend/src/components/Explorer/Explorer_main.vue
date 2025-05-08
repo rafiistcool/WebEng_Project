@@ -24,15 +24,15 @@
         <div>Set</div>
       </label>
       <div class="input-container">
-        <label class="name" for="setName">Name:</label>
+        <label class="name" for="setName">Name: </label>
         <input type="text" id="setName" v-model="state.setName" placeholder="Enter name" />
       </div>
       <div v-if="state.parentFolder">
         <p>Adding to: {{ state.parentFolder.name }}</p>
       </div>
       <div class="modal-buttons">
-        <button class="confirm-button" @click="confirmSelection">Confirm</button>
-        <button class="cancel-button" @click="closeModal">Cancel</button>
+        <button class="button confirm-button" @click="confirmSelection">Confirm</button>
+        <button class="button cancel-button" @click="closeModal">Cancel</button>
       </div>
     </div>
   </div>
@@ -98,6 +98,7 @@ export default {
 };
 </script>
 <style>
+@import "@/assets/styles/masterStyle.css";
 @import "@/assets/styles/style_Desktop3.css";
 </style>
 

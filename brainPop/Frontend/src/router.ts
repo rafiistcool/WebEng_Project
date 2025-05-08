@@ -11,12 +11,12 @@ import CardCreation from "@/components/CardCreation.vue";
 
 const routes = [
   { path: '/', component: StartScreen },
-  { path: '/card', component: Card, meta: { requiresAuth: true } } ,
+  { path: '/card', component: Card}, //meta: { requiresAuth: true },
   { path: '/startscreen', component: StartScreen} ,
   { path: '/login', component: Login},
   { path: '/register', component: Register},
-  {path: '/explorer',component: Explorer, meta: { requiresAuth: true }},
-  {path: '/cardcreation', component: CardCreation, meta: { requiresAuth: true }}
+  {path: '/explorer',component: Explorer}, //meta: { requiresAuth: true },
+  {path: '/cardcreation', component: CardCreation}, //meta: { requiresAuth: true }
 
 
 ];

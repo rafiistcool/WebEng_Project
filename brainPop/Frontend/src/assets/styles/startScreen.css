@@ -1,28 +1,7 @@
-
-/* Reset and Global Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(to bottom right, #021C1E, #004445);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-}
-
+/* startScreen.css */
 .container {
     text-align: center;
-}
-
-/* Logo Styling */
-.logo-container {
-    margin-bottom: 1rem;
+    width: 100%;
 }
 
 /* Logo Styling */
@@ -37,7 +16,7 @@ body {
 
 /* Main Content */
 .main-content {
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--grayBackground);
     backdrop-filter: blur(10px);
     border-radius: 10px;
     padding: 5%;
@@ -47,7 +26,6 @@ body {
 
 .title {
     font-size: 6vw;
-    color: #FFF;
     margin-bottom: 10%;
 }
 
@@ -59,37 +37,11 @@ body {
     margin-top: 5%;
     flex-direction: column; /* Stack buttons on small screens */
 }
-
 .button {
-    display: flex;
-    justify-content: center; /*centers the text*/
-    align-items: center; /*centers the text*/
-    padding: 5% 5%;
-    background: #6FB98F;
-    color: #021C1E;
-    border: none;
-    border-radius: 10px;
-    font-size: 100%;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background 0.3s, color 0.3s;
-    width: 100%;
-    min-width: 200px;  /* Ensures buttons are not too small */
-    text-align: center;
+    width: 20%;
+    height: 3rem;
 }
 
-.button:hover {
-    background: #2C7873;
-    color: white;
-}
-
-.login-button {
-    background: #6FB98F;
-}
-
-.guest-button {
-    background: #6FB98F;
-}
 
 /* Media Query for larger screens */
 @media (min-width: 600px) {

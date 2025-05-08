@@ -3,7 +3,6 @@
 </script>
 
 <template>
-  <body>
   <div class="container">
     <header class="logo-container">
       <img class="logo"
@@ -15,15 +14,15 @@
         <router-link to="/login" class="button login-button" custom v-slot="{ navigate }">
           <button @click="navigate">Anmelden</button>
         </router-link>
-        <router-link to="/desktop" class="button guest-button" custom v-slot="{ navigate }">
+        <router-link to="/Explorer" class="button guest-button" custom v-slot="{ navigate }">
           <button @click="navigate">Gast</button>
         </router-link>
       </div>
     </main>
   </div>
-  </body>
 </template>
 
 <style scoped>
+@import "../assets/styles/masterStyle.css";
 @import "../assets/styles/startScreen.css";
 </style>

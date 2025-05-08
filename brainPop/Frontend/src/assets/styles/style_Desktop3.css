@@ -1,11 +1,5 @@
-.desktop-3,
-.desktop-3 * {
-    box-sizing: border-box;
-}
-.desktop-3 {
-    background: linear-gradient(to bottom right, #021C1E, #004445);
+/* style_Desktop3.css */
 
-}
 .Brainpop-Logo{
     display: flex;
     top: 5%;
@@ -23,9 +17,8 @@
     object-fit: cover;
 }
 .brainpop_Title {
-    color: #6FB98F;
+    color: var(--primary-color);
     text-align: left;
-    font-family: "Bayon-Regular", sans-serif;
     font-size: 6rem;
     font-weight: 400;
     position: absolute;
@@ -41,7 +34,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--blackBackground);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -51,11 +44,11 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     width: 100%;
-    border: 3px solid #343434;
+    border: 3px solid var(--toggleContainer);
     border-radius: 20px;
-    background: #343434;
+    background: var(--toggleContainer);
     font-weight: bold;
-    color: #343434;
+    color: var(--toggleContainer);
     cursor: pointer;
 
 
@@ -67,14 +60,14 @@
     height: 100%;
     left: 0;
     border-radius:20px;
-    background: #6fB98F;
+    background: var(--primary-color);
     transition: all 0.3s;
 }
 .toggleCheckbox:checked + .toggleContainer::before {
     left: 50%;
 }
 .toggleContainer div {
-    font-family: "Bayon-Regular", sans-serif;
+    font-family: 'Arial', sans-serif;
     padding: 6px;
     text-align: center;
     z-index: 1;
@@ -83,24 +76,24 @@
     display: none;
 }
 .toggleCheckbox:checked + .toggleContainer div:first-child{
-    color: #6fB98F;
+    color: var(--primary-color);
     transition: color 0.3s;
 }
 .toggleCheckbox:checked + .toggleContainer div:last-child{
-    color: #343434;
+    color: var(--toggleContainer);
     transition: color 0.3s;
 }
 .toggleCheckbox + .toggleContainer div:first-child{
-    color: #343434;
+    color: var(--toggleContainer);
     transition: color 0.3s;
 }
 .toggleCheckbox + .toggleContainer div:last-child{
-    color: #6fB98F;
+    color: var(--primary-color);
     transition: color 0.3s;
 }
 
 .modal {
-    background: #2C7873;
+    background: linear-gradient(to bottom right, var(--background-color2), var(--secondary-color));
     padding: 20px;
     border-radius: 10px;
     text-align: center;
@@ -110,81 +103,36 @@
     flex-direction: column;
     position: relative;
 }
-.modal h2{
-    font-family: "Bayon-Regular", sans-serif;
-    color: white;
-}
 
 .modal-buttons {
-    position: absolute;
+    margin-top: 10%;
     bottom: 10px;
     width: 100%;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     gap: 30%;
 }
-.context-menu {
-    position: absolute;
-    background: #2C7873;
-    border: 1px solid #6FB98F;
-    padding: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-}
 
-.context-menu button {
-    background: #343434;
-    border: none;
-    color: #6FB98F;
-    font-weight: bold;
-    padding: 10px;
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
-    transition: background 0.3s ease, color 0.3s ease;
-}
-
-.context-menu button:hover {
-    background: #6FB98F;
-    color: #021C1E;
-}
-
-.name {
-    font-family: "Bayon-Regular", sans-serif;
-    color: #343434;
+.input-container{
+    margin-top: 5%;
 }
 
 .confirm-button, .cancel-button {
-    font-family: "Bayon-Regular", sans-serif;
-    width: 20%;
     padding: 10px;
-    cursor: pointer;
-    background: #343434;
-    color: #6fB98F;
-    border: none;
-    border-radius: 10px;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.confirm-button:hover, .cancel-button:hover {
-    background-color: #6FB98F;
-    color: #021C1E;
 }
 
 .items-container {
+    position: absolute;
+    top: 25%;
+    left: 5%;
+    right: 5%;
+    bottom: 15%;
     display: flex;
     flex-wrap: wrap;
-    gap: 10%;
+    gap: 5%;
     justify-content: flex-start;
-    padding: 40px;
     align-items: flex-start;
-    margin-top: 10%;
-    margin-left: 5%;
-    width: 94%;
-    height: 70%;
-    position: absolute;
+    overflow-y: auto; /* only allows scrolling if necessary */
 }
 
 .item-container {
@@ -212,12 +160,9 @@
 }
 
 .item-text {
-    color: #ffffff;
-    font-family: "Bayon-Regular", sans-serif;
     font-size: 1em;
     font-weight: 400;
     margin-top: 5px;
 }
-
 
 

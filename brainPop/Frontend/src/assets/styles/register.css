@@ -1,25 +1,16 @@
-body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(to bottom right, #021C1E, #004445);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-}
+/* register.css */
 
 .login-container {
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--grayBackground);
     backdrop-filter: blur(10px);
     border-radius: 10px;
-    padding: 5%;
+    padding: 3rem 5rem;
     display: inline-block;
     text-align: center;
 }
 
 .login-container h2 {
     margin-bottom: 1rem;
-    color: white;
     text-align: center;
 }
 
@@ -35,7 +26,7 @@ body {
     display: block;
     text-align: left;
     font-size: 0.9rem;
-    color: #6fB98F;
+    color: var(--primary-color);
     margin-bottom: 5px;
     width: 100%;
 }
@@ -43,34 +34,18 @@ body {
 .input-group input {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--text-color);
     border-radius: 5px;
     font-size: 1rem;
     transition: border 0.3s;
 }
 
 .input-group input:focus {
-    border-color: #6fB98F;
+    border-color: var(--primary-color);
     outline: none;
 }
 
-.register-button {
+.button{
     width: 100%;
-    padding: 5% 5%;
-    border: none;
-    background-color: #6fB98F;
-    color: #021C1E;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-    margin-top: 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.register-button:hover {
-    background: #2C7873;
-    color: white;
+    height : 3rem;
 }
