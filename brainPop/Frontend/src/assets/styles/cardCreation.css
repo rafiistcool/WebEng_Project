@@ -1,7 +1,15 @@
 /* cardCreation.css */
 
+.card-creation {
+    display: flex;
+    min-height: 100vh;
+    width: 100vw;
+    margin-top: 10%;
+    padding: 0;
+    box-sizing: border-box;
+}
 .title {
-    position: absolute;
+    position: fixed;
     top: 5%;
     left: 5%;
     color: var(--primary-color);
@@ -9,6 +17,7 @@
     font-weight: 400;
     margin: 0;
 }
+
 
 .content-wrapper {
     display: flex;
@@ -21,13 +30,13 @@
 }
 
 .card-creation-button {
-    position: fixed;
+    position: absolute;
     padding: 10px 20px;
     left:5%;
     top: 30%;
 }
 .card-start-button{
-    position: fixed;
+    position: absolute;
     padding: 10px 20px;
     left:5%;
     top: 20%;
@@ -105,7 +114,7 @@
 }
 
 .menu-popup{
-    position: fixed; /* Ensures it appears outside the card */
+    position: fixed;
     background: var(--text-color);
     border: 1px solid #ccc;
     box-shadow: 0 2px 5px var(--boxShadow);
