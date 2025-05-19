@@ -56,8 +56,8 @@
           <input type="text" id="setName" v-model="state.setName" placeholder="Enter name" />
         </div>
         <div class="modal-buttons">
-          <button class="confirm-button" @click="confirmSelection">Confirm</button>
-          <button class="cancel-button" @click="closeModal">Cancel</button>
+          <button class="button confirm-button" @click="confirmSelection">Confirm</button>
+          <button class="button cancel-button" @click="closeModal">Cancel</button>
         </div>
 
 
