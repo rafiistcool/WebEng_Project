@@ -1,21 +1,22 @@
-/* style_Desktop3.css */
+
+.desktop-3,
+.desktop-3 * {
+    box-sizing: border-box;
+
+}
 
 .Brainpop-Logo{
     display: flex;
     top: 5%;
     right:5%;
+
     position: absolute;
+    top: 5%;
+    right: 5%;
     width: 10%;
     height: auto;
 }
-.add {
-    width: 6%;
-    height: auto;
-    position: absolute;
-    right: 5%;
-    bottom: 5%;
-    object-fit: cover;
-}
+
 .brainpop_Title {
     color: var(--primary-color);
     text-align: left;
@@ -26,6 +27,31 @@
     top: 5%;
     width: 770px;
     height: 98px;
+}
+
+.breadcrumb-container {
+    position: absolute;
+    left: 10%;
+    top: 25%;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.breadcrumb-link {
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+/* Rest der CSS-Datei bleibt unverändert */
+.add {
+    width: 6%;
+    height: auto;
+    position: absolute;
+    right: 5%;
+    bottom: 5%;
+    object-fit: cover;
 }
 
 .modal-overlay {
@@ -132,7 +158,14 @@
     gap: 5%;
     justify-content: flex-start;
     align-items: flex-start;
+
+    margin-top: 15%;
+    margin-left: 5%;
+    width: 94%;
+    height: 60%;
+    position: absolute;
     overflow-y: auto; /* only allows scrolling if necessary */
+
 }
 
 .item-container {
@@ -163,6 +196,6 @@
     font-size: 1em;
     font-weight: 400;
     margin-top: 5px;
-}
 
+}
 
