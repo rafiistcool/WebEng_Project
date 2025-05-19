@@ -10,7 +10,7 @@
         ⭠ Back
       </button>
       <span class="breadcrumb">
-        <span @click="goTo(null)" class="breadcrumb-link">Root</span>
+        <span @click="goTo(null)" class="breadcrumb-link">Home</span>
         <template v-for="(folder, index) in state.navigation" :key="folder.id">
           / <span @click="goTo(index)" class="breadcrumb-link">{{ folder.name }}</span>
         </template>
