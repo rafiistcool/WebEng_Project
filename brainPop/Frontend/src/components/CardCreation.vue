@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useCardStore } from '../script/store.js';
 import { useRouter } from "vue-router";
 
@@ -45,6 +45,8 @@ const saveCard = () => {
   closePopup();
 };
 
+
+
 const closePopup = () => {
   showPopup.value = false;
   selectedCardIndex.value = null;
@@ -89,10 +91,9 @@ const deleteCard = (index: number) => {
 <template>
   <div class="card-creation">
     <h1 class="title">Card Creation</h1>
-    <button class="card-start-button" @click="startLearningmode">Starten</button>
-    <button class="card-creation-button" @click="addCard">Hinzufügen</button>
+    <button class="button card-start-button" @click="startLearningmode">Starten</button>
+    <button class="button card-creation-button" @click="addCard">Hinzufügen</button>
 
-    <div class="content-wrapper">
       <div class="card-contents">
         <div v-for="(card, index) in cardStore.cards" :key="index" class="card-item">
           <div class="card-header">
@@ -103,7 +104,6 @@ const deleteCard = (index: number) => {
           <small>{{ card.category }}</small>
         </div>
       </div>
-    </div>
 
     <!-- Menü Popup -->
     <div v-if="activeMenuIndex !== null" class="menu-popup" :style="{ top: menuPosition.top + 'px', left: menuPosition.left + 'px' }">
@@ -117,20 +117,20 @@ const deleteCard = (index: number) => {
         <h2 class="popup-title">{{ editMode ? 'Karte bearbeiten' : 'Karte erstellen' }}</h2>
         <form @submit.prevent="saveCard">
           <div class="form-group">
-            <label for="question">Frage:</label>
+            <label for="question">Frage: </label>
             <input type="text" id="question" v-model="question" />
           </div>
           <div class="form-group">
-            <label for="answer">Antwort:</label>
+            <label for="answer">Antwort: </label>
             <input type="text" id="answer" v-model="answer" />
           </div>
           <div class="form-group">
-            <label for="category">Kategorie:</label>
+            <label for="category">Kategorie: </label>
             <input type="text" id="category" v-model="category" />
           </div>
           <div class="popup-buttons">
-            <button class="save-button" type="submit">Speichern</button>
-            <button class="close-button" @click="closePopup">Schließen</button>
+            <button class="button close-button" @click="closePopup">Schließen</button>
+            <button class="button save-button" type="submit">Speichern</button>
           </div>
         </form>
       </div>
@@ -138,6 +138,7 @@ const deleteCard = (index: number) => {
   </div>
 </template>
 <style scoped>
+@import "../assets/styles/masterStyle.css";
 @import "../assets/styles/cardCreation.css";
 
 

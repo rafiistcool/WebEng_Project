@@ -1,3 +1,5 @@
+/* learningMode.css */
+
 .content-above-flashcard{
     display: flex;
     flex-direction: row;
@@ -6,8 +8,7 @@
 
 #learnMode-h1{
     text-align: center;
-    color: #6fB98F;
-    font-family: "Bayon-Regular", sans-serif;
+    color: var(--primary-color);
     font-size: 3rem;
 
 }
@@ -35,20 +36,13 @@
     flex: 1;
 }
 
-.learning-mode-window{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 99vw;
-    height: 99vh;
-    background: linear-gradient(to bottom, #021C1E, #004445);
-}
+
 .flashcard {
     width: 50vw;
     height: 40vh;
-    background-color: #004445;
+    background-color: var(--background-color2);
     border-radius: 20px;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 5px 5px 15px var(--boxShadow);
     display: flex;
     justify-content: center;
     align-items: stretch;
@@ -82,7 +76,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #2C7873;
+    background-color: var(--secondary-color);
 
 }
 .flashcardBack {
@@ -90,10 +84,9 @@
 }
 
 .userContent{
-    color: #021C1E;
+    color: var(--background-color1);
     font-size: 3rem;
     font-weight: bold;
-    font-family: "Bayon-Regular", sans-serif;
 }
 
 .learning-mode-window-content{
@@ -111,7 +104,7 @@
 }
 
 .arrow {
-    background-color: #004445;
+    background-color: var(--background-color2);
     width: 70px;
     height: 70px;
     border-radius: 50%;
@@ -124,13 +117,13 @@
 
 .arrow:hover {
    transform: scale(1.1);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 8px var(--boxShadow);
 }
 
 .arrow-svg {
     width: 24px;
     height: 24px;
-    stroke: #2C7873;
+    stroke: var(--secondary-color);
     stroke-width: 2;
     fill: none;
 }
@@ -142,21 +135,21 @@
     align-items: center;
 }
 .counter{
-    color: #6fB98F;
+    color: var(--primary-color);
     font-size: 1.2rem;
 }
 
 .baseButtonLayout{
-    background-color: #2C7873;
-    border: #021C1E;
+    background-color: var(--secondary-color);
+    border: var(--background-color1);
     border-radius: 15px;
     font-size: 1.2rem;
     padding: 0.2rem 2rem;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 5px 5px 15px var(--boxShadow);
 
 }
 .baseButtonLayout:hover{
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.7);
+    box-shadow: 5px 5px 15px var(--blackBackground);
     transform: scale(1.1);
 }
 

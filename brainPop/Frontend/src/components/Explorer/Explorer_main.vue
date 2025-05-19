@@ -17,6 +17,7 @@
       </span>
     </div>
 
+
     <!-- Folder Contents -->
     <div class="items-container">
       <div
@@ -30,10 +31,12 @@
           <img :src="item.icon" class="item-icon" />
         </div>
         <div class="item-text">{{ item.name }}</div>
+
       </div>
 
       <div v-if="currentItems.length === 0" class="item-text" style="margin-top: 50px;">
       </div>
+
     </div>
 
     <!-- Add Button -->
@@ -56,6 +59,8 @@
           <button class="confirm-button" @click="confirmSelection">Confirm</button>
           <button class="cancel-button" @click="closeModal">Cancel</button>
         </div>
+
+
       </div>
     </div>
 
@@ -195,7 +200,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+@import "@/assets/styles/masterStyle.css";
 @import "@/assets/styles/style_Desktop3.css";
 
 .breadcrumb-link {
