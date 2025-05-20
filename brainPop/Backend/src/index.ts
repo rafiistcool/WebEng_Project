@@ -1,10 +1,25 @@
-import express from "express";
+import "dotenv/config";
+import express, { Request, Response } from "express";
+import pgPromise from "pg-promise";
+
+const pgp = pgPromise();
+const db = pgp(process.env.DATABASE_URL as string);
+
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
-app.get("/", (_, res) => { 
-  res.send("Hello express");
+app.get("/", (_req: Request, res: Response) => {
+  res.send("Hello Express ✨");
 });
 
-app.listen(80);
-console.log("Server started at http://localhost:80");
+app.get("/test", async (_req: Request, res: Response) => {
+  try {
+    const data = await db.any("SELECT * FROM users,sets,cards");
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: (err as Error).message });
+  }
+});
+
+app.listen(PORT, () => console.log(`Server läuft auf http://localhost:${PORT}`));

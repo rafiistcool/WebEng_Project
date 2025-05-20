@@ -12,17 +12,22 @@
     "format": "prettier --write src/**/*.ts"
   },
   "dependencies": {
-    "express": "latest"
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "pg-promise": "^11.13.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
-    "@types/express": "latest",
-    "@types/node": "latest",
+    "@types/express": "^5.0.2",
+    "@types/node": "^22.15.19",
     "@vitest/ui": "latest",
     "eslint": "latest",
     "eslint-config-prettier": "latest",
     "nodemon": "latest",
     "prettier": "latest",
-    "typescript": "latest",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.3",
     "typescript-eslint": "latest",
     "vitest": "latest"
   }
