@@ -15,25 +15,5 @@
 
 <style>
 @import "../assets/styles/masterStyle.css";
-
-#app {
-  padding-top: 60px;
-}
-
-.nav-bar {
-  display: flex;
-  gap: 1rem;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: var(--sidebarBackground);
-  padding: 1rem;
-  z-index: 50;
-}
-
-.nav-bar a {
-  color: var(--primary-color);
-  text-decoration: none;
-}
+@import "../assets/styles/sidebar.css";
 </style>
