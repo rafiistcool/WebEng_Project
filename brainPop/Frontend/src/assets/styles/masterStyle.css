@@ -17,7 +17,7 @@ body {
     padding-top: 60px;
     font-family: 'Arial', sans-serif;
     background: linear-gradient(to bottom right, var(--background-color1), var(--background-color2));
-    min-height: 99%;
+    height: calc(99% - 60px);
     display: flex;
     align-items: center;
     justify-content: center;
