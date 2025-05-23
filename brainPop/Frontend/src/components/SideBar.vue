@@ -12,6 +12,7 @@ const closeSidebar = () => {
 </script>
 
 <template>
+
   <div class="sidebar-container">
     <div class="sidebar-hover-area" @mouseenter="openSidebar"></div>
 
