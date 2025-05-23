@@ -2,7 +2,7 @@
 
 .card-creation {
     display: flex;
-    min-height: 100vh;
+    min-height: 99%;
     width: 100vw;
     margin-top: 10%;
     padding: 0;
