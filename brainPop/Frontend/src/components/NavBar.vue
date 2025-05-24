@@ -25,7 +25,7 @@ const isNavOpen = ref(false);
 
     <!-- Hamburger Button (for mobile) -->
     <button class="nav-toggle" @click="isNavOpen = !isNavOpen">
-      <!-- Basic "hamburger" icon -->
+
       <span class="bar"></span>
       <span class="bar"></span>
       <span class="bar"></span>
@@ -50,7 +50,7 @@ const isNavOpen = ref(false);
         <i class="fa fa-user-plus"></i> Register
       </router-link>
 
-      <!-- If user IS logged in, show these -->
+
       <router-link
           v-if="authenticator.isUserLoggedIn"
           to="/logout"

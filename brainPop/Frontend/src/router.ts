@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 
 import Card from '@/components/LearningMode.vue';
 import StartScreen from "@/components/StartScreen.vue";
@@ -7,6 +8,7 @@ import Register from './components/RegisterPage.vue';
 import Explorer from "@/components/Explorer/Explorer_main.vue";
 import CardCreation from "@/components/CardCreation.vue";
 
+const authenticator = useAuthStore();
 
 const routes = [
   { path: '/', component: StartScreen },
