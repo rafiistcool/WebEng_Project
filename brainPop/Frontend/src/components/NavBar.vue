@@ -63,7 +63,8 @@ const isNavOpen = ref(false);
           class="nav-link"
           @click.native.prevent="authenticator.logout"
       >
-      <i class="fa fa-sign-out"></i> Logout
+      <i class="fa fa-sign-out"></i>
+        <span class="icon-font">Logout</span>
       </router-link>
 
 
