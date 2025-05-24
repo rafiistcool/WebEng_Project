@@ -1,0 +1,126 @@
+.nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--sidebarBackground);
+    padding: 0.5rem 1rem;
+    z-index: 50;
+
+
+    transition: max-height 0.3s ease-in-out;
+
+    max-height: 60px;
+    overflow: hidden;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+}
+
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+.nav-logo i {
+    margin-right: 0.5rem;
+}
+
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+
+.nav-link {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+}
+.nav-link i {
+    margin-right: 0.3rem;
+    font-size: 1.2rem;
+}
+
+
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+/* Example button for toggling login (demo only) */
+.demo-toggle-button {
+    background: var(--primary-color);
+    color: var(--text-color);
+    border: none;
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+}
+.demo-toggle-button:hover {
+    background: var(--secondary-color);
+}
+
+
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-left: auto;
+}
+.nav-toggle .bar {
+    width: 25px;
+    height: 3px;
+    background-color: var(--text-color);
+    margin: 4px 0;
+    transition: 0.4s;
+}
+
+
+.nav-bar.nav-open {
+    max-height: 300px; /* enough to show all links stacked */
+}
+
+
+@media (max-width: 768px) {
+    .nav-toggle {
+        display: flex;
+    }
+
+
+    .nav-links {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        padding: 1rem 0;
+    }
+
+    .nav-link {
+        padding: 0.5rem 0;
+    }
+}
+#home-icon{
+    height: 70px;
+}
+.icon{
+    height: 50px
+}
+.icon-font{
+    font-size: 1.2rem;
+}
