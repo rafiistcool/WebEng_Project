@@ -22,5 +22,9 @@ export const useAuthStore = defineStore("auth", {
             this.user = null;
             //this.token = null;
         }
+    },
+    getters: {
+        userName: state => state.user?.name ?? "Nicht angemeldet",
+        isUserLoggedIn: state => state.isLoggedIn
     }
 });
