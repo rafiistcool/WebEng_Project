@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '@/components/Home.vue';
 
 import Card from '@/components/LearningMode.vue';
 import StartScreen from "@/components/StartScreen.vue";
@@ -15,8 +14,10 @@ const routes = [
   { path: '/startscreen', component: StartScreen} ,
   { path: '/login', component: Login},
   { path: '/register', component: Register},
-  {path: '/explorer',component: Explorer}, //meta: { requiresAuth: true },
-  {path: '/cardcreation', component: CardCreation}, //meta: { requiresAuth: true }
+  { path: '/logout', component: StartScreen},
+  { path: '/explorer',component: Explorer}, //meta: { requiresAuth: true },
+  { path: '/cardcreation', component: CardCreation}, //meta: { requiresAuth: true }
+  { path: '/home', component: Explorer}
 
 
 ];
@@ -26,13 +27,12 @@ const router = createRouter({
   routes
 });
 
-// Navigation Guard für geschützte Routen
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = localStorage.getItem('userEmail') !== null; // Prüft, ob ein Nutzer eingeloggt ist
+  const isAuthenticated = localStorage.getItem('userEmail') !== null;
 
   if (to.meta.requiresAuth && !isAuthenticated) {
     alert('Du musst dich zuerst anmelden!');
-    next('/login'); // Weiterleitung zum Login, falls nicht eingeloggt
+    next('/login');
   } else {
     next();
   }
