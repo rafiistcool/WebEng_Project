@@ -115,3 +115,12 @@
         padding: 0.5rem 0;
     }
 }
+#home-icon{
+    height: 70px;
+}
+.icon{
+    height: 50px
+}
+.icon-font{
+    font-size: 1.2rem;
+}

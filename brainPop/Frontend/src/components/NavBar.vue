@@ -4,6 +4,7 @@ import { useAuthStore } from "@/script/auth.ts"
 
 const authenticator = useAuthStore();
 
+//DEMO DATA
 const password = ref("password");
 const email = ref("email");
 //For Mobile
@@ -13,17 +14,17 @@ const isNavOpen = ref(false);
 
 <template>
   <nav class="nav-bar" :class="{ 'nav-open': isNavOpen }">
-    <!-- Left Side: Branding / Startscreen -->
+
     <div class="nav-brand">
-      <!-- Could place a logo image or text here -->
+
       <router-link to="/startscreen" class="nav-logo">
-        <!-- Placeholder icon for "home" -->
+
         <i class="fa fa-home"></i>
-        <span>Startscreen</span>
+        <img src="../assets/icons/Temp-Logo-Sebastian.png" alt="Startseite" id="home-icon">
       </router-link>
     </div>
 
-    <!-- Hamburger Button (for mobile) -->
+
     <button class="nav-toggle" @click="isNavOpen = !isNavOpen">
 
       <span class="bar"></span>
@@ -31,15 +32,17 @@ const isNavOpen = ref(false);
       <span class="bar"></span>
     </button>
 
-    <!-- Right Side: Links -->
+
     <div class="nav-links">
-      <!-- If user is NOT logged in, show these -->
+
       <router-link
           v-if="!authenticator.isUserLoggedIn"
           to="/login"
           class="nav-link"
       >
-        <i class="fa fa-sign-in"></i> Login
+        <i class="fa fa-sign-in"></i>
+        <span class="icon-font">Login</span>
+        <img src="../assets/icons/login-icon.svg" alt="Login" class="icon">
       </router-link>
 
       <router-link
@@ -47,7 +50,10 @@ const isNavOpen = ref(false);
           to="/register"
           class="nav-link"
       >
-        <i class="fa fa-user-plus"></i> Register
+        <i class="fa fa-user-plus"></i>
+        <span class="icon-font">Register</span>
+        <img src="../assets/icons/register-icon.svg" alt="Register" class="icon">
+
       </router-link>
 
 
@@ -60,7 +66,7 @@ const isNavOpen = ref(false);
       <i class="fa fa-sign-out"></i> Logout
       </router-link>
 
-      <!-- Demo button: Switch login status manually -->
+
       <button class="demo-toggle-button" @click="authenticator.login(email, password)">
         Login (Demo)
       </button>
