@@ -42,7 +42,7 @@ const isNavOpen = ref(false);
       >
         <i class="fa fa-sign-in"></i>
         <span class="icon-font">Login</span>
-        <img src="../assets/icons/login-icon.svg" alt="Login" class="icon">
+        <img src="../assets/icons/login-icon-thicker.svg" alt="Login" class="icon">
       </router-link>
 
       <router-link
@@ -65,6 +65,7 @@ const isNavOpen = ref(false);
       >
       <i class="fa fa-sign-out"></i>
         <span class="icon-font">Logout</span>
+        <img src="../assets/icons/logout-icon.svg" alt="Logout" class="icon">
       </router-link>
 
 
