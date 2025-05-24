@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useAuthStore } from "@/script/auth.js"
+import { useAuthStore } from "@/script/auth.ts"
 
 const authenticator = useAuthStore();
 

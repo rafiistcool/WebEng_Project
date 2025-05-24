@@ -10,8 +10,6 @@ export const useAuthStore = defineStore("auth", {
         async login(email: string, password: string) {
             //BACKEND CALLS
 
-
-
             this.isLoggedIn = true;
 
             //Test Data
