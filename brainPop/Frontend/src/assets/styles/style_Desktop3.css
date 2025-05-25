@@ -182,3 +182,14 @@ body.left-aligned {
 
 }
 
+.context-menu {
+    background: var(--grayBackground);
+    backdrop-filter: blur(10px);
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 1000;
+}
+

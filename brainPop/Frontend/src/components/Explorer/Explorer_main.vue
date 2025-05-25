@@ -89,12 +89,20 @@ export default {
       }
     });
 
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.context-menu')) {
+        closeContextMenu();
+      }
+    };
+
     onMounted(() => {
       document.body.classList.add('left-aligned');
+      document.addEventListener('click', handleClickOutside);
     });
 
     onUnmounted(() => {
       document.body.classList.remove('left-aligned');
+      document.removeEventListener('click', handleClickOutside);
     });
 
     const openModal = () => {
@@ -150,12 +158,13 @@ export default {
 
     const openContextMenu = (event, item) => {
       state.contextMenu.visible = true;
-      state.contextMenu.x = event.pageX;
-      state.contextMenu.y = event.pageY;
+      state.contextMenu.x = event.clientX;
+      state.contextMenu.y = event.clientY;
       state.contextMenu.targetItem = item;
     };
 
     const contextMenuStyles = computed(() => ({
+      position: 'fixed',
       top: `${state.contextMenu.y}px`,
       left: `${state.contextMenu.x}px`
     }));
