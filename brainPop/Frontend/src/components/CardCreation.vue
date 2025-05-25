@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, watch} from 'vue';
+import {ref} from 'vue';
 import {useCardStore} from '../script/store.js';
 import {useRouter} from "vue-router";
 
@@ -118,16 +118,16 @@ const deleteCard = (index: number) => {
         <form @submit.prevent="saveCard">
           <div class="form-wrapper">
             <div class="form-group">
-              <label class="popup-label" for="question">Frage: </label>
-              <input class="popup-text-input" type="text" id="question" v-model="question"/>
+              <label class="popup-label" for="question" >Frage: </label>
+              <input class="popup-text-input" type="text" id="question" v-model="question" placeholder="Frage"/>
             </div>
             <div class="form-group">
               <label class="popup-label" for="answer">Antwort: </label>
-              <input class="popup-text-input" type="text" id="answer" v-model="answer"/>
+              <input class="popup-text-input" type="text" id="answer" v-model="answer" placeholder="Antwort"/>
             </div>
             <div class="form-group">
               <label class="popup-label" for="category">Kategorie: </label>
-              <input class="popup-text-input" type="text" id="category" v-model="category"/>
+              <input class="popup-text-input" type="text" id="category" v-model="category" placeholder="Kategorie"/>
             </div>
             <div class="popup-buttons">
               <button class="button close-button" @click="closePopup">Schließen</button>

@@ -24,7 +24,7 @@
           @contextmenu.prevent="openContextMenu($event, item)"
       >
         <div class="icon-wrapper">
-          <img :src="item.icon" class="item-icon" />
+          <img :src="item.icon" class="item-icon" alt="icon"/>
         </div>
         <div class="item-text">{{ item.name }}</div>
 
@@ -49,7 +49,7 @@
         </label>
         <div class="input-container">
           <label class="name" for="setName">Name:</label>
-          <input type="text" id="setName" v-model="state.setName" placeholder="Enter name" />
+          <input class="name-input" type="text" id="setName" v-model="state.setName" placeholder="Enter name" />
         </div>
         <div class="modal-buttons">
           <button class="button confirm-button" @click="confirmSelection">Confirm</button>
