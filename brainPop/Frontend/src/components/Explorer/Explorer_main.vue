@@ -114,11 +114,23 @@ export default {
       }
     };
 
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.context-menu')) {
+        closeContextMenu();
+      }
+    }
+
     // Load sets when component is mounted
     onMounted(() => {
       loadSets();
+      document.body.classList.add('left-aligned');
+      document.addEventListener('click', handleClickOutside);
     });
 
+    onUnmounted(() => {
+      document.body.classList.remove('left-aligned');
+      document.removeEventListener('click', handleClickOutside);
+    });
     const openModal = () => {
       state.isModalOpen = true;
     };
