@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { useCardStore } from '../script/store.js';
+import { ref, computed, nextTick } from 'vue';
+import { useCardStore } from '../script/store';
 import { useRouter } from "vue-router";
 
 const cardStore = useCardStore();
@@ -10,14 +10,31 @@ const showPopup = ref(false);
 const question = ref("");
 const answer = ref("");
 const category = ref("");
-
-
 const editMode = ref(false);
 const selectedCardIndex = ref<number | null>(null);
 
-// Menü-Status
 const activeMenuIndex = ref<number | null>(null);
 const menuPosition = ref({ top: 0, left: 0 });
+
+const selectedCategoryFilter = ref<string | null>(null);
+
+//Filter
+const filteredCards = computed(() => {
+  if (!selectedCategoryFilter.value) return cardStore.cards;
+  return cardStore.cards.filter(card => card.category === selectedCategoryFilter.value);
+});
+
+const uniqueCategories = computed(() => {
+  const categories = cardStore.cards
+      .map(card => card.category.trim())
+      .filter(c => c !== "");
+  return [...new Set(categories)];
+});
+
+const clearFilter = () => {
+  selectedCategoryFilter.value = null;
+};
+
 
 const addCard = () => {
   question.value = "";
@@ -30,22 +47,22 @@ const addCard = () => {
 const saveCard = () => {
   if (editMode.value && selectedCardIndex.value !== null) {
     const existingCard = cardStore.cards[selectedCardIndex.value];
-
     cardStore.cards[selectedCardIndex.value] = {
       id: existingCard.id,
       question: question.value,
       answer: answer.value,
-      category: category.value,
+      category: category.value.trim(),
     };
   } else {
-
-    cardStore.addCard(question.value, answer.value, category.value);
+    cardStore.addCard(question.value, answer.value, category.value.trim());
   }
+
+  nextTick(() => {
+    console.log("Aktualisierte Kategorien:", uniqueCategories.value);
+  });
 
   closePopup();
 };
-
-
 
 const closePopup = () => {
   showPopup.value = false;
@@ -71,11 +88,9 @@ const toggleMenu = (event: MouseEvent, index: number) => {
 
 const editCard = (index: number) => {
   const card = cardStore.cards[index];
-
   question.value = card.question;
   answer.value = card.answer;
   category.value = card.category;
-
   selectedCardIndex.value = index;
   editMode.value = true;
   showPopup.value = true;
@@ -94,42 +109,67 @@ const deleteCard = (index: number) => {
     <button class="button card-start-button" @click="startLearningmode">Starten</button>
     <button class="button card-creation-button" @click="addCard">Hinzufügen</button>
 
-      <div class="card-contents">
-        <div v-for="(card, index) in cardStore.cards" :key="index" class="card-item">
-          <div class="card-header">
-            <h3>{{ card.question }}</h3>
-            <button class="menu-button" @click="toggleMenu($event, index)">&#8226;&#8226;&#8226;</button>
-          </div>
-          <p>{{ card.answer }}</p>
-          <small>{{ card.category }}</small>
+    <!-- FILTERBUTTONS UNTER "HINZUFÜGEN" -->
+    <div class="category-filters">
+      <button
+          v-for="category in uniqueCategories"
+          :key="category"
+          @click="selectedCategoryFilter = category"
+          :class="{ active: selectedCategoryFilter === category }"
+          class="filter-button"
+      >
+        {{ category }}
+      </button>
+      <button
+          v-if="selectedCategoryFilter"
+          @click="clearFilter"
+          class="filter-button clear"
+      >
+        Alle anzeigen
+      </button>
+    </div>
+
+    <!-- KARTENLISTE DARUNTER -->
+    <div class="card-contents">
+      <div v-for="(card, index) in filteredCards" :key="card.id" class="card-item">
+        <div class="card-header">
+          <h3>{{ card.question }}</h3>
+          <button class="menu-button" @click="toggleMenu($event, index)">&#8226;&#8226;&#8226;</button>
         </div>
+        <p>{{ card.answer }}</p>
+        <small>{{ card.category }}</small>
       </div>
+    </div>
 
     <!-- Menü Popup -->
-    <div v-if="activeMenuIndex !== null" class="menu-popup" :style="{ top: menuPosition.top + 'px', left: menuPosition.left + 'px' }">
+    <div
+        v-if="activeMenuIndex !== null"
+        class="menu-popup"
+        :style="{ top: menuPosition.top + 'px', left: menuPosition.left + 'px' }"
+    >
       <button @click="editCard(activeMenuIndex)">Bearbeiten</button>
       <button @click="deleteCard(activeMenuIndex)">Löschen</button>
     </div>
 
-    <!-- Popup zum Erstellen/Bearbeiten einer Karte -->
+    <!-- Popup zum Erstellen/Bearbeiten -->
     <div v-if="showPopup" class="card-creation-popup">
       <div class="popup-content">
         <h2 class="popup-title">{{ editMode ? 'Karte bearbeiten' : 'Karte erstellen' }}</h2>
         <form @submit.prevent="saveCard">
           <div class="form-group">
-            <label for="question">Frage: </label>
+            <label for="question">Frage:</label>
             <input type="text" id="question" v-model="question" />
           </div>
           <div class="form-group">
-            <label for="answer">Antwort: </label>
+            <label for="answer">Antwort:</label>
             <input type="text" id="answer" v-model="answer" />
           </div>
           <div class="form-group">
-            <label for="category">Kategorie: </label>
+            <label for="category">Kategorie:</label>
             <input type="text" id="category" v-model="category" />
           </div>
           <div class="popup-buttons">
-            <button class="button close-button" @click="closePopup">Schließen</button>
+            <button class="button close-button" @click="closePopup" type="button">Schließen</button>
             <button class="button save-button" type="submit">Speichern</button>
           </div>
         </form>
@@ -137,9 +177,45 @@ const deleteCard = (index: number) => {
     </div>
   </div>
 </template>
+
 <style scoped>
 @import "../assets/styles/masterStyle.css";
 @import "../assets/styles/cardCreation.css";
 
+.title {
+  font-size: 2rem;
+  color: #a8d5ba;
+  margin: 0;
+}
+.category-filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
 
+.filter-button {
+  background-color: #48a89d;
+  color: white;
+  border: none;
+  padding: 0.2rem 0.6rem; /* kleiner */
+  font-size: 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.filter-button:hover {
+  background-color: #3b8d83;
+}
+
+.filter-button.active {
+  background-color: #2f746b;
+}
+
+.filter-button.clear {
+  background-color: #888;
+}
 </style>
