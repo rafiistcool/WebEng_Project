@@ -70,7 +70,8 @@
 
 <script>
 import { reactive, computed, onMounted, onUnmounted } from "vue";
-
+import { useRouter } from "vue-router";
+import { useCardStore } from "../../script/store"
 export default {
   name: "Desktop",
   setup() {
@@ -87,22 +88,6 @@ export default {
         y: 0,
         targetItem: null
       }
-    });
-
-    const handleClickOutside = (event) => {
-      if (!event.target.closest('.context-menu')) {
-        closeContextMenu();
-      }
-    };
-
-    onMounted(() => {
-      document.body.classList.add('left-aligned');
-      document.addEventListener('click', handleClickOutside);
-    });
-
-    onUnmounted(() => {
-      document.body.classList.remove('left-aligned');
-      document.removeEventListener('click', handleClickOutside);
     });
 
     const openModal = () => {
@@ -214,7 +199,7 @@ export default {
 
 <style>
 @import "@/assets/styles/masterStyle.css";
-@import "@/assets/styles/style_Desktop3.css";
+@import "@/assets/styles/explorer.css";
 
 .breadcrumb-link {
   cursor: pointer;
