@@ -1,9 +1,5 @@
 <template>
   <div class="desktop-3">
-    <!-- Logo & Title -->
-    <div class="brainpop_Title">Brainpop</div>
-    <img class="Brainpop-Logo" src="@/assets/icons/Temp-Logo-Sebastian.png" alt="Logo" />
-
     <!-- Breadcrumb & Back -->
     <div class="breadcrumb-container">
       <button class="back-button" @click="goBack" :disabled="state.navigation.length === 0">
@@ -74,8 +70,7 @@
 
 <script>
 import { reactive, computed, onMounted, onUnmounted } from "vue";
-import { useRouter } from "vue-router";
-import { useCardStore } from "../../script/store"
+
 export default {
   name: "Desktop",
   setup() {
@@ -92,6 +87,22 @@ export default {
         y: 0,
         targetItem: null
       }
+    });
+
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.context-menu')) {
+        closeContextMenu();
+      }
+    };
+
+    onMounted(() => {
+      document.body.classList.add('left-aligned');
+      document.addEventListener('click', handleClickOutside);
+    });
+
+    onUnmounted(() => {
+      document.body.classList.remove('left-aligned');
+      document.removeEventListener('click', handleClickOutside);
     });
 
     const openModal = () => {

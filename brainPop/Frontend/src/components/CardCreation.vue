@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
-import { useCardStore } from '../script/store.js';
-import { useRouter } from "vue-router";
+import {ref, watch} from 'vue';
+import {useCardStore} from '../script/store.js';
+import {useRouter} from "vue-router";
 
 const cardStore = useCardStore();
 const router = useRouter();
@@ -10,9 +10,6 @@ const showPopup = ref(false);
 const question = ref("");
 const answer = ref("");
 const category = ref("");
-
-// Get cards for the current set
-const currentSetCards = computed(() => cardStore.getCardsForCurrentSet());
 
 
 const editMode = ref(false);
@@ -39,7 +36,6 @@ const saveCard = () => {
       question: question.value,
       answer: answer.value,
       category: category.value,
-      setId: existingCard.setId,
     };
   } else {
 
@@ -58,10 +54,6 @@ const closePopup = () => {
 
 const startLearningmode = () => {
   router.push("/card");
-};
-
-const goBackToExplorer = () => {
-  router.push("/explorer");
 };
 
 const toggleMenu = (event: MouseEvent, index: number) => {
@@ -113,7 +105,8 @@ const deleteCard = (index: number) => {
     </div>
 
     <!-- Menü Popup -->
-    <div v-if="activeMenuIndex !== null" class="menu-popup" :style="{ top: menuPosition.top + 'px', left: menuPosition.left + 'px' }">
+    <div v-if="activeMenuIndex !== null" class="menu-popup"
+         :style="{ top: menuPosition.top + 'px', left: menuPosition.left + 'px' }">
       <button @click="editCard(activeMenuIndex)">Bearbeiten</button>
       <button @click="deleteCard(activeMenuIndex)">Löschen</button>
     </div>
@@ -123,21 +116,23 @@ const deleteCard = (index: number) => {
       <div class="popup-content">
         <h2 class="popup-title">{{ editMode ? 'Karte bearbeiten' : 'Karte erstellen' }}</h2>
         <form @submit.prevent="saveCard">
-          <div class="form-group">
-            <label for="question">Frage: </label>
-            <input type="text" id="question" v-model="question" />
-          </div>
-          <div class="form-group">
-            <label for="answer">Antwort: </label>
-            <input type="text" id="answer" v-model="answer" />
-          </div>
-          <div class="form-group">
-            <label for="category">Kategorie: </label>
-            <input type="text" id="category" v-model="category" />
-          </div>
-          <div class="popup-buttons">
-            <button class="button close-button" @click="closePopup">Schließen</button>
-            <button class="button save-button" type="submit">Speichern</button>
+          <div class="form-wrapper">
+            <div class="form-group">
+              <label class="popup-label" for="question">Frage: </label>
+              <input class="popup-text-input" type="text" id="question" v-model="question"/>
+            </div>
+            <div class="form-group">
+              <label class="popup-label" for="answer">Antwort: </label>
+              <input class="popup-text-input" type="text" id="answer" v-model="answer"/>
+            </div>
+            <div class="form-group">
+              <label class="popup-label" for="category">Kategorie: </label>
+              <input class="popup-text-input" type="text" id="category" v-model="category"/>
+            </div>
+            <div class="popup-buttons">
+              <button class="button close-button" @click="closePopup">Schließen</button>
+              <button class="button save-button" type="submit">Speichern</button>
+            </div>
           </div>
         </form>
       </div>
