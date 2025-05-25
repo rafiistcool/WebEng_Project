@@ -62,8 +62,8 @@
 
     <!-- Context Menu -->
     <div v-if="state.contextMenu.visible" :style="contextMenuStyles" class="context-menu">
-      <button @click="renameItem">Rename</button>
-      <button @click="deleteItem">Delete</button>
+      <button class="back-button" @click="renameItem">Rename</button>
+      <button class="back-button" @click="deleteItem">Delete</button>
     </div>
   </div>
 </template>

@@ -116,21 +116,23 @@ const deleteCard = (index: number) => {
       <div class="popup-content">
         <h2 class="popup-title">{{ editMode ? 'Karte bearbeiten' : 'Karte erstellen' }}</h2>
         <form @submit.prevent="saveCard">
-          <div class="form-group">
-            <label for="question">Frage: </label>
-            <input type="text" id="question" v-model="question"/>
-          </div>
-          <div class="form-group">
-            <label for="answer">Antwort: </label>
-            <input type="text" id="answer" v-model="answer"/>
-          </div>
-          <div class="form-group">
-            <label for="category">Kategorie: </label>
-            <input type="text" id="category" v-model="category"/>
-          </div>
-          <div class="popup-buttons">
-            <button class="button close-button" @click="closePopup">Schließen</button>
-            <button class="button save-button" type="submit">Speichern</button>
+          <div class="form-wrapper">
+            <div class="form-group">
+              <label class="popup-label" for="question">Frage: </label>
+              <input class="popup-text-input" type="text" id="question" v-model="question"/>
+            </div>
+            <div class="form-group">
+              <label class="popup-label" for="answer">Antwort: </label>
+              <input class="popup-text-input" type="text" id="answer" v-model="answer"/>
+            </div>
+            <div class="form-group">
+              <label class="popup-label" for="category">Kategorie: </label>
+              <input class="popup-text-input" type="text" id="category" v-model="category"/>
+            </div>
+            <div class="popup-buttons">
+              <button class="button close-button" @click="closePopup">Schließen</button>
+              <button class="button save-button" type="submit">Speichern</button>
+            </div>
           </div>
         </form>
       </div>
