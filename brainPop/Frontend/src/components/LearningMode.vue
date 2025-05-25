@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import swing from 'swing';
 import {useCardStore} from "@/script/store.js";
 import router from "@/router.js";
 
@@ -9,6 +10,7 @@ const userContentFront = ref("Vorderseite");
 const userContentBack = ref("Rückseite");
 const cardStore = useCardStore();
 const currentIndex = ref(0);
+const flashcardElement = ref<HTMLElement | null>(null);
 
 // Get only cards from the current set
 const filteredCards = computed(() => cardStore.getCardsForCurrentSet());
@@ -60,6 +62,22 @@ const endLearningMode = () => {
   router.push("/cardcreation");
 }
 updateContentOfFlashcard();
+
+onMounted(() => {
+  if (flashcardElement.value) {
+    const { Stack, Direction } = swing as any;
+    const stack = Stack({ allowedDirections: [Direction.LEFT, Direction.RIGHT] });
+    const card = stack.createCard(flashcardElement.value);
+    stack.on('throwoutleft', () => {
+      notKnown();
+      card.throwIn(0, 0);
+    });
+    stack.on('throwoutright', () => {
+      known();
+      card.throwIn(0, 0);
+    });
+  }
+});
 </script>
 
 <template>
@@ -87,7 +105,7 @@ updateContentOfFlashcard();
         </div>
       </div>
       <div class="flashcard-container">
-        <div class="flashcard" @click="flip" :class="{flipped: flipped}">
+        <div class="flashcard" @click="flip" :class="{flipped: flipped}" ref="flashcardElement">
             <div class="flashcardFront">
               <p class="userContent" >{{ userContentFront }}</p>
             </div>
