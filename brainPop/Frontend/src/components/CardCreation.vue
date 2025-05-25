@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import {ref} from 'vue';
-import {useCardStore} from '../script/store.js';
-import {useRouter} from "vue-router";
+
+import { ref, computed, nextTick } from 'vue';
+import { useCardStore } from '../script/store.ts';
+import { useRouter } from "vue-router";
 
 const cardStore = useCardStore();
 const router = useRouter();
@@ -10,14 +11,31 @@ const showPopup = ref(false);
 const question = ref("");
 const answer = ref("");
 const category = ref("");
-
-
 const editMode = ref(false);
 const selectedCardIndex = ref<number | null>(null);
 
-// Menü-Status
 const activeMenuIndex = ref<number | null>(null);
 const menuPosition = ref({top: 0, left: 0});
+
+const selectedCategoryFilter = ref<string | null>(null);
+
+//Filter
+const filteredCards = computed(() => {
+  if (!selectedCategoryFilter.value) return cardStore.cards;
+  return cardStore.cards.filter(card => card.category === selectedCategoryFilter.value);
+});
+
+const uniqueCategories = computed(() => {
+  const categories = cardStore.cards
+      .map(card => card.category.trim())
+      .filter(c => c !== "");
+  return [...new Set(categories)];
+});
+
+const clearFilter = () => {
+  selectedCategoryFilter.value = null;
+};
+
 
 const addCard = () => {
   question.value = "";
@@ -30,17 +48,19 @@ const addCard = () => {
 const saveCard = () => {
   if (editMode.value && selectedCardIndex.value !== null) {
     const existingCard = cardStore.cards[selectedCardIndex.value];
-
     cardStore.cards[selectedCardIndex.value] = {
       id: existingCard.id,
       question: question.value,
       answer: answer.value,
-      category: category.value,
+      category: category.value.trim(),
     };
   } else {
-
-    cardStore.addCard(question.value, answer.value, category.value);
+    cardStore.addCard(question.value, answer.value, category.value.trim());
   }
+
+  nextTick(() => {
+    console.log("Aktualisierte Kategorien:", uniqueCategories.value);
+  });
 
   closePopup();
 };
@@ -70,11 +90,9 @@ const toggleMenu = (event: MouseEvent, index: number) => {
 
 const editCard = (index: number) => {
   const card = cardStore.cards[index];
-
   question.value = card.question;
   answer.value = card.answer;
   category.value = card.category;
-
   selectedCardIndex.value = index;
   editMode.value = true;
   showPopup.value = true;
@@ -93,8 +111,31 @@ const deleteCard = (index: number) => {
     <button class="button card-start-button" @click="startLearningmode">Starten</button>
     <button class="button card-creation-button" @click="addCard">Hinzufügen</button>
 
+
+    <!-- FILTERBUTTONS UNTER "HINZUFÜGEN" -->
+    <div class="category-filters">
+      <button
+          v-for="category in uniqueCategories"
+          :key="category"
+          @click="selectedCategoryFilter = category"
+          :class="{ active: selectedCategoryFilter === category }"
+          class="button filter-button"
+      >
+        {{ category }}
+      </button>
+      <button
+          v-if="selectedCategoryFilter"
+          @click="clearFilter"
+          class="button filter-button clear"
+      >
+        Alle anzeigen
+      </button>
+    </div>
+
+    <!-- KARTENLISTE DARUNTER -->
     <div class="card-contents">
-      <div v-for="(card, index) in cardStore.cards" :key="index" class="card-item">
+      <div v-for="(card, index) in filteredCards" :key="card.id" class="card-item">
+
         <div class="card-header">
           <h3>{{ card.question }}</h3>
           <button class="menu-button" @click="toggleMenu($event, index)">&#8226;&#8226;&#8226;</button>
@@ -105,17 +146,24 @@ const deleteCard = (index: number) => {
     </div>
 
     <!-- Menü Popup -->
-    <div v-if="activeMenuIndex !== null" class="menu-popup"
-         :style="{ top: menuPosition.top + 'px', left: menuPosition.left + 'px' }">
+    <div
+        v-if="activeMenuIndex !== null"
+        class="menu-popup"
+        :style="{ top: menuPosition.top + 'px', left: menuPosition.left + 'px' }"
+    >
+
       <button @click="editCard(activeMenuIndex)">Bearbeiten</button>
       <button @click="deleteCard(activeMenuIndex)">Löschen</button>
     </div>
 
-    <!-- Popup zum Erstellen/Bearbeiten einer Karte -->
+    <!-- Popup zum Erstellen/Bearbeiten -->
     <div v-if="showPopup" class="card-creation-popup">
       <div class="popup-content">
         <h2 class="popup-title">{{ editMode ? 'Karte bearbeiten' : 'Karte erstellen' }}</h2>
         <form @submit.prevent="saveCard">
+
+         
+
           <div class="form-wrapper">
             <div class="form-group">
               <label class="popup-label" for="question" >Frage: </label>
@@ -133,12 +181,14 @@ const deleteCard = (index: number) => {
               <button class="button close-button" @click="closePopup">Schließen</button>
               <button class="button save-button" type="submit">Speichern</button>
             </div>
+
           </div>
         </form>
       </div>
     </div>
   </div>
 </template>
+
 <style scoped>
 @import "../assets/styles/masterStyle.css";
 @import "../assets/styles/cardCreation.css";

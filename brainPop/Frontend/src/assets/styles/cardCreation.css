@@ -30,13 +30,13 @@
 }
 
 .card-creation-button {
-    position: absolute;
+    position: fixed;
     padding: 10px 20px;
     left:5%;
     top: 30%;
 }
 .card-start-button{
-    position: absolute;
+    position: fixed;
     padding: 10px 20px;
     left:5%;
     top: 20%;
@@ -159,3 +159,16 @@
     z-index: 1000;
 }
 
+.category-filters {
+    display: flex;
+    position:fixed;
+    left: 35%;
+    top: 5%;
+    gap: 10px;
+}
+.category-filters button {
+    padding: 10px;
+}
+.filter-button.clear {
+    background-color: #888;
+}
