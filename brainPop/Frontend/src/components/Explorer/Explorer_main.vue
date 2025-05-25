@@ -114,6 +114,8 @@ export default {
       }
     };
 
+
+
     const handleClickOutside = (event) => {
       if (!event.target.closest('.context-menu')) {
         closeContextMenu();
