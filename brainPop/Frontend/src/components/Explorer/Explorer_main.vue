@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { reactive, computed } from "vue";
+import { reactive, computed, onMounted, onUnmounted } from "vue";
 
 export default {
   name: "Desktop",
@@ -87,6 +87,14 @@ export default {
         y: 0,
         targetItem: null
       }
+    });
+
+    onMounted(() => {
+      document.body.classList.add('left-aligned');
+    });
+
+    onUnmounted(() => {
+      document.body.classList.remove('left-aligned');
     });
 
     const openModal = () => {
