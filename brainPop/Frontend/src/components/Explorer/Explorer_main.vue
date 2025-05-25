@@ -49,7 +49,7 @@
         </label>
         <div class="input-container">
           <label class="name" for="setName">Name:</label>
-          <input type="text" id="setName" v-model="state.setName" placeholder="Enter name" />
+          <input class="name-input" type="text" id="setName" v-model="state.setName" placeholder="Enter name" />
         </div>
         <div class="modal-buttons">
           <button class="button confirm-button" @click="confirmSelection">Confirm</button>
