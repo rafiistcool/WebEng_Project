@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import {useCardStore} from "@/script/store.js";
 import router from "@/router.js";
 
@@ -10,33 +10,50 @@ const userContentBack = ref("Rückseite");
 const cardStore = useCardStore();
 const currentIndex = ref(0);
 
+// Get only cards from the current set
+const filteredCards = computed(() => cardStore.getCardsForCurrentSet());
+
 const flip = () => {
   flipped.value = !flipped.value;
 }
 
 const updateContentOfFlashcard = () => {
-  if(cardStore.cards.length > 0) {
-    const currentCard = cardStore.cards[currentIndex.value];
+  if(filteredCards.value.length > 0) {
+    // Make sure currentIndex is within bounds
+    if (currentIndex.value >= filteredCards.value.length) {
+      currentIndex.value = 0;
+    }
+    const currentCard = filteredCards.value[currentIndex.value];
     userContentFront.value = currentCard.question;
     userContentBack.value = currentCard.answer;
+  } else {
+    // No cards in the current set
+    userContentFront.value = "No cards in this set";
+    userContentBack.value = "Add cards to this set in the card creation page";
   }
 }
 
 const notKnown = () => {
-  if (currentIndex.value <= 0) {
-    currentIndex.value = cardStore.cards.length - 1;
-  }else {
-    currentIndex.value = (currentIndex.value - 1) % cardStore.cards.length;
+  // Only navigate if there are cards
+  if (filteredCards.value.length > 0) {
+    if (currentIndex.value <= 0) {
+      currentIndex.value = filteredCards.value.length - 1;
+    } else {
+      currentIndex.value = (currentIndex.value - 1) % filteredCards.value.length;
+    }
+    flipped.value = false;
+    updateContentOfFlashcard();
+    console.log('Not Known');
   }
-  flipped.value = false;
-  updateContentOfFlashcard();
-  console.log('Not Known');
 }
 const known = () => {
-  currentIndex.value = (currentIndex.value + 1) % cardStore.cards.length;
-  flipped.value = false;
-  updateContentOfFlashcard();
-  console.log('Known');
+  // Only navigate if there are cards
+  if (filteredCards.value.length > 0) {
+    currentIndex.value = (currentIndex.value + 1) % filteredCards.value.length;
+    flipped.value = false;
+    updateContentOfFlashcard();
+    console.log('Known');
+  }
 }
 
 const endLearningMode = () => {
@@ -89,7 +106,7 @@ updateContentOfFlashcard();
     </div>
     <div class="content-below-flashcard">
       <div class="flashcard-counter">
-        <p class="counter"> ({{ currentIndex+1 }})/({{ cardStore.cards.length }})</p>
+        <p class="counter"> ({{ currentIndex+1 }})/({{ filteredCards.length }})</p>
       </div>
       <div class="edit-button-container">
         <button class="baseButtonLayout" @click="updateContentOfFlashcard">
