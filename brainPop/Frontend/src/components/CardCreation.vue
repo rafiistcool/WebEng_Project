@@ -20,7 +20,7 @@ const selectedCardIndex = ref<number | null>(null);
 
 // Menü-Status
 const activeMenuIndex = ref<number | null>(null);
-const menuPosition = ref({ top: 0, left: 0 });
+const menuPosition = ref({top: 0, left: 0});
 
 const addCard = () => {
   question.value = "";
@@ -50,7 +50,6 @@ const saveCard = () => {
 };
 
 
-
 const closePopup = () => {
   showPopup.value = false;
   selectedCardIndex.value = null;
@@ -78,53 +77,40 @@ const toggleMenu = (event: MouseEvent, index: number) => {
 };
 
 const editCard = (index: number) => {
-  const card = currentSetCards.value[index];
+  const card = cardStore.cards[index];
 
   question.value = card.question;
   answer.value = card.answer;
   category.value = card.category;
 
-  // Find the actual index in the full cards array
-  const actualIndex = cardStore.cards.findIndex(c => c.id === card.id);
-  selectedCardIndex.value = actualIndex;
-
+  selectedCardIndex.value = index;
   editMode.value = true;
   showPopup.value = true;
   activeMenuIndex.value = null;
 };
 
 const deleteCard = (index: number) => {
-  const card = currentSetCards.value[index];
-  // Find the actual index in the full cards array
-  const actualIndex = cardStore.cards.findIndex(c => c.id === card.id);
-
-  if (actualIndex !== -1) {
-    cardStore.cards.splice(actualIndex, 1);
-  }
-
+  cardStore.cards.splice(index, 1);
   activeMenuIndex.value = null;
 };
 </script>
 
 <template>
-  <div class="card-creation">
-    <h1 class="title">Card Creation</h1>
-    <div class="button-container">
-      <button class="button back-button" @click="goBackToExplorer">Back to Explorer</button>
-      <button class="button card-start-button" @click="startLearningmode">Starten</button>
-      <button class="button card-creation-button" @click="addCard">Hinzufügen</button>
-    </div>
+  <div class=" card-creation">
 
-      <div class="card-contents">
-        <div v-for="(card, index) in currentSetCards" :key="index" class="card-item">
-          <div class="card-header">
-            <h3>{{ card.question }}</h3>
-            <button class="menu-button" @click="toggleMenu($event, index)">&#8226;&#8226;&#8226;</button>
-          </div>
-          <p>{{ card.answer }}</p>
-          <small>{{ card.category }}</small>
+    <button class="button card-start-button" @click="startLearningmode">Starten</button>
+    <button class="button card-creation-button" @click="addCard">Hinzufügen</button>
+
+    <div class="card-contents">
+      <div v-for="(card, index) in cardStore.cards" :key="index" class="card-item">
+        <div class="card-header">
+          <h3>{{ card.question }}</h3>
+          <button class="menu-button" @click="toggleMenu($event, index)">&#8226;&#8226;&#8226;</button>
         </div>
+        <p>{{ card.answer }}</p>
+        <small>{{ card.category }}</small>
       </div>
+    </div>
 
     <!-- Menü Popup -->
     <div v-if="activeMenuIndex !== null" class="menu-popup" :style="{ top: menuPosition.top + 'px', left: menuPosition.left + 'px' }">

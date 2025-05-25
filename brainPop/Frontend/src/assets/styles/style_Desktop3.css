@@ -1,50 +1,42 @@
-
-.desktop-3,
-.desktop-3 * {
-    box-sizing: border-box;
-
-}
-
-.Brainpop-Logo{
+.desktop-3{
     display: flex;
-    top: 5%;
-    right:5%;
-
-    position: absolute;
-    top: 5%;
-    right: 5%;
-    width: 10%;
-    height: auto;
+    justify-content: left;
+    flex-direction: column;
+    max-width: 99%;
+    margin-top: 20px;
+    margin-left: 40px;
 }
 
-.brainpop_Title {
-    color: var(--primary-color);
-    text-align: left;
-    font-size: 6rem;
-    font-weight: 400;
-    position: absolute;
-    left: 10%;
-    top: 5%;
-    width: 770px;
-    height: 98px;
+body.left-aligned {
+    align-items: flex-start;
+    justify-content: flex-start;
 }
 
 .breadcrumb-container {
-    position: absolute;
-    left: 10%;
-    top: 25%;
     color: var(--primary-color);
     display: flex;
     align-items: center;
     gap: 10px;
+    max-height: 40px;
 }
 
 .breadcrumb-link {
     cursor: pointer;
     margin: 0 5px;
 }
+.back-button{
+    background-color: var(--primary-color);
+    color: var(--background-color1);
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+    min-width: 100px;
+    text-align: center;
+}
 
-/* Rest der CSS-Datei bleibt unverändert */
 .add {
     width: 6%;
     height: auto;
@@ -148,24 +140,15 @@
 }
 
 .items-container {
-    position: absolute;
-    top: 25%;
-    left: 5%;
-    right: 5%;
-    bottom: 15%;
+
     display: flex;
-    flex-wrap: wrap;
-    gap: 5%;
+    gap: 30px;
     justify-content: flex-start;
     align-items: flex-start;
 
-    margin-top: 15%;
-    margin-left: 5%;
-    width: 94%;
-    height: 60%;
-    position: absolute;
-    overflow-y: auto; /* only allows scrolling if necessary */
-
+    margin-top: 2rem;
+    margin-left: 0.5rem;
+    height: auto;
 }
 
 .item-container {
@@ -175,7 +158,7 @@
     justify-content: center;
     transition: transform 0.2s ease-in-out;
     cursor: pointer;
-    width: 6%;
+    width: 150px;
     height: auto;
 }
 .icon-wrapper {

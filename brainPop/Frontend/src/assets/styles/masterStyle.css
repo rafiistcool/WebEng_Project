@@ -15,15 +15,16 @@
 }
 
 body {
+    padding-top: 60px;
     font-family: 'Arial', sans-serif;
     background: linear-gradient(to bottom right, var(--background-color1), var(--background-color2));
-    min-height: 100vh;
-    width: 100%;
+    height: calc(99% - 60px);
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--text-color);
 }
+
 
 .button:hover {
     background: var(--secondary-color);
@@ -36,12 +37,12 @@ body {
     background-color: var(--primary-color);
     color: var(--background-color1);
     border: none;
-    border-radius: 10px;  /* Rundung des Buttons */
-    font-size: 1rem;      /* Schriftgröße */
+    border-radius: 10px;
+    font-size: 1rem;
     text-decoration: none;
     cursor: pointer;
-    transition: background 0.3s, color 0.3s; /* sanfte Übergänge */
-    min-width: 200px; /* Verhindert, dass Buttons zu klein werden */
-    text-align: center; /* Text zentrieren */
-    margin-top: 10px; /* Abstand oben */
+    transition: background 0.3s, color 0.3s;
+    min-width: 200px;
+    text-align: center;
+    margin-top: 10px;
 }
