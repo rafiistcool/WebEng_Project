@@ -6,17 +6,20 @@
 
     <!-- Breadcrumb & Back -->
     <div class="breadcrumb-container">
-      <button class="back-button" @click="goBack" :disabled="state.navigation.length === 0">
+      <button 
+        v-if="navigation.length > 0"
+        class="button back-button" 
+        @click="goBack"
+      >
         ⭠ Back
       </button>
       <span class="breadcrumb">
         <span @click="goTo(null)" class="breadcrumb-link">Home</span>
-        <template v-for="(folder, index) in state.navigation" :key="folder.id">
+        <template v-for="(folder, index) in navigation" :key="folder.id">
           / <span @click="goTo(index)" class="breadcrumb-link">{{ folder.name }}</span>
         </template>
       </span>
     </div>
-
 
     <!-- Folder Contents -->
     <div class="items-container">
@@ -74,10 +77,15 @@
 
 <script>
 import { reactive, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useCardStore } from "../../script/store";
 
 export default {
   name: "Desktop",
   setup() {
+    const router = useRouter();
+    const cardStore = useCardStore();
+
     const state = reactive({
       isModalOpen: false,
       isSetSelected: false,
@@ -124,8 +132,13 @@ export default {
 
     const onItemClick = (item) => {
       if (item.children) {
+        // This is a folder, navigate into it
         state.currentDirectory = item;
         state.navigation.push(item);
+      } else {
+        // This is a set, navigate to CardCreation
+        cardStore.setCurrentSet(item.id);
+        router.push('/cardcreation');
       }
     };
 
@@ -182,6 +195,8 @@ export default {
       return state.currentDirectory?.children || state.items;
     });
 
+    const navigation = computed(() => state.navigation);
+
     return {
       state,
       openModal,
@@ -194,7 +209,8 @@ export default {
       renameItem,
       deleteItem,
       contextMenuStyles,
-      currentItems
+      currentItems,
+      navigation
     };
   }
 };

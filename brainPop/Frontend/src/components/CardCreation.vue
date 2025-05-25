@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useCardStore } from '../script/store.js';
 import { useRouter } from "vue-router";
 
@@ -10,6 +10,9 @@ const showPopup = ref(false);
 const question = ref("");
 const answer = ref("");
 const category = ref("");
+
+// Get cards for the current set
+const currentSetCards = computed(() => cardStore.getCardsForCurrentSet());
 
 
 const editMode = ref(false);
@@ -57,6 +60,10 @@ const startLearningmode = () => {
   router.push("/card");
 };
 
+const goBackToExplorer = () => {
+  router.push("/explorer");
+};
+
 const toggleMenu = (event: MouseEvent, index: number) => {
   if (activeMenuIndex.value === index) {
     activeMenuIndex.value = null;
@@ -70,20 +77,30 @@ const toggleMenu = (event: MouseEvent, index: number) => {
 };
 
 const editCard = (index: number) => {
-  const card = cardStore.cards[index];
+  const card = currentSetCards.value[index];
 
   question.value = card.question;
   answer.value = card.answer;
   category.value = card.category;
 
-  selectedCardIndex.value = index;
+  // Find the actual index in the full cards array
+  const actualIndex = cardStore.cards.findIndex(c => c.id === card.id);
+  selectedCardIndex.value = actualIndex;
+
   editMode.value = true;
   showPopup.value = true;
   activeMenuIndex.value = null;
 };
 
 const deleteCard = (index: number) => {
-  cardStore.cards.splice(index, 1);
+  const card = currentSetCards.value[index];
+  // Find the actual index in the full cards array
+  const actualIndex = cardStore.cards.findIndex(c => c.id === card.id);
+
+  if (actualIndex !== -1) {
+    cardStore.cards.splice(actualIndex, 1);
+  }
+
   activeMenuIndex.value = null;
 };
 </script>
@@ -91,11 +108,14 @@ const deleteCard = (index: number) => {
 <template>
   <div class="card-creation">
     <h1 class="title">Card Creation</h1>
-    <button class="button card-start-button" @click="startLearningmode">Starten</button>
-    <button class="button card-creation-button" @click="addCard">Hinzufügen</button>
+    <div class="button-container">
+      <button class="button back-button" @click="goBackToExplorer">Back to Explorer</button>
+      <button class="button card-start-button" @click="startLearningmode">Starten</button>
+      <button class="button card-creation-button" @click="addCard">Hinzufügen</button>
+    </div>
 
       <div class="card-contents">
-        <div v-for="(card, index) in cardStore.cards" :key="index" class="card-item">
+        <div v-for="(card, index) in currentSetCards" :key="index" class="card-item">
           <div class="card-header">
             <h3>{{ card.question }}</h3>
             <button class="menu-button" @click="toggleMenu($event, index)">&#8226;&#8226;&#8226;</button>
