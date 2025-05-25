@@ -6,6 +6,13 @@
 
 }
 
+/* When the explorer is shown we want the body to align everything to the top
+   left so the content starts directly below the navbar */
+body.left-aligned {
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
 .breadcrumb-container {
     color: var(--primary-color);
     display: flex;
