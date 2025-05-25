@@ -50,9 +50,6 @@ updateContentOfFlashcard();
 
     <div class="content-above-flashcard">
       <div class="end-button"></div>
-      <div class="learn-mode-heading">
-        <h1 id="learnMode-h1">Learn-Mode</h1>
-      </div>
 
       <div class="end-button-container" >
         <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class="end-button" @click="endLearningMode">

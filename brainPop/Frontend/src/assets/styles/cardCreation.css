@@ -2,7 +2,7 @@
 
 .card-creation {
     display: flex;
-    min-height: 100vh;
+    min-height: 99%;
     width: 100vw;
     margin-top: 10%;
     padding: 0;
@@ -61,8 +61,8 @@
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-    width: 50%;
-    height: 50%;
+    width: 420px;
+    height: 320px;
     z-index: 3;
     justify-content: center;
 
@@ -78,7 +78,41 @@
     gap: 10%;
     width: 100%;
 }
+.form-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
 
+
+
+.popup-label{
+
+    font-size: 1.2rem;
+
+}
+.popup-text-input{
+    padding: 6px 12px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    appearance: none;
+    border-radius: 4px;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    :focus{
+        color: #212529;
+        background-color: #fff;
+        border-color: #86b7fe;
+        outline: 0;
+        box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+    }
+}
 .close-button, .save-button{
     padding: 10px;
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
+
 import { ref, computed, nextTick } from 'vue';
-import { useCardStore } from '../script/store';
+import { useCardStore } from '../script/store.ts';
 import { useRouter } from "vue-router";
 
 const cardStore = useCardStore();
@@ -14,7 +15,7 @@ const editMode = ref(false);
 const selectedCardIndex = ref<number | null>(null);
 
 const activeMenuIndex = ref<number | null>(null);
-const menuPosition = ref({ top: 0, left: 0 });
+const menuPosition = ref({top: 0, left: 0});
 
 const selectedCategoryFilter = ref<string | null>(null);
 
@@ -64,6 +65,7 @@ const saveCard = () => {
   closePopup();
 };
 
+
 const closePopup = () => {
   showPopup.value = false;
   selectedCardIndex.value = null;
@@ -104,10 +106,11 @@ const deleteCard = (index: number) => {
 </script>
 
 <template>
-  <div class="card-creation">
-    <h1 class="title">Card Creation</h1>
+  <div class=" card-creation">
+
     <button class="button card-start-button" @click="startLearningmode">Starten</button>
     <button class="button card-creation-button" @click="addCard">Hinzufügen</button>
+
 
     <!-- FILTERBUTTONS UNTER "HINZUFÜGEN" -->
     <div class="category-filters">
@@ -132,6 +135,7 @@ const deleteCard = (index: number) => {
     <!-- KARTENLISTE DARUNTER -->
     <div class="card-contents">
       <div v-for="(card, index) in filteredCards" :key="card.id" class="card-item">
+
         <div class="card-header">
           <h3>{{ card.question }}</h3>
           <button class="menu-button" @click="toggleMenu($event, index)">&#8226;&#8226;&#8226;</button>
@@ -147,6 +151,7 @@ const deleteCard = (index: number) => {
         class="menu-popup"
         :style="{ top: menuPosition.top + 'px', left: menuPosition.left + 'px' }"
     >
+
       <button @click="editCard(activeMenuIndex)">Bearbeiten</button>
       <button @click="deleteCard(activeMenuIndex)">Löschen</button>
     </div>
@@ -156,21 +161,27 @@ const deleteCard = (index: number) => {
       <div class="popup-content">
         <h2 class="popup-title">{{ editMode ? 'Karte bearbeiten' : 'Karte erstellen' }}</h2>
         <form @submit.prevent="saveCard">
-          <div class="form-group">
-            <label for="question">Frage:</label>
-            <input type="text" id="question" v-model="question" />
-          </div>
-          <div class="form-group">
-            <label for="answer">Antwort:</label>
-            <input type="text" id="answer" v-model="answer" />
-          </div>
-          <div class="form-group">
-            <label for="category">Kategorie:</label>
-            <input type="text" id="category" v-model="category" />
-          </div>
-          <div class="popup-buttons">
-            <button class="button close-button" @click="closePopup" type="button">Schließen</button>
-            <button class="button save-button" type="submit">Speichern</button>
+
+         
+
+          <div class="form-wrapper">
+            <div class="form-group">
+              <label class="popup-label" for="question" >Frage: </label>
+              <input class="popup-text-input" type="text" id="question" v-model="question" placeholder="Frage"/>
+            </div>
+            <div class="form-group">
+              <label class="popup-label" for="answer">Antwort: </label>
+              <input class="popup-text-input" type="text" id="answer" v-model="answer" placeholder="Antwort"/>
+            </div>
+            <div class="form-group">
+              <label class="popup-label" for="category">Kategorie: </label>
+              <input class="popup-text-input" type="text" id="category" v-model="category" placeholder="Kategorie"/>
+            </div>
+            <div class="popup-buttons">
+              <button class="button close-button" @click="closePopup">Schließen</button>
+              <button class="button save-button" type="submit">Speichern</button>
+            </div>
+
           </div>
         </form>
       </div>
