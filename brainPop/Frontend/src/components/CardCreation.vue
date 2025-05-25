@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, watch} from 'vue';
+import {ref} from 'vue';
 import {useCardStore} from '../script/store.js';
 import {useRouter} from "vue-router";
 

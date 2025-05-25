@@ -24,7 +24,7 @@
           @contextmenu.prevent="openContextMenu($event, item)"
       >
         <div class="icon-wrapper">
-          <img :src="item.icon" class="item-icon" />
+          <img :src="item.icon" class="item-icon" alt="icon"/>
         </div>
         <div class="item-text">{{ item.name }}</div>
 
