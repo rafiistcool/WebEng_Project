@@ -1,9 +1,5 @@
 <template>
   <div class="desktop-3">
-    <!-- Logo & Title -->
-    <div class="brainpop_Title">Brainpop</div>
-    <img class="Brainpop-Logo" src="@/assets/icons/Temp-Logo-Sebastian.png" alt="Logo" />
-
     <!-- Breadcrumb & Back -->
     <div class="breadcrumb-container">
       <button class="back-button" @click="goBack" :disabled="state.navigation.length === 0">
@@ -28,7 +24,7 @@
           @contextmenu.prevent="openContextMenu($event, item)"
       >
         <div class="icon-wrapper">
-          <img :src="item.icon" class="item-icon" />
+          <img :src="item.icon" class="item-icon" alt="icon"/>
         </div>
         <div class="item-text">{{ item.name }}</div>
 
@@ -53,7 +49,7 @@
         </label>
         <div class="input-container">
           <label class="name" for="setName">Name:</label>
-          <input type="text" id="setName" v-model="state.setName" placeholder="Enter name" />
+          <input class="name-input" type="text" id="setName" v-model="state.setName" placeholder="Enter name" />
         </div>
         <div class="modal-buttons">
           <button class="button confirm-button" @click="confirmSelection">Confirm</button>
@@ -66,14 +62,14 @@
 
     <!-- Context Menu -->
     <div v-if="state.contextMenu.visible" :style="contextMenuStyles" class="context-menu">
-      <button @click="renameItem">Rename</button>
-      <button @click="deleteItem">Delete</button>
+      <button class="back-button" @click="renameItem">Rename</button>
+      <button class="back-button" @click="deleteItem">Delete</button>
     </div>
   </div>
 </template>
 
 <script>
-import { reactive, computed } from "vue";
+import { reactive, computed, onMounted, onUnmounted } from "vue";
 
 export default {
   name: "Desktop",
@@ -91,6 +87,22 @@ export default {
         y: 0,
         targetItem: null
       }
+    });
+
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.context-menu')) {
+        closeContextMenu();
+      }
+    };
+
+    onMounted(() => {
+      document.body.classList.add('left-aligned');
+      document.addEventListener('click', handleClickOutside);
+    });
+
+    onUnmounted(() => {
+      document.body.classList.remove('left-aligned');
+      document.removeEventListener('click', handleClickOutside);
     });
 
     const openModal = () => {
@@ -146,12 +158,13 @@ export default {
 
     const openContextMenu = (event, item) => {
       state.contextMenu.visible = true;
-      state.contextMenu.x = event.pageX;
-      state.contextMenu.y = event.pageY;
+      state.contextMenu.x = event.clientX;
+      state.contextMenu.y = event.clientY;
       state.contextMenu.targetItem = item;
     };
 
     const contextMenuStyles = computed(() => ({
+      position: 'fixed',
       top: `${state.contextMenu.y}px`,
       left: `${state.contextMenu.x}px`
     }));
