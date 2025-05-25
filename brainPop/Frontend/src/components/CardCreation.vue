@@ -39,6 +39,7 @@ const saveCard = () => {
       question: question.value,
       answer: answer.value,
       category: category.value,
+      setId: existingCard.setId,
     };
   } else {
 
