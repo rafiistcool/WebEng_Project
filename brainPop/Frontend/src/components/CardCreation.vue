@@ -116,14 +116,14 @@ const deleteCard = (index: number) => {
           :key="category"
           @click="selectedCategoryFilter = category"
           :class="{ active: selectedCategoryFilter === category }"
-          class="filter-button"
+          class="button filter-button"
       >
         {{ category }}
       </button>
       <button
           v-if="selectedCategoryFilter"
           @click="clearFilter"
-          class="filter-button clear"
+          class="button filter-button clear"
       >
         Alle anzeigen
       </button>
@@ -182,40 +182,5 @@ const deleteCard = (index: number) => {
 @import "../assets/styles/masterStyle.css";
 @import "../assets/styles/cardCreation.css";
 
-.title {
-  font-size: 2rem;
-  color: #a8d5ba;
-  margin: 0;
-}
-.category-filters {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
 
-.filter-button {
-  background-color: #48a89d;
-  color: white;
-  border: none;
-  padding: 0.2rem 0.6rem; /* kleiner */
-  font-size: 0.9rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.filter-button:hover {
-  background-color: #3b8d83;
-}
-
-.filter-button.active {
-  background-color: #2f746b;
-}
-
-.filter-button.clear {
-  background-color: #888;
-}
 </style>
