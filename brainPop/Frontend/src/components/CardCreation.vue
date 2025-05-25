@@ -88,7 +88,7 @@ const deleteCard = (index: number) => {
 </script>
 
 <template>
-  <div class="card-creation">
+  <div class=" card-creation">
 
     <button class="button card-start-button" @click="startLearningmode">Starten</button>
     <button class="button card-creation-button" @click="addCard">Hinzufügen</button>

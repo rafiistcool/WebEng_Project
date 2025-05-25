@@ -1,38 +1,12 @@
-
-.desktop-3,
-.desktop-3 * {
-    box-sizing: border-box;
-
-}
-
-.Brainpop-Logo{
+.desktop-3{
     display: flex;
-    top: 5%;
-    right:5%;
+    justify-content: left;
+    flex-direction: column;
+    max-width: 99%;
 
-    position: absolute;
-    top: 5%;
-    right: 5%;
-    width: 10%;
-    height: auto;
-}
-
-.brainpop_Title {
-    color: var(--primary-color);
-    text-align: left;
-    font-size: 6rem;
-    font-weight: 400;
-    position: absolute;
-    left: 10%;
-    top: 5%;
-    width: 770px;
-    height: 98px;
 }
 
 .breadcrumb-container {
-    position: absolute;
-    left: 10%;
-    top: 25%;
     color: var(--primary-color);
     display: flex;
     align-items: center;
@@ -148,23 +122,17 @@
 }
 
 .items-container {
-    position: absolute;
-    top: 25%;
-    left: 5%;
-    right: 5%;
-    bottom: 15%;
+
     display: flex;
-    flex-wrap: wrap;
-    gap: 5%;
+    gap: 20px;
     justify-content: flex-start;
     align-items: flex-start;
 
-    margin-top: 15%;
-    margin-left: 5%;
-    width: 94%;
-    height: 60%;
-    position: absolute;
-    overflow-y: auto; /* only allows scrolling if necessary */
+    margin-top: 1rem;
+    margin-left: 0.5rem;
+
+    height: 10vh;
+    overflow-y: auto;
 
 }
 
@@ -175,7 +143,7 @@
     justify-content: center;
     transition: transform 0.2s ease-in-out;
     cursor: pointer;
-    width: 6%;
+    width: 100px;
     height: auto;
 }
 .icon-wrapper {

@@ -1,9 +1,5 @@
 <template>
   <div class="desktop-3">
-    <!-- Logo & Title -->
-    <div class="brainpop_Title">Brainpop</div>
-    <img class="Brainpop-Logo" src="@/assets/icons/Temp-Logo-Sebastian.png" alt="Logo" />
-
     <!-- Breadcrumb & Back -->
     <div class="breadcrumb-container">
       <button class="back-button" @click="goBack" :disabled="state.navigation.length === 0">
