@@ -24,7 +24,7 @@
           @contextmenu.prevent="openContextMenu($event, item)"
       >
         <div class="icon-wrapper">
-          <img :src="item.icon" class="item-icon" alt="icon"/>
+          <img :src="item.icon" class="item-icon" />
         </div>
         <div class="item-text">{{ item.name }}</div>
 
@@ -49,7 +49,7 @@
         </label>
         <div class="input-container">
           <label class="name" for="setName">Name:</label>
-          <input class="name-input" type="text" id="setName" v-model="state.setName" placeholder="Enter name" />
+          <input type="text" id="setName" v-model="state.setName" placeholder="Enter name" />
         </div>
         <div class="modal-buttons">
           <button class="button confirm-button" @click="confirmSelection">Confirm</button>
@@ -62,18 +62,22 @@
 
     <!-- Context Menu -->
     <div v-if="state.contextMenu.visible" :style="contextMenuStyles" class="context-menu">
-      <button class="back-button" @click="renameItem">Rename</button>
-      <button class="back-button" @click="deleteItem">Delete</button>
+      <button @click="renameItem">Rename</button>
+      <button @click="deleteItem">Delete</button>
     </div>
   </div>
 </template>
 
 <script>
 import { reactive, computed, onMounted, onUnmounted } from "vue";
-
+import { useRouter } from "vue-router";
+import { useCardStore } from "../../script/store";
 export default {
   name: "Desktop",
   setup() {
+    const router = useRouter();
+    const cardStore = useCardStore();
+
     const state = reactive({
       isModalOpen: false,
       isSetSelected: false,
@@ -89,20 +93,30 @@ export default {
       }
     });
 
-    const handleClickOutside = (event) => {
-      if (!event.target.closest('.context-menu')) {
-        closeContextMenu();
+    // Load sets from localStorage
+    const loadSets = () => {
+      try {
+        const savedItems = localStorage.getItem('explorer_items');
+        if (savedItems) {
+          state.items = JSON.parse(savedItems);
+        }
+      } catch (error) {
+        console.error("Error loading sets from localStorage:", error);
       }
     };
 
-    onMounted(() => {
-      document.body.classList.add('left-aligned');
-      document.addEventListener('click', handleClickOutside);
-    });
+    // Save sets to localStorage
+    const saveSets = () => {
+      try {
+        localStorage.setItem('explorer_items', JSON.stringify(state.items));
+      } catch (error) {
+        console.error("Error saving sets to localStorage:", error);
+      }
+    };
 
-    onUnmounted(() => {
-      document.body.classList.remove('left-aligned');
-      document.removeEventListener('click', handleClickOutside);
+    // Load sets when component is mounted
+    onMounted(() => {
+      loadSets();
     });
 
     const openModal = () => {
@@ -132,12 +146,20 @@ export default {
       const targetArray = state.currentDirectory?.children || state.items;
       targetArray.push(newItem);
       closeModal();
+
+      // Save sets to backend after adding a new item
+      saveSets();
     };
 
     const onItemClick = (item) => {
       if (item.children) {
+        // It's a folder, navigate into it
         state.currentDirectory = item;
         state.navigation.push(item);
+      } else {
+        // It's a set, navigate to CardCreation
+        cardStore.setCurrentSet(item.id);
+        router.push('/cardcreation');
       }
     };
 
@@ -158,13 +180,12 @@ export default {
 
     const openContextMenu = (event, item) => {
       state.contextMenu.visible = true;
-      state.contextMenu.x = event.clientX;
-      state.contextMenu.y = event.clientY;
+      state.contextMenu.x = event.pageX;
+      state.contextMenu.y = event.pageY;
       state.contextMenu.targetItem = item;
     };
 
     const contextMenuStyles = computed(() => ({
-      position: 'fixed',
       top: `${state.contextMenu.y}px`,
       left: `${state.contextMenu.x}px`
     }));
@@ -173,6 +194,8 @@ export default {
       const newName = prompt("Enter new name:", state.contextMenu.targetItem.name);
       if (newName) {
         state.contextMenu.targetItem.name = newName;
+        // Save sets to backend after renaming an item
+        saveSets();
       }
       closeContextMenu();
     };
@@ -182,6 +205,8 @@ export default {
       const index = items.findIndex(i => i.id === state.contextMenu.targetItem.id);
       if (index !== -1) {
         items.splice(index, 1);
+        // Save sets to backend after deleting an item
+        saveSets();
       }
       closeContextMenu();
     };
@@ -207,7 +232,9 @@ export default {
       renameItem,
       deleteItem,
       contextMenuStyles,
-      currentItems
+      currentItems,
+      loadSets,
+      saveSets
     };
   }
 };
@@ -215,7 +242,7 @@ export default {
 
 <style>
 @import "@/assets/styles/masterStyle.css";
-@import "@/assets/styles/style_Desktop3.css";
+@import "@/assets/styles/explorer.css";
 
 .breadcrumb-link {
   cursor: pointer;
