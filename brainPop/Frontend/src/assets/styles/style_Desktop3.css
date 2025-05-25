@@ -3,11 +3,10 @@
     justify-content: left;
     flex-direction: column;
     max-width: 99%;
-
+    margin-top: 20px;
+    margin-left: 40px;
 }
 
-/* When the explorer is shown we want the body to align everything to the top
-   left so the content starts directly below the navbar */
 body.left-aligned {
     align-items: flex-start;
     justify-content: flex-start;
@@ -18,14 +17,26 @@ body.left-aligned {
     display: flex;
     align-items: center;
     gap: 10px;
+    max-height: 40px;
 }
 
 .breadcrumb-link {
     cursor: pointer;
     margin: 0 5px;
 }
+.back-button{
+    background-color: var(--primary-color);
+    color: var(--background-color1);
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+    min-width: 100px;
+    text-align: center;
+}
 
-/* Rest der CSS-Datei bleibt unverändert */
 .add {
     width: 6%;
     height: auto;
@@ -131,16 +142,13 @@ body.left-aligned {
 .items-container {
 
     display: flex;
-    gap: 20px;
+    gap: 30px;
     justify-content: flex-start;
     align-items: flex-start;
 
-    margin-top: 1rem;
+    margin-top: 2rem;
     margin-left: 0.5rem;
-
-    height: 10vh;
-    overflow-y: auto;
-
+    height: auto;
 }
 
 .item-container {
@@ -150,7 +158,7 @@ body.left-aligned {
     justify-content: center;
     transition: transform 0.2s ease-in-out;
     cursor: pointer;
-    width: 100px;
+    width: 150px;
     height: auto;
 }
 .icon-wrapper {
