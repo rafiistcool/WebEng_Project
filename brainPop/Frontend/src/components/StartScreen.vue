@@ -4,19 +4,18 @@
 
 <template>
 
-    <div class=" container">
-      <header class="logo-container">
-        <img class="logo"
-             src="../assets/icons/logo.png" alt=""/>
+    <div class="w-full text-center">
+      <header class="mb-8">
+        <img class="max-w-[20%] mx-auto" src="../assets/icons/logo.png" alt="" />
       </header>
-      <main class="main-content">
-        <h1 class="title">BrainPop</h1>
-        <div class="button-group">
-          <router-link to="/login" class="button login-button" custom v-slot="{ navigate }">
-            <button @click="navigate">Anmelden</button>
+      <main class="inline-block text-center bg-grayBackground backdrop-blur rounded p-[5%]">
+        <h1 class="text-[6vw] mb-[10%]">BrainPop</h1>
+        <div class="flex justify-center gap-[10%] mt-[5%] flex-col sm:flex-row sm:gap-[5%]">
+          <router-link to="/login" class="w-[20%] h-12" custom v-slot="{ navigate }">
+            <button class="button w-full h-full" @click="navigate">Anmelden</button>
           </router-link>
-          <router-link to="/Explorer" class="button guest-button" custom v-slot="{ navigate }">
-            <button @click="navigate">Gast</button>
+          <router-link to="/Explorer" class="w-[20%] h-12" custom v-slot="{ navigate }">
+            <button class="button w-full h-full" @click="navigate">Gast</button>
           </router-link>
         </div>
       </main>
@@ -26,6 +25,4 @@
 </template>
 
 <style scoped>
-@import "../assets/styles/masterStyle.css";
-@import "../assets/styles/startScreen.css";
 </style>

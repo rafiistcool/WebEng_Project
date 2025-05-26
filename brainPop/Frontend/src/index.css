@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary-color: #6FB98F;
+    --secondary-color: #2C7873;
+    --background-color1: #021C1E;
+    --background-color2: #004445;
+    --text-color: #FFF;
+    --blackBackground: #0000007F;
+    --boxShadow: #00000033;
+    --grayBackground: #FFFFFF26;
+    --sidebarBackground: #333;
+    --toggleContainer: #343434;
+  }
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    @apply font-sans bg-gradient-to-br from-background-1 to-background-2 text-text flex items-center justify-center pt-[60px] min-h-[calc(99%-60px)];
+  }
+}
+
+@layer components {
+  .button {
+    @apply flex justify-center items-center bg-primary text-background-1 rounded-lg text-base no-underline cursor-pointer transition-colors duration-300 min-w-[200px] text-center;
+  }
+  .button:hover {
+    @apply bg-secondary text-text;
+  }
+  .icon-wrapper {
+    @apply flex justify-center items-center;
+  }
+  .arrow-svg {
+    @apply w-6 h-6 stroke-secondary fill-none;
+  }
+  .flashcard-container {
+    @apply flex justify-center items-center perspective-[1000px];
+  }
+  .flashcard {
+    @apply w-[50vw] h-[40vh] bg-background-2 rounded-2xl shadow-xl flex justify-center items-stretch p-2 relative transition-transform duration-500 [transform-style:preserve-3d];
+  }
+  .flashcardFront,
+  .flashcardBack {
+    @apply absolute inset-0 flex items-center justify-center bg-secondary rounded-2xl;
+    backface-visibility: hidden;
+  }
+  .flashcardBack {
+    transform: rotateY(180deg);
+  }
+  .flashcard.flipped {
+    transform: rotateY(180deg);
+  }
+  .flashcard-counter {
+    @apply text-primary text-lg;
+  }
+  .edit-button-container {
+    @apply mt-2;
+  }
+  .breadcrumb {
+    @apply text-primary;
+  }
+  .item-text {
+    @apply text-base font-normal mt-1;
+  }
+}

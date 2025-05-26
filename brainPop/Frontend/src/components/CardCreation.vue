@@ -221,16 +221,16 @@ const filteredCards = computed(() => {
 </script>
 
 <template>
-  <div class=" card-creation">
-    <div class="content-wrapper">
-      <div class="content-buttons">
-        <button class="button card-start-button" @click="startLearningmode">Starten</button>
-        <button class="button card-creation-button" @click="addCard">Hinzufügen</button>
+  <div class="flex w-full">
+    <div class="flex-1 mt-12 ml-2 flex flex-col gap-5">
+      <div class="flex flex-col gap-5">
+        <button class="button" @click="startLearningmode">Starten</button>
+        <button class="button" @click="addCard">Hinzufügen</button>
 
-        <div class="category-filters">
+        <div class="flex gap-2">
           <select
               v-model="selectedCategory"
-              class="category-dropdown"
+              class="px-[45px] text-sm border-2 border-secondary rounded-lg bg-background-2 text-text cursor-pointer outline-none min-w-[200px] h-10 focus:border-primary focus:shadow-[0_0_5px_var(--primary-color)]"
           >
             <option value="">All Categories</option>
             <option
@@ -244,50 +244,46 @@ const filteredCards = computed(() => {
         </div>
       </div>
 
-      <div class="card-contents">
-        <div v-for="(card, index) in filteredCards" :key="index" class="card-item">
-          <div class="card-header">
-            <div class="card-header">
-              <h3>{{ card.question }}</h3>
-              <button class="menu-button" @click="toggleMenu($event, index)">&#8226;&#8226;&#8226;</button>
-            </div>
-            <p>{{ card.answer }}</p>
-            <small>{{ card.category }}</small>
+      <div class="flex flex-wrap flex-row gap-5 justify-start ml-12 mt-12">
+        <div v-for="(card, index) in filteredCards" :key="index" class="relative rounded-lg p-2 bg-secondary min-h-[140px] min-w-[170px]">
+          <div class="absolute top-0 right-0">
+            <button class="bg-none border-none text-xl cursor-pointer p-1" @click="toggleMenu($event, index)">&#8226;&#8226;&#8226;</button>
           </div>
+          <h3>{{ card.question }}</h3>
+          <p>{{ card.answer }}</p>
+          <small>{{ card.category }}</small>
         </div>
       </div>
     </div>
 
 
     <!-- Menü Popup -->
-    <div v-if="activeMenuIndex !== null" class="menu-popup"
+    <div v-if="activeMenuIndex !== null" class="fixed bg-text border border-gray-300 shadow-md p-2 flex flex-col rounded z-50"
          :style="{ top: menuPosition.top + 'px', left: menuPosition.left + 'px' }">
       <button @click="editCard(activeMenuIndex)">Bearbeiten</button>
       <button @click="deleteCard(activeMenuIndex)">Löschen</button>
     </div>
 
     <!-- Popup zum Erstellen/Bearbeiten einer Karte -->
-    <div v-if="showPopup" class="card-creation-popup">
-      <div class="popup-content">
-        <h2 class="popup-title">{{ editMode ? 'Karte bearbeiten' : 'Karte erstellen' }}</h2>
-        <form @submit.prevent="saveCard">
-          <div class="form-wrapper">
-            <div class="form-group">
-              <label class="popup-label" for="question">Frage: </label>
-              <input class="popup-text-input" type="text" id="question" v-model="question"/>
-            </div>
-            <div class="form-group">
-              <label class="popup-label" for="answer">Antwort: </label>
-              <input class="popup-text-input" type="text" id="answer" v-model="answer"/>
-            </div>
-            <div class="form-group">
-              <label class="popup-label" for="category">Kategorie: </label>
-              <input class="popup-text-input" type="text" id="category" v-model="category"/>
-            </div>
-            <div class="popup-buttons">
-              <button class="button close-button" @click="closePopup">Schließen</button>
-              <button class="button save-button" type="submit">Speichern</button>
-            </div>
+    <div v-if="showPopup" class="fixed inset-0 bg-blackBackground flex justify-center items-center">
+      <div class="bg-gradient-to-br from-background-2 to-secondary p-5 rounded text-center w-[420px] h-[320px] z-10 flex justify-center">
+        <h2 class="text-2xl mb-4">{{ editMode ? 'Karte bearbeiten' : 'Karte erstellen' }}</h2>
+        <form @submit.prevent="saveCard" class="flex flex-col gap-5 justify-center items-center">
+          <div class="flex flex-col gap-2">
+            <label class="text-lg" for="question">Frage: </label>
+            <input class="px-3 py-1 border rounded" type="text" id="question" v-model="question" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="text-lg" for="answer">Antwort: </label>
+            <input class="px-3 py-1 border rounded" type="text" id="answer" v-model="answer" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="text-lg" for="category">Kategorie: </label>
+            <input class="px-3 py-1 border rounded" type="text" id="category" v-model="category" />
+          </div>
+          <div class="flex justify-center gap-4 w-full mt-4">
+            <button class="button px-4" @click="closePopup">Schließen</button>
+            <button class="button px-4" type="submit">Speichern</button>
           </div>
         </form>
       </div>
@@ -295,32 +291,4 @@ const filteredCards = computed(() => {
   </div>
 </template>
 <style scoped>
-@import "../assets/styles/masterStyle.css";
-@import "../assets/styles/cardCreation.css";
-
-.category-dropdown {
-  padding: 0 45px;
-  font-size: 14px;
-  border: 2px solid var(--secondary-color);
-  border-radius: 10px;
-  background-color: var(--background-color2);
-  color: var(--text-color);
-  cursor: pointer;
-  outline: none;
-  min-width: 200px;
-  height: 40px;
-
-}
-
-.category-dropdown:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 5px var(--primary-color);
-}
-
-.category-dropdown option {
-  background-color: var(--background-color2);
-  color: var(--text-color);
-  padding: 12px;
-  font-size: 16px;
-}
 </style>
