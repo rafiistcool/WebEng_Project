@@ -55,8 +55,6 @@
           <button class="button confirm-button" @click="confirmSelection">Confirm</button>
           <button class="button cancel-button" @click="closeModal">Cancel</button>
         </div>
-
-
       </div>
     </div>
 
@@ -71,7 +69,7 @@
 <script>
 import { reactive, computed, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
-import { useCardStore } from "../../script/store";
+import { useCardStore } from "@/script/store.js";
 export default {
   name: "Desktop",
   setup() {
