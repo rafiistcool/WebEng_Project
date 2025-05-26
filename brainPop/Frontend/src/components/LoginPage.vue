@@ -22,29 +22,27 @@ const login = () => {
 </script>
 
 <template>
-  <div class="login-container">
-    <h2>Login</h2>
+  <div class="bg-grayBackground backdrop-blur rounded px-20 py-12 inline-block text-center">
+    <h2 class="mb-4">Login</h2>
     <form>
-      <div class="input-group">
-        <label for="email">E-Mail</label>
-        <input type="text" id="email" v-model="email" required>
+      <div class="flex flex-col items-center mb-4 text-left">
+        <label for="email" class="block w-full text-sm text-primary mb-1">E-Mail</label>
+        <input type="text" id="email" v-model="email" required class="w-full p-2 border border-text rounded text-base focus:border-primary outline-none">
       </div>
-      <div class="input-group">
-        <label for="password">Passwort</label>
-        <input type="password" id="password" v-model="password" required>
+      <div class="flex flex-col items-center mb-4 text-left">
+        <label for="password" class="block w-full text-sm text-primary mb-1">Passwort</label>
+        <input type="password" id="password" v-model="password" required class="w-full p-2 border border-text rounded text-base focus:border-primary outline-none">
       </div>
-      <div class="login-register-buttons">
-        <button type="submit" class="button login-button" @click="login">Login</button>
-        <router-link to="/register" class="button register-button" custom v-slot="{ navigate }">
-          <button @click="navigate">Registrieren</button>
+      <div class="flex flex-col justify-center gap-2">
+        <button type="submit" class="button w-[70%] h-12" @click="login">Login</button>
+        <router-link to="/register" class="w-[70%] h-12" custom v-slot="{ navigate }">
+          <button class="button w-full h-full" @click="navigate">Registrieren</button>
         </router-link>
       </div>
     </form>
-    <a href="#" style="color: #6fB98F" class="forgot-password">Passwort vergessen?</a>
+    <a href="#" class="block mt-2 text-sm text-primary hover:underline">Passwort vergessen?</a>
   </div>
 </template>
 
 <style scoped>
-@import "../assets/styles/masterStyle.css";
-@import "../assets/styles/login.css";
 </style>

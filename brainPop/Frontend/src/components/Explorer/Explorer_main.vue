@@ -1,32 +1,32 @@
 <template>
-  <div class="desktop-3">
+  <div class="flex justify-start flex-col max-w-[99%] mt-5 ml-10">
     <!-- Breadcrumb & Back -->
-    <div class="breadcrumb-container">
-      <button class="back-button" @click="goBack" :disabled="state.navigation.length === 0">
+    <div class="flex items-center gap-2 text-primary max-h-10">
+      <button class="button min-w-[100px]" @click="goBack" :disabled="state.navigation.length === 0">
         ⭠ Back
       </button>
       <span class="breadcrumb">
-        <span @click="goTo(null)" class="breadcrumb-link">Home</span>
+        <span @click="goTo(null)" class="cursor-pointer underline mx-1">Home</span>
         <template v-for="(folder, index) in state.navigation" :key="folder.id">
-          / <span @click="goTo(index)" class="breadcrumb-link">{{ folder.name }}</span>
+          / <span @click="goTo(index)" class="cursor-pointer mx-1 underline">{{ folder.name }}</span>
         </template>
       </span>
     </div>
 
 
     <!-- Folder Contents -->
-    <div class="items-container">
+    <div class="flex flex-wrap gap-8 justify-start items-start mt-8 ml-2 h-auto w-full">
       <div
           v-for="item in currentItems"
           :key="item.id"
-          class="item-container"
+          class="flex flex-col items-center justify-center transition-transform duration-200 cursor-pointer w-[150px]"
           @dblclick="onItemClick(item)"
           @contextmenu.prevent="openContextMenu($event, item)"
       >
         <div class="icon-wrapper">
-          <img :src="item.icon" class="item-icon" />
+          <img :src="item.icon" class="w-full h-full" />
         </div>
-        <div class="item-text">{{ item.name }}</div>
+        <div class="text-base font-normal mt-1">{{ item.name }}</div>
 
       </div>
 
@@ -36,30 +36,30 @@
     </div>
 
     <!-- Add Button -->
-    <img class="add" src="@/assets/icons/plus.svg" alt="Add" @click="openModal" />
+    <img class="w-[6%] h-auto absolute right-[5%] bottom-[5%] object-cover" src="@/assets/icons/plus.svg" alt="Add" @click="openModal" />
 
     <!-- Modal -->
-    <div v-if="state.isModalOpen" class="modal-overlay" @click="closeModal">
-      <div class="modal" @click.stop>
+    <div v-if="state.isModalOpen" class="fixed inset-0 bg-blackBackground flex justify-center items-center" @click="closeModal">
+      <div class="bg-gradient-to-br from-background-2 to-secondary p-5 rounded text-center w-[500px] h-[300px] flex flex-col" @click.stop>
         <h2>Select what to add</h2>
-        <input type="checkbox" id="toggle" class="toggleCheckbox" v-model="state.isSetSelected" />
-        <label for="toggle" class="toggleContainer">
+        <input type="checkbox" id="toggle" class="hidden" v-model="state.isSetSelected" />
+        <label for="toggle" class="relative grid grid-cols-2 w-full border-3 border-toggleContainer rounded-2xl bg-toggleContainer font-bold text-toggleContainer cursor-pointer">
           <div>Folder</div>
           <div>Set</div>
         </label>
-        <div class="input-container">
-          <label class="name" for="setName">Name:</label>
-          <input type="text" id="setName" v-model="state.setName" placeholder="Enter name" />
+        <div class="mt-8 flex flex-col gap-5">
+          <label class="text-lg" for="setName">Name:</label>
+          <input type="text" id="setName" v-model="state.setName" placeholder="Enter name" class="p-2 border rounded" />
         </div>
-        <div class="modal-buttons">
-          <button class="button confirm-button" @click="confirmSelection">Confirm</button>
-          <button class="button cancel-button" @click="closeModal">Cancel</button>
+        <div class="mt-8 w-full flex justify-center gap-12">
+          <button class="button px-4" @click="confirmSelection">Confirm</button>
+          <button class="button px-4" @click="closeModal">Cancel</button>
         </div>
       </div>
     </div>
 
     <!-- Context Menu -->
-    <div v-if="state.contextMenu.visible" :style="contextMenuStyles" class="context-menu">
+    <div v-if="state.contextMenu.visible" :style="contextMenuStyles" class="bg-grayBackground backdrop-blur rounded p-2 flex flex-col gap-2 z-50">
       <button @click="renameItem">Rename</button>
       <button @click="deleteItem">Delete</button>
     </div>
@@ -253,12 +253,4 @@ export default {
 </script>
 
 <style>
-@import "@/assets/styles/masterStyle.css";
-@import "@/assets/styles/explorer.css";
-
-.breadcrumb-link {
-  cursor: pointer;
-  text-decoration: underline;
-  margin: 0 5px;
-}
 </style>
