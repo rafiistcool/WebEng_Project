@@ -3,7 +3,7 @@ import express, { Request, Response } from "express";
 import pgPromise from "pg-promise";
 
 const pgp = pgPromise();
-const db = pgp("postgresql://admin:brainpop69@45.93.249.43:5432/flashcards");
+const db = pgp("");
 
 const PORT = process.env.PORT || 3000;
 
