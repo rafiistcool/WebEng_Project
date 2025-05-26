@@ -68,3 +68,10 @@
 .forgot-password:hover {
     text-decoration: underline;
 }
+
+.login-register-buttons{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+}

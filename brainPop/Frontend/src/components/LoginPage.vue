@@ -33,10 +33,12 @@ const login = () => {
         <label for="password">Passwort</label>
         <input type="password" id="password" v-model="password" required>
       </div>
-      <button type="submit" class="button login-button" @click="login">Login</button>
-      <router-link to="/register" class="button register-button" custom v-slot="{ navigate }">
-        <button @click="navigate">Registrieren</button>
-      </router-link>
+      <div class="login-register-buttons">
+        <button type="submit" class="button login-button" @click="login">Login</button>
+        <router-link to="/register" class="button register-button" custom v-slot="{ navigate }">
+          <button @click="navigate">Registrieren</button>
+        </router-link>
+      </div>
     </form>
     <a href="#" style="color: #6fB98F" class="forgot-password">Passwort vergessen?</a>
   </div>
