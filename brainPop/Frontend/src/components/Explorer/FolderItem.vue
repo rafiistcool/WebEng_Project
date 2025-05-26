@@ -1,11 +1,11 @@
 
 <template>
-  <div class="item-container">
-    <div @click="toggleExpand" class="folder-item">
-      <img :src="item.icon" class="item-icon" alt="" />
-      <div class="item-text">{{ item.name }}</div>
+  <div class="flex flex-col">
+    <div @click="toggleExpand" class="flex items-center cursor-pointer">
+      <img :src="item.icon" class="w-full h-full" alt="" />
+      <div class="ml-2">{{ item.name }}</div>
     </div>
-    <div v-if="isExpanded" class="nested-items">
+    <div v-if="isExpanded" class="pl-5">
       <FolderItem
           v-for="(child, index) in item.children"
           :key="index"
@@ -43,16 +43,5 @@ export default {
 
 </script>
 
-<style>
-
-.nested-items {
-  padding-left: 20px;
-}
-.folder-item {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-
+<style scoped>
 </style>
