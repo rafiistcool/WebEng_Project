@@ -63,13 +63,13 @@ updateContentOfFlashcard();
 </script>
 
 <template>
-  <div class="learning-mode-window">
+  <div class="flex flex-col items-center justify-center gap-4">
 
-    <div class="content-above-flashcard">
-      <div class="end-button"></div>
+    <div class="flex w-full">
+      <div class="flex-1"></div>
 
-      <div class="end-button-container" >
-        <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class="end-button" @click="endLearningMode">
+      <div class="flex justify-end items-center w-full p-4 flex-1">
+        <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class="cursor-pointer" @click="endLearningMode">
           <circle cx="30" cy="30" r="28" fill="#004445" stroke="#004445" stroke-width="4"/>
           <line x1="18" y1="18" x2="42" y2="42" stroke="#2C7873" stroke-width="4" stroke-linecap="round"/>
           <line x1="18" y1="42" x2="42" y2="18" stroke="#2C7873" stroke-width="4" stroke-linecap="round"/>
@@ -78,38 +78,38 @@ updateContentOfFlashcard();
     </div>
 
 
-    <div class="learning-mode-window-content">
-      <div class="arrow-container">
-        <div class="arrow arrow-left" @click="notKnown">
+    <div class="flex flex-row justify-center gap-6 items-center">
+      <div class="flex items-center justify-center">
+        <div class="bg-background-2 w-[70px] h-[70px] rounded-full flex items-center justify-center cursor-pointer transition-transform duration-200 hover:scale-110 hover:shadow-md" @click="notKnown">
           <svg viewBox="0 0 24 24" class="arrow-svg">
             <path d="M15 20l-8-8 8-8" stroke-width="3"/>
           </svg>
         </div>
       </div>
-      <div class="flashcard-container">
-        <div class="flashcard" @click="flip" :class="{flipped: flipped}">
-            <div class="flashcardFront">
-              <p class="userContent" >{{ userContentFront }}</p>
+      <div class="flex justify-center items-center [perspective:1000px]">
+        <div class="w-[50vw] h-[40vh] bg-background-2 rounded-2xl shadow-xl flex justify-center items-stretch p-2 relative transition-transform duration-500 [transform-style:preserve-3d]" @click="flip" :class="{ 'rotate-y-180': flipped }">
+            <div class="absolute inset-0 flex items-center justify-center bg-secondary [backface-visibility:hidden]">
+              <p class="text-background-1 text-3xl font-bold">{{ userContentFront }}</p>
             </div>
-            <div class="flashcardBack">
-              <p class="userContent">{{ userContentBack }}</p>
+            <div class="absolute inset-0 flex items-center justify-center bg-secondary [backface-visibility:hidden] rotate-y-180">
+              <p class="text-background-1 text-3xl font-bold">{{ userContentBack }}</p>
             </div>
         </div>
       </div>
-      <div class="arrow-container">
-        <div class="arrow arrow-right" @click="known">
+      <div class="flex items-center justify-center">
+        <div class="bg-background-2 w-[70px] h-[70px] rounded-full flex items-center justify-center cursor-pointer transition-transform duration-200 hover:scale-110 hover:shadow-md" @click="known">
           <svg viewBox="0 0 24 24" class="arrow-svg">
             <path d="M9 20l8-8-8-8" stroke-width="3"/>
           </svg>
         </div>
       </div>
     </div>
-    <div class="content-below-flashcard">
+    <div class="flex flex-col items-center">
       <div class="flashcard-counter">
-        <p class="counter"> ({{ currentIndex+1 }})/({{ filteredCards.length }})</p>
+        <p class="text-primary text-lg"> ({{ currentIndex+1 }})/({{ filteredCards.length }})</p>
       </div>
       <div class="edit-button-container">
-        <button class="baseButtonLayout" @click="updateContentOfFlashcard">
+        <button class="bg-secondary border-background-1 rounded-lg text-lg px-8 py-1 shadow-md hover:shadow-lg transform hover:scale-110" @click="updateContentOfFlashcard">
           Edit
         </button>
       </div>
@@ -117,7 +117,4 @@ updateContentOfFlashcard();
   </div>
 </template>
 
-<style>
-@import "../assets/styles/masterStyle.css";
-@import "../assets/styles/learningMode.css";
-</style>
+
