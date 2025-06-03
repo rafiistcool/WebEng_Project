@@ -13,28 +13,30 @@
       </span>
     </div>
 
-
-    <!-- Folder Contents -->
+    <!-- Folder Contents (gehört innerhalb von .desktop-3!) -->
     <div class="items-container">
       <div
           v-for="item in currentItems"
           :key="item.id"
           class="item-container"
+          draggable="true"
+          @dragstart="onDragStart(item)"
+          @dragover.prevent="onDragOver(item)"
+          @drop="onDrop(item)"
           @dblclick="onItemClick(item)"
           @contextmenu.prevent="openContextMenu($event, item)"
       >
         <div class="icon-wrapper">
-          <img :src="item.icon" class="item-icon" />
+          <img :src="item.icon" class="item-icon"  alt=""/>
         </div>
         <div class="item-text">{{ item.name }}</div>
-
       </div>
 
       <div v-if="currentItems.length === 0" class="item-text" style="margin-top: 50px;">
+        No items
       </div>
-
     </div>
-
+  </div>
     <!-- Add Button -->
     <img class="add" src="@/assets/icons/plus.svg" alt="Add" @click="openModal" />
 
@@ -65,13 +67,14 @@
       <button @click="renameItem">Rename</button>
       <button @click="deleteItem">Delete</button>
     </div>
-  </div>
+
 </template>
 
 <script>
-import { reactive, computed, onMounted, onUnmounted } from "vue";
+import { reactive, ref, computed, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import { useCardStore } from "../../script/store";
+
 export default {
   name: "Desktop",
   setup() {
@@ -93,7 +96,8 @@ export default {
       }
     });
 
-    // Load sets from localStorage
+    const draggedItem = ref(null);
+
     const loadSets = () => {
       try {
         const savedItems = localStorage.getItem('explorer_items');
@@ -114,24 +118,8 @@ export default {
       }
     };
 
-
-
-    const handleClickOutside = (event) => {
-      if (!event.target.closest('.context-menu')) {
-        closeContextMenu();
-      }
-    }
-
-    // Load sets when component is mounted
-    onMounted(() => {
-      loadSets();
-      document.body.classList.add('left-aligned');
-      document.addEventListener('click', handleClickOutside);
-    });
-
-    onUnmounted(() => {
-      document.body.classList.remove('left-aligned');
-      document.removeEventListener('click', handleClickOutside);
+    const currentItems = computed(() => {
+      return state.currentDirectory?.children || state.items;
     });
     const openModal = () => {
       state.isModalOpen = true;
@@ -230,8 +218,47 @@ export default {
       state.contextMenu.targetItem = null;
     };
 
-    const currentItems = computed(() => {
-      return state.currentDirectory?.children || state.items;
+    // DRAG AND DROP
+
+    const onDragStart = (item) => {
+      draggedItem.value = item;
+    };
+
+    const onDragOver = (targetItem) => {
+      // Allow drop only on folders
+      if (targetItem.children) {
+        event.preventDefault();
+      }
+    };
+
+    const onDrop = (targetItem) => {
+      if (!targetItem.children || !draggedItem.value || draggedItem.value.id === targetItem.id) return;
+
+      const fromArray = state.currentDirectory?.children || state.items;
+      const index = fromArray.findIndex(i => i.id === draggedItem.value.id);
+      if (index !== -1) {
+        const [moved] = fromArray.splice(index, 1);
+        targetItem.children.push(moved);
+        saveSets();
+      }
+
+      draggedItem.value = null;
+    };
+
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.context-menu')) {
+        closeContextMenu();
+      }
+    };
+
+    onMounted(() => {
+      loadSets();
+      document.body.classList.add('left-aligned');
+      document.addEventListener('click', handleClickOutside);
+    });
+
+    onUnmounted(() => {
+      document.removeEventListener('click', handleClickOutside);
     });
 
     return {
@@ -247,8 +274,9 @@ export default {
       deleteItem,
       contextMenuStyles,
       currentItems,
-      loadSets,
-      saveSets
+      onDragStart,
+      onDragOver,
+      onDrop
     };
   }
 };
