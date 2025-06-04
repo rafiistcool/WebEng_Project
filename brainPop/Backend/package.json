@@ -4,7 +4,7 @@
   "scripts": {
     "test": "vitest --ui",
     "test:once": "vitest run",
-    "dev": "nodemon --ext ts --exec 'tsc && node dist/index.js'",
+    "dev": "nodemon --ext ts --exec \"tsc && node dist/index.js\"",
     "build": "tsc",
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
@@ -12,6 +12,7 @@
     "format": "prettier --write src/**/*.ts"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "pg-promise": "^11.13.0",
@@ -19,6 +20,7 @@
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.2",
     "@types/node": "^22.15.19",
     "@vitest/ui": "latest",

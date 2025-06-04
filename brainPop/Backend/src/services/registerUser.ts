@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import pgPromise from "pg-promise";
 
 const pgp = pgPromise({});
-const db = pgp("postgresql://admin:brainpop69@45.93.249.43:5432/flashcards");
+const db = pgp(process.env.DATABASE_URL as string);
 
 /**
  * Registriert einen neuen Benutzer in der PostgreSQL-Datenbank
