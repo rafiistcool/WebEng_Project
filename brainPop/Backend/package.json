@@ -12,7 +12,8 @@
     "format": "prettier --write src/**/*.ts"
   },
   "dependencies": {
-    "bcrypt": "^6.0.0",
+    "argon2": "^0.43.0",
+    "argon2id": "^1.0.1",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "pg-promise": "^11.13.0",
@@ -20,7 +21,7 @@
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
+    "@types/argon2": "^0.15.4",
     "@types/express": "^5.0.2",
     "@types/node": "^22.15.19",
     "@vitest/ui": "latest",
