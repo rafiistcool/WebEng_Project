@@ -1,17 +1,11 @@
-import bcrypt from "bcrypt";
+import * as argon2 from "argon2";
+
 import pgPromise from "pg-promise";
 
 const pgp = pgPromise({});
 const db = pgp(process.env.DATABASE_URL as string);
 
-/**
- * Registriert einen neuen Benutzer in der PostgreSQL-Datenbank
- *
- * @param username - Die E-Mail des Benutzers.
- * @param password - Das Passwort des Benutzers.
- * @param repeatPassword - Wiederholung des Passworts.
- * @returns Erfolgs- oder Fehlermeldung.
- */
+
 export async function registerUser(
     username: string,
     password: string,
@@ -44,7 +38,13 @@ export async function registerUser(
         }
 
         // 3. Passwort hashen
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await argon2.hash(password, {
+            type: argon2.argon2id,
+            memoryCost: 2 ** 16,
+            timeCost: 3,
+            parallelism: 1
+        });
+
 
         // 4. Benutzer in die Datenbank einfügen
         await db.none(
