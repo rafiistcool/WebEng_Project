@@ -2,6 +2,7 @@ import "dotenv/config";
 import express, { Request, Response } from "express";
 import pgPromise from "pg-promise";
 import { registerUser } from "./services/registerUser";
+import { loginUser } from "./services/loginUser";
 
 const pgp = pgPromise();
 const db = pgp(process.env.DATABASE_URL as string);
@@ -33,6 +34,21 @@ app.post("/register", async (req: Request, res: Response) => {
     res.status(200).json({ message: result });
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
+  }
+});
+
+app.post("/login", async (req: Request, res: Response) => {
+  const { username, password } = req.body as { username: string; password: string };
+
+  try {
+    const result = await loginUser(username, password);
+    if (result.success) {
+      res.status(200).json(result);
+    } else {
+      res.status(401).json(result);
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: (error as Error).message });
   }
 });
 
