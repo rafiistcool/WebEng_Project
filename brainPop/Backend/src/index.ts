@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express, { Request, Response } from "express";
 import pgPromise from "pg-promise";
+import cors from "cors";
 import { registerUser } from "./services/registerUser";
 import { loginUser } from "./services/loginUser";
 
@@ -10,6 +11,12 @@ const db = pgp(process.env.DATABASE_URL as string);
 const PORT = process.env.PORT || 3000;
 
 const app = express();
+
+app.use(cors({
+  origin: 'http://localhost:5174', // Nur Anfragen von Frontend erlauben
+  methods: ['GET', 'POST'], // Nur bestimmte HTTP-Methoden erlauben
+  credentials: true // Erlaubt das Senden von Cookies
+}));
 
 app.use(express.json());
 
