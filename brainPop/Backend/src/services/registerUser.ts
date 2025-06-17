@@ -1,5 +1,4 @@
 import * as argon2 from "argon2";
-
 import pgPromise from "pg-promise";
 
 const pgp = pgPromise({});

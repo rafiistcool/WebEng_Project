@@ -1,22 +1,33 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '../script/auth';
 
-const email = ref('');
+const username = ref('');
 const password = ref('');
+const errorMessage = ref('');
 const router = useRouter();
+const authStore = useAuthStore();
 
-const login = () => {
-  const storedEmail = localStorage.getItem('userEmail');
-  console.log(storedEmail);
+const login = async (event: Event) => {
+  event.preventDefault();
 
-  const storedPassword = localStorage.getItem('userPassword');
-  console.log(storedPassword);
-  if (email.value === storedEmail && password.value === storedPassword) {
-    alert('Login erfolgreich!');
-    router.push('/explorer');
-  } else {
-    alert('Falsche E-Mail oder falsches Passwort!');
+  if (!username.value || !password.value) {
+    errorMessage.value = 'Bitte geben Sie Benutzername und Passwort ein.';
+    return;
+  }
+
+  try {
+    const result = await authStore.login(username.value, password.value);
+
+    if (result.success) {
+      router.push('/explorer');
+    } else {
+      errorMessage.value = result.message;
+    }
+  } catch (error) {
+    errorMessage.value = 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.';
+    console.error('Login error:', error);
   }
 };
 </script>
@@ -24,17 +35,20 @@ const login = () => {
 <template>
   <div class="login-container">
     <h2>Login</h2>
-    <form>
+    <form @submit.prevent="login">
+      <div v-if="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
       <div class="input-group">
-        <label for="email">E-Mail</label>
-        <input type="text" id="email" v-model="email" required>
+        <label for="username">Benutzername</label>
+        <input type="text" id="username" v-model="username" required>
       </div>
       <div class="input-group">
         <label for="password">Passwort</label>
         <input type="password" id="password" v-model="password" required>
       </div>
       <div class="login-register-buttons">
-        <button type="submit" class="button login-button" @click="login">Login</button>
+        <button type="submit" class="button login-button">Login</button>
         <router-link to="/register" class="button register-button" custom v-slot="{ navigate }">
           <button @click="navigate">Registrieren</button>
         </router-link>
