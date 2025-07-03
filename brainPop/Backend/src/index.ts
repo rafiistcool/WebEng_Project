@@ -4,6 +4,7 @@ import pgPromise from "pg-promise";
 import cors from "cors";
 import { registerUser } from "./services/registerUser";
 import { loginUser } from "./services/loginUser";
+import session from "express-session";
 
 const pgp = pgPromise();
 const db = pgp(process.env.DATABASE_URL as string);
@@ -19,6 +20,17 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+app.use(session({
+  secret: process.env.SESSION_SECRET || "super-secret", // in .env ablegen!
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: false, // Auf true setzen, wenn du HTTPS verwendest
+    maxAge: 1000 * 60 * 60 * 0.5 // 30 Min
+  }
+}));
 
 app.get("/", (_req: Request, res: Response) => {
   res.send("Hello Express ✨");
@@ -49,7 +61,8 @@ app.post("/login", async (req: Request, res: Response) => {
 
   try {
     const result = await loginUser(username, password);
-    if (result.success) {
+    if (result.success && result.userId) {
+      req.session.userId = result.userId;
       res.status(200).json(result);
     } else {
       res.status(401).json(result);
@@ -58,5 +71,29 @@ app.post("/login", async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: (error as Error).message });
   }
 });
+
+app.get("/session", (req: Request, res: Response) => {
+  if (req.session.userId) {
+    res.status(200).json({
+      loggedIn: true,
+      userId: req.session.userId
+    });
+  } else {
+    res.status(200).json({
+      loggedIn: false
+    });
+  }
+});
+
+app.post("/logout", (req: Request, res: Response) => {
+  req.session.destroy((err) => {
+    if (err) {
+      res.status(500).json({ success: false, message: "Fehler beim Abmelden" });
+    } else {
+      res.status(200).json({ success: true, message: "Erfolgreich abgemeldet" });
+    }
+  });
+});
+
 
 app.listen(PORT, () => console.log(`Server läuft auf http://localhost:${PORT}`));
