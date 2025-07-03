@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173', // Nur Anfragen von Frontend erlauben
+  origin: process.env.FRONTEND_URL as string, // Nur Anfragen von Frontend erlauben
   methods: ['GET', 'POST'], // Nur bestimmte HTTP-Methoden erlauben
   credentials: true // Erlaubt das Senden von Cookies
 }));
@@ -27,7 +27,7 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: false, // Auf true setzen, wenn du HTTPS verwendest
+    secure: false, // true für https
     maxAge: 1000 * 60 * 60 * 0.5 // 30 Min
   }
 }));

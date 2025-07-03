@@ -8,7 +8,7 @@ export const useAuthStore = defineStore("auth", {
     actions: {
         async login(username: string, password: string): Promise<{ success: boolean; message: string }> {
             try {
-                const response = await fetch('http://localhost:90/login', {
+                const response = await fetch(import.meta.env.VITE_BACKEND_URL as string + '/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ export const useAuthStore = defineStore("auth", {
         },
         async register(username: string, password: string, repeatPassword: string): Promise<{ success: boolean; message: string }> {
             try {
-                const response = await fetch('http://localhost:90/register', {
+                const response = await fetch(import.meta.env.VITE_BACKEND_URL as string + '/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -60,8 +60,19 @@ export const useAuthStore = defineStore("auth", {
             }
         },
         async logout() {
-            this.isLoggedIn = false;
-            this.user = null;
+            try {
+                const response = await fetch(import.meta.env.VITE_BACKEND_URL as string + '/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+
+                if (response.ok) {
+                    this.isLoggedIn = false;
+                    this.user = null;
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
         }
     },
     getters: {
