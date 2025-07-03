@@ -1,8 +1,6 @@
 import * as argon2 from "argon2";
-import pgPromise from "pg-promise";
 
-const pgp = pgPromise({});
-const db = pgp(process.env.DATABASE_URL as string);
+import db from "../db";
 
 
 export async function registerUser(
