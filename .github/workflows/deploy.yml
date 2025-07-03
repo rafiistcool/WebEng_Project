@@ -21,7 +21,7 @@ jobs:
       # == DATENBANK-MIGRATION
       # =================================================================
       - name: Run Flyway Database Migration
-        uses: flyway/flyway-action@v4
+        uses: red-gate/FlywayGitHubAction@main
         with:
           url: jdbc:postgresql://${{ secrets.POSTGRES_HOST }}:${{ secrets.POSTGRES_PORT }}/${{ secrets.POSTGRES_DB }}
           user: ${{ secrets.POSTGRES_USER }}
