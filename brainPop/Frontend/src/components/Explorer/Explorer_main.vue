@@ -13,7 +13,6 @@
       </span>
     </div>
 
-    <!-- Folder Contents (gehört innerhalb von .desktop-3!) -->
     <div class="items-container">
       <div
           v-for="item in currentItems"
@@ -74,6 +73,7 @@
 import { reactive, ref, computed, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import { useCardStore } from "../../script/store";
+import axios from "axios";
 
 export default {
   name: "Desktop",
@@ -93,28 +93,48 @@ export default {
         x: 0,
         y: 0,
         targetItem: null
-      }
+      },
+      userId: 1 // Default user ID, should be replaced with actual user ID from authentication
     });
 
     const draggedItem = ref(null);
 
-    const loadSets = () => {
+    const loadSets = async () => {
       try {
-        const savedItems = localStorage.getItem('explorer_items');
-        if (savedItems) {
-          state.items = JSON.parse(savedItems);
-        }
+        // Try to load from backend first
+        const response = await axios.get(`http://localhost:3000/explorer/${state.userId}`);
+        state.items = response.data;
       } catch (error) {
-        console.error("Error loading sets from localStorage:", error);
+        console.error("Error loading sets from backend:", error);
+
+        // Fallback to localStorage if backend fails
+        try {
+          const savedItems = localStorage.getItem('explorer_items');
+          if (savedItems) {
+            state.items = JSON.parse(savedItems);
+            // Try to save to backend
+            saveSets();
+          }
+        } catch (localError) {
+          console.error("Error loading sets from localStorage:", localError);
+        }
       }
     };
 
-    // Save sets to localStorage
-    const saveSets = () => {
+    // Save sets to backend
+    const saveSets = async () => {
       try {
-        localStorage.setItem('explorer_items', JSON.stringify(state.items));
+        // Save to backend
+        await axios.post(`http://localhost:3000/explorer/${state.userId}`, state.items);
       } catch (error) {
-        console.error("Error saving sets to localStorage:", error);
+        console.error("Error saving sets to backend:", error);
+
+        // Fallback to localStorage if backend fails
+        try {
+          localStorage.setItem('explorer_items', JSON.stringify(state.items));
+        } catch (localError) {
+          console.error("Error saving sets to localStorage:", localError);
+        }
       }
     };
 

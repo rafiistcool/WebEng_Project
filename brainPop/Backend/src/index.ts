@@ -4,6 +4,7 @@ import pgPromise from "pg-promise";
 import cors from "cors";
 import { registerUser } from "./services/registerUser";
 import { loginUser } from "./services/loginUser";
+import { getExplorerItems, saveExplorerItems } from "./services/explorerService";
 
 const pgp = pgPromise();
 const db = pgp(process.env.DATABASE_URL as string);
@@ -56,6 +57,38 @@ app.post("/login", async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.status(500).json({ success: false, message: (error as Error).message });
+  }
+});
+
+// Explorer endpoints
+app.get("/explorer/:userId", async (req: Request, res: Response) => {
+  const userId = parseInt(req.params.userId);
+
+  if (isNaN(userId)) {
+    return res.status(400).json({ error: "Invalid user ID" });
+  }
+
+  try {
+    const items = await getExplorerItems(userId);
+    res.status(200).json(items);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+});
+
+app.post("/explorer/:userId", async (req: Request, res: Response) => {
+  const userId = parseInt(req.params.userId);
+  const items = req.body;
+
+  if (isNaN(userId)) {
+    return res.status(400).json({ error: "Invalid user ID" });
+  }
+
+  try {
+    await saveExplorerItems(userId, items);
+    res.status(200).json({ message: "Explorer items saved successfully" });
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
   }
 });
 
