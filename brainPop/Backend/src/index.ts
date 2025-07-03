@@ -1,12 +1,10 @@
 import "dotenv/config";
 import express, { Request, Response } from "express";
-import pgPromise from "pg-promise";
+import db from "./db";
 import cors from "cors";
 import { registerUser } from "./services/registerUser";
 import { loginUser } from "./services/loginUser";
 
-const pgp = pgPromise();
-const db = pgp(process.env.DATABASE_URL as string);
 
 const PORT = process.env.PORT || 3000;
 
