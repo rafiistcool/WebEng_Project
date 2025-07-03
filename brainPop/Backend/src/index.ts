@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express, { Request, Response } from "express";
 import db from "./db";
-import cors from "cors";
+//import cors from "cors";
 import { registerUser } from "./services/registerUser";
 import { loginUser } from "./services/loginUser";
 
@@ -10,11 +10,11 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 
-app.use(cors({
+/*app.use(cors({
   origin: 'http://localhost:5173', // Nur Anfragen von Frontend erlauben
   methods: ['GET', 'POST'], // Nur bestimmte HTTP-Methoden erlauben
   credentials: true // Erlaubt das Senden von Cookies
-}));
+}));*/
 
 app.use(express.json());
 
@@ -57,4 +57,9 @@ app.post("/login", async (req: Request, res: Response) => {
   }
 });
 
-app.listen(PORT, () => console.log(`Server läuft auf http://localhost:${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server läuft auf http://localhost:${PORT}`);
+}).on("error", (err) => {
+  console.error("Fehler beim Starten des Servers:", err);
+  process.exit(1);
+});
