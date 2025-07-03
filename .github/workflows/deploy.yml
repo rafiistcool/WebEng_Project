@@ -64,5 +64,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            sudo systemctl restart brainpop-backend
-            sudo systemctl status brainpop-backend
+            sudo systemctl restart brainpop_backend
+            sudo systemctl status brainpop_backend
