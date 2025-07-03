@@ -27,9 +27,7 @@ jobs:
           user: ${{ secrets.POSTGRES_USER }}
           password: ${{ secrets.POSTGRES_PASSWORD }}
           locations: filesystem:./db/migrations
-          baselineOnMigrate: true
-          baselineVersion: 1
-          baselineDescription: "Initial baseline"
+          extraArgs: -baselineOnMigrate=true -baselineVersion=1 -baselineDescription="Initial baseline"
 
       # =================================================================
       # == BACKEND-DEPLOYMENT
