@@ -1,0 +1,69 @@
+# Name des Workflows
+name: Deploy Database and Backend
+
+# Trigger
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Schritt 1: Code auschecken
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # =================================================================
+      # == DATENBANK-MIGRATION
+      # =================================================================
+      - name: Run Flyway Database Migration
+        uses: flyway/flyway-action@v4
+        with:
+          url: jdbc:postgresql://${{ secrets.POSTGRES_HOST }}:${{ secrets.POSTGRES_PORT }}/${{ secrets.POSTGRES_DB }}
+          user: ${{ secrets.POSTGRES_USER }}
+          password: ${{ secrets.POSTGRES_PASSWORD }}
+          locations: filesystem:./db/migrations
+
+      # =================================================================
+      # == BACKEND-DEPLOYMENT
+      # =================================================================
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies and Build Project
+        working-directory: ./brainPop/Backend
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy built files to server via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          # Kopiert den gesamten Inhalt des lokalen "brainPop"-Ordners
+          source: "./brainPop/"
+          # *** GEÄNDERT ***
+          # Der neue Zielordner auf dem Server
+          target: "/backend"
+
+      - name: Restart application on server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            # Systemd-Service neu starten
+            sudo systemctl restart brainpop-backend
+            # (Optional) Status prüfen
+            sudo systemctl status brainpop-backend
