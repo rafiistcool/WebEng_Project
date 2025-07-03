@@ -27,6 +27,9 @@ jobs:
           user: ${{ secrets.POSTGRES_USER }}
           password: ${{ secrets.POSTGRES_PASSWORD }}
           locations: filesystem:./db/migrations
+          baselineOnMigrate: true
+          baselineVersion: 1
+          baselineDescription: "Initial baseline"
 
       # =================================================================
       # == BACKEND-DEPLOYMENT
@@ -54,6 +57,7 @@ jobs:
           # *** GEÄNDERT ***
           # Der neue Zielordner auf dem Server
           target: "/backend"
+
 
       - name: Restart application on server via SSH
         uses: appleboy/ssh-action@v1.0.3
