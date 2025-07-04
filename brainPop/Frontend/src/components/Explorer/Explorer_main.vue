@@ -74,6 +74,13 @@
 import { reactive, ref, computed, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import { useCardStore } from "../../script/store";
+import { 
+  fetchExplorerItems, 
+  saveExplorerItem, 
+  updateExplorerItem, 
+  deleteExplorerItem, 
+  saveExplorerStructure 
+} from "../../script/api";
 
 export default {
   name: "Desktop",
@@ -93,28 +100,53 @@ export default {
         x: 0,
         y: 0,
         targetItem: null
-      }
+      },
+      userId: 1 // Temporary hardcoded user ID, should be replaced with actual user authentication
     });
 
     const draggedItem = ref(null);
 
-    const loadSets = () => {
+    const loadSets = async () => {
       try {
-        const savedItems = localStorage.getItem('explorer_items');
-        if (savedItems) {
-          state.items = JSON.parse(savedItems);
-        }
+        const items = await fetchExplorerItems(state.userId);
+
+        // Transform the flat structure from the backend into a hierarchical structure
+        const rootItems = items.filter(item => item.parent_id === null);
+        const itemsById = {};
+
+        // Create a map of items by ID
+        items.forEach(item => {
+          itemsById[item.id] = {
+            id: item.id,
+            name: item.name,
+            icon: item.is_folder 
+              ? new URL('@/assets/icons/folder.svg', import.meta.url).href
+              : new URL('@/assets/icons/set.svg', import.meta.url).href,
+            children: item.is_folder ? [] : null,
+            backendId: item.id, // Store the backend ID for future reference
+            setId: item.set_id
+          };
+        });
+
+        // Build the hierarchy
+        items.forEach(item => {
+          if (item.parent_id !== null && itemsById[item.parent_id]) {
+            itemsById[item.parent_id].children.push(itemsById[item.id]);
+          }
+        });
+
+        state.items = rootItems.map(item => itemsById[item.id]);
       } catch (error) {
-        console.error("Error loading sets from localStorage:", error);
+        console.error("Error loading explorer items from backend:", error);
       }
     };
 
-    // Save sets to localStorage
-    const saveSets = () => {
+    // Save sets to backend
+    const saveSets = async () => {
       try {
-        localStorage.setItem('explorer_items', JSON.stringify(state.items));
+        await saveExplorerStructure(state.userId, state.items);
       } catch (error) {
-        console.error("Error saving sets to localStorage:", error);
+        console.error("Error saving explorer items to backend:", error);
       }
     };
 
@@ -130,7 +162,7 @@ export default {
       state.setName = "";
     };
 
-    const confirmSelection = () => {
+    const confirmSelection = async () => {
       if (!state.setName.trim()) {
         alert("Please enter a name!");
         return;
@@ -150,7 +182,7 @@ export default {
       closeModal();
 
       // Save sets to backend after adding a new item
-      saveSets();
+      await saveSets();
     };
 
     const onItemClick = (item) => {
@@ -192,23 +224,23 @@ export default {
       left: `${state.contextMenu.x}px`
     }));
 
-    const renameItem = () => {
+    const renameItem = async () => {
       const newName = prompt("Enter new name:", state.contextMenu.targetItem.name);
       if (newName) {
         state.contextMenu.targetItem.name = newName;
         // Save sets to backend after renaming an item
-        saveSets();
+        await saveSets();
       }
       closeContextMenu();
     };
 
-    const deleteItem = () => {
+    const deleteItem = async () => {
       const items = state.currentDirectory?.children || state.items;
       const index = items.findIndex(i => i.id === state.contextMenu.targetItem.id);
       if (index !== -1) {
         items.splice(index, 1);
         // Save sets to backend after deleting an item
-        saveSets();
+        await saveSets();
       }
       closeContextMenu();
     };
@@ -231,7 +263,7 @@ export default {
       }
     };
 
-    const onDrop = (targetItem) => {
+    const onDrop = async (targetItem) => {
       if (!targetItem.children || !draggedItem.value || draggedItem.value.id === targetItem.id) return;
 
       const fromArray = state.currentDirectory?.children || state.items;
@@ -239,7 +271,7 @@ export default {
       if (index !== -1) {
         const [moved] = fromArray.splice(index, 1);
         targetItem.children.push(moved);
-        saveSets();
+        await saveSets();
       }
 
       draggedItem.value = null;
@@ -251,8 +283,8 @@ export default {
       }
     };
 
-    onMounted(() => {
-      loadSets();
+    onMounted(async () => {
+      await loadSets();
       document.body.classList.add('left-aligned');
       document.addEventListener('click', handleClickOutside);
     });

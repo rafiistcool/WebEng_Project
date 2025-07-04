@@ -4,9 +4,16 @@ import db from "./db";
 //import cors from "cors";
 import { registerUser } from "./services/registerUser";
 import { loginUser } from "./services/loginUser";
+import { 
+  getExplorerItems, 
+  saveExplorerItem, 
+  updateExplorerItem, 
+  deleteExplorerItem, 
+  saveExplorerStructure 
+} from "./services/explorerService";
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 90;
 
 const app = express();
 
@@ -54,6 +61,61 @@ app.post("/login", async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.status(500).json({ success: false, message: (error as Error).message });
+  }
+});
+
+// Explorer endpoints
+app.get("/explorer/:userId", async (req: Request, res: Response) => {
+  try {
+    const userId = parseInt(req.params.userId);
+    const parentId = req.query.parentId ? parseInt(req.query.parentId as string) : null;
+
+    const items = await getExplorerItems(userId, parentId);
+    res.status(200).json(items);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+});
+
+app.post("/explorer/item", async (req: Request, res: Response) => {
+  try {
+    const item = req.body;
+    const result = await saveExplorerItem(item);
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+});
+
+app.put("/explorer/item/:id", async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(req.params.id);
+    const updates = req.body;
+    await updateExplorerItem(id, updates);
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+});
+
+app.delete("/explorer/item/:id", async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(req.params.id);
+    await deleteExplorerItem(id);
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+});
+
+app.post("/explorer/structure/:userId", async (req: Request, res: Response) => {
+  try {
+    const userId = parseInt(req.params.userId);
+    const items = req.body.items;
+    await saveExplorerStructure(userId, items);
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
   }
 });
 
