@@ -108,9 +108,18 @@ updateContentOfFlashcard();
       <div class="flashcard-counter">
         <p class="counter"> ({{ currentIndex+1 }})/({{ filteredCards.length }})</p>
       </div>
-      <div class="edit-button-container">
-        <button class="baseButtonLayout" @click="updateContentOfFlashcard">
-          Edit
+      <div class="button-container">
+        <button class="baseButtonLayout" style="background-color: red">
+          Nicht gewusst
+        </button>
+        <button class="baseButtonLayout" style="background-color: orange">
+          Wiederholen/Schwer
+        </button>
+        <button class="baseButtonLayout" style="background-color: cornflowerblue">
+          Unsicher/Fast gewusst
+        </button>
+        <button class="baseButtonLayout" style="background-color: lawngreen">
+          Gewusst
         </button>
       </div>
     </div>

@@ -140,13 +140,19 @@
 }
 
 .baseButtonLayout{
-    background-color: var(--secondary-color);
     border: var(--background-color1);
     border-radius: 15px;
     font-size: 1.2rem;
     padding: 0.2rem 2rem;
     box-shadow: 5px 5px 15px var(--boxShadow);
 
+}
+.button-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
 }
 .baseButtonLayout:hover{
     box-shadow: 5px 5px 15px var(--blackBackground);
