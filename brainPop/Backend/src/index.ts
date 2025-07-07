@@ -39,7 +39,7 @@ app.use(cors({
 app.use(express.json());
 
 app.use(session({
-  secret: process.env.SESSION_SECRET || "super-secret", // in .env ablegen!
+  secret: process.env.SESSION_SECRET as string,
   resave: false,
   saveUninitialized: false,
   cookie: {
@@ -113,7 +113,6 @@ app.post("/logout", (req: Request, res: Response) => {
 });
 
 
-app.listen(PORT, () => console.log(`Server läuft auf http://localhost:${PORT}`));
 // @ts-ignore
 app.get("/sets", async (req: Request<{}, {}, {}, { userId?: string }>, res: Response) => {
   try {

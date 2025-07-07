@@ -27,7 +27,7 @@
           @contextmenu.prevent="openContextMenu($event, item)"
       >
         <div class="icon-wrapper">
-          <img :src="item.icon" class="item-icon"  alt=""/>
+          <img :src="item.icon" class="item-icon" alt=""/>
         </div>
         <div class="item-text">{{ item.name }}</div>
       </div>
@@ -37,44 +37,44 @@
       </div>
     </div>
   </div>
-    <!-- Add Button -->
-    <img class="add" src="@/assets/icons/plus.svg" alt="Add" @click="openModal" />
+  <!-- Add Button -->
+  <img class="add" src="@/assets/icons/plus.svg" alt="Add" @click="openModal"/>
 
-    <!-- Modal -->
-    <div v-if="state.isModalOpen" class="modal-overlay" @click="closeModal">
-      <div class="modal" @click.stop>
-        <h2>Select what to add</h2>
-        <input type="checkbox" id="toggle" class="toggleCheckbox" v-model="state.isSetSelected" />
-        <label for="toggle" class="toggleContainer">
-          <div>Folder</div>
-          <div>Set</div>
-        </label>
-        <div class="input-container">
-          <label class="name" for="setName">Name:</label>
-          <input type="text" id="setName" v-model="state.setName" placeholder="Enter name" />
-        </div>
-        <div class="modal-buttons">
-          <button class="button confirm-button" @click="confirmSelection">Confirm</button>
-          <button class="button cancel-button" @click="closeModal">Cancel</button>
-        </div>
-
-
+  <!-- Modal -->
+  <div v-if="state.isModalOpen" class="modal-overlay" @click="closeModal">
+    <div class="modal" @click.stop>
+      <h2>Select what to add</h2>
+      <input type="checkbox" id="toggle" class="toggleCheckbox" v-model="state.isSetSelected"/>
+      <label for="toggle" class="toggleContainer">
+        <div>Folder</div>
+        <div>Set</div>
+      </label>
+      <div class="input-container">
+        <label class="name" for="setName">Name:</label>
+        <input type="text" id="setName" v-model="state.setName" placeholder="Enter name"/>
       </div>
-    </div>
+      <div class="modal-buttons">
+        <button class="button confirm-button" @click="confirmSelection">Confirm</button>
+        <button class="button cancel-button" @click="closeModal">Cancel</button>
+      </div>
 
-    <!-- Context Menu -->
-    <div v-if="state.contextMenu.visible" :style="contextMenuStyles" class="context-menu">
-      <button @click="renameItem">Rename</button>
-      <button @click="deleteItem">Delete</button>
+
     </div>
+  </div>
+
+  <!-- Context Menu -->
+  <div v-if="state.contextMenu.visible" :style="contextMenuStyles" class="context-menu">
+    <button @click="renameItem">Rename</button>
+    <button @click="deleteItem">Delete</button>
+  </div>
 
 </template>
 
 <script>
-import { reactive, ref, computed, onMounted, onUnmounted } from "vue";
-import { useRouter } from "vue-router";
-import { useCardStore } from "../../script/store";
-import { useAuthStore } from "../../script/auth";
+import {reactive, ref, computed, onMounted, onUnmounted} from "vue";
+import {useRouter} from "vue-router";
+import {useCardStore} from "../../script/store";
+import {useAuthStore} from "../../script/auth";
 
 export default {
   name: "Desktop",
@@ -107,7 +107,9 @@ export default {
           return;
         }
 
-        const response = await fetch(`http://localhost:90/folders/hierarchy?userId=${authStore.user.id}`);
+        const response = await fetch(`http://localhost:90/folders/hierarchy?userId=${authStore.user.id}`, {
+          credentials: 'include'
+        });
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -118,7 +120,9 @@ export default {
         state.items = data.map(folder => convertFolderToFrontendFormat(folder));
 
         // Also load root-level sets (sets not in any folder)
-        const setsResponse = await fetch(`http://localhost:90/sets?userId=${authStore.user.id}`);
+        const setsResponse = await fetch(`http://localhost:90/sets?userId=${authStore.user.id}`, {
+          credentials: 'include'
+        });
         if (setsResponse.ok) {
           const sets = await setsResponse.json();
           // Filter out sets that are already in folders
@@ -176,17 +180,19 @@ export default {
           return null;
         }
 
-        const response = await fetch('http://localhost:90/folders', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ 
-            userId: authStore.user.id,
-            name,
-            parentId
-          }),
-        });
+        const response = await fetch('http://localhost:90/folders',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include',
+              body: JSON.stringify({
+                userId: authStore.user.id,
+                name,
+                parentId
+              }),
+            });
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -207,16 +213,18 @@ export default {
           return null;
         }
 
-        const response = await fetch('http://localhost:90/sets', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ 
-            userId: authStore.user.id,
-            name
-          }),
-        });
+        const response = await fetch('http://localhost:90/sets',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include',
+              body: JSON.stringify({
+                userId: authStore.user.id,
+                name
+              }),
+            });
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -232,12 +240,15 @@ export default {
     // Add a set to a folder
     const addSetToFolder = async (folderId, setId) => {
       try {
-        const response = await fetch(`http://localhost:90/folders/${folderId}/sets/${setId}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        });
+        const response = await fetch(`http://localhost:90/folders/${folderId}/sets/${setId}`,
+
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include',
+            });
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -251,14 +262,15 @@ export default {
     };
 
     // Update folder name
-    const updateFolder = async (id, name) => {
+    const updateFolder = async (id, name, parentId = null) => {
       try {
         const response = await fetch(`http://localhost:90/folders/${id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ name }),
+          credentials: 'include',
+          body: JSON.stringify({name, parentId}),
         });
 
         if (!response.ok) {
@@ -275,14 +287,15 @@ export default {
     // Update set name
     const updateSet = async (id, name) => {
       try {
-        const response = await fetch(`http://localhost:90/sets/${id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ name }),
-        });
-
+        const response = await fetch(`http://localhost:90/sets/${id}`,
+            {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include',
+              body: JSON.stringify({name}),
+            });
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -297,9 +310,12 @@ export default {
     // Delete folder
     const deleteFolder = async (id) => {
       try {
-        const response = await fetch(`http://localhost:90/folders/${id}`, {
-          method: 'DELETE'
-        });
+        const response = await fetch(`http://localhost:90/folders/${id}`,
+
+            {
+              method: 'DELETE',
+              credentials: 'include',
+            });
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -315,9 +331,12 @@ export default {
     // Delete set
     const deleteSet = async (id) => {
       try {
-        const response = await fetch(`http://localhost:90/sets/${id}`, {
-          method: 'DELETE'
-        });
+        const response = await fetch(`http://localhost:90/sets/${id}`,
+
+            {
+              method: 'DELETE',
+              credentials: 'include',
+            });
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

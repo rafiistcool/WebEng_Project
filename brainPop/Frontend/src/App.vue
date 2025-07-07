@@ -1,7 +1,7 @@
 <script setup>
 import { RouterView } from 'vue-router';
 import NavBar from "@/components/NavBar.vue";
-import onMounted from 'vue';
+import { onMounted } from 'vue';
 import {useAuthStore} from "@/script/auth";
 
 onMounted(async () => {
