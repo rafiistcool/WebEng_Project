@@ -27,7 +27,7 @@ const loadCards = async () => {
       return;
     }
 
-    const response = await fetch(`http://localhost:90/cards?setId=${cardStore.currentSetId}`);
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/cards?setId=${cardStore.currentSetId}');
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -53,7 +53,7 @@ const saveCardToBackend = async (question: string, answer: string, category: str
       return null;
     }
 
-    const response = await fetch('http://localhost:90/cards', {
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/cards', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ const saveCardToBackend = async (question: string, answer: string, category: str
 // Update a card in backend
 const updateCardInBackend = async (id: number, question: string, answer: string, category: string) => {
   try {
-    const response = await fetch(`http://localhost:90/cards/${id}`, {
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/cards/${id}', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ const updateCardInBackend = async (id: number, question: string, answer: string,
 // Delete a card from backend
 const deleteCardFromBackend = async (id: number) => {
   try {
-    const response = await fetch(`http://localhost:90/cards/${id}`, {
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/cards/${id}', {
       method: 'DELETE'
     });
 

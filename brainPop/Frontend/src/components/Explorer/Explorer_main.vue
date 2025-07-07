@@ -107,7 +107,7 @@ export default {
           return;
         }
 
-        const response = await fetch(`http://localhost:90/folders/hierarchy?userId=${authStore.user.id}`, {
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + `/folders/hierarchy?userId=${authStore.user.id}`, {
           credentials: 'include'
         });
         if (!response.ok) {
@@ -120,7 +120,7 @@ export default {
         state.items = data.map(folder => convertFolderToFrontendFormat(folder));
 
         // Also load root-level sets (sets not in any folder)
-        const setsResponse = await fetch(`http://localhost:90/sets?userId=${authStore.user.id}`, {
+        const setsResponse = await fetch(import.meta.env.VITE_BACKEND_URL + `/sets?userId=${authStore.user.id}`, {
           credentials: 'include'
         });
         if (setsResponse.ok) {
@@ -180,7 +180,7 @@ export default {
           return null;
         }
 
-        const response = await fetch('http://localhost:90/folders',
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/folders',
             {
               method: 'POST',
               headers: {
@@ -213,7 +213,7 @@ export default {
           return null;
         }
 
-        const response = await fetch('http://localhost:90/sets',
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/sets',
             {
               method: 'POST',
               headers: {
@@ -240,7 +240,7 @@ export default {
     // Add a set to a folder
     const addSetToFolder = async (folderId, setId) => {
       try {
-        const response = await fetch(`http://localhost:90/folders/${folderId}/sets/${setId}`,
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/folders/${folderId}/sets/${setId}',
 
             {
               method: 'POST',
@@ -264,7 +264,7 @@ export default {
     // Update folder name
     const updateFolder = async (id, name, parentId = null) => {
       try {
-        const response = await fetch(`http://localhost:90/folders/${id}`, {
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/folders/${id}', {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -287,7 +287,7 @@ export default {
     // Update set name
     const updateSet = async (id, name) => {
       try {
-        const response = await fetch(`http://localhost:90/sets/${id}`,
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/sets/${id}',
             {
               method: 'PUT',
               headers: {
@@ -310,7 +310,7 @@ export default {
     // Delete folder
     const deleteFolder = async (id) => {
       try {
-        const response = await fetch(`http://localhost:90/folders/${id}`,
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/folders/${id}',
 
             {
               method: 'DELETE',
@@ -331,7 +331,7 @@ export default {
     // Delete set
     const deleteSet = async (id) => {
       try {
-        const response = await fetch(`http://localhost:90/sets/${id}`,
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/sets/${id}',
 
             {
               method: 'DELETE',
