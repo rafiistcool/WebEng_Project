@@ -34,15 +34,37 @@ const updateContentOfFlashcard = () => {
 }
 
 const notKnown = () => {
-
+  let weight = getWeightOfCard();
+  weight = Math.max(0, weight - 2);
+  updateWeightOfCard(,weight);
+  showNextCard();
 }
 const hard = () => {
-
+  let weight = getWeightOfCard();
+  weight = Math.max(0, weight - 1);
+  updateWeightOfCard(,weight);
+  showNextCard();
 }
 const almostKnown = () => {
-
+  //No weight Changes because i would add 0 to the weight
+  showNextCard();
 }
 const known = () => {
+  let weight = getWeightOfCard();
+  weight = weight + 1;
+  updateWeightOfCard(,weight);
+
+}
+
+const updateWeightOfCard = (cardID: number, newWeight: number) => {
+
+}
+const getWeightOfCard = (cardID: number): number => {
+
+  return 1;
+}
+
+const showNextCard = () => {
 
 }
 
