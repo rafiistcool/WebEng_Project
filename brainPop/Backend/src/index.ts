@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express, { Request, Response } from "express";
 import db from "./db";
-//import cors from "cors";
+import cors from "cors";
 import { registerUser } from "./services/registerUser";
 import { loginUser } from "./services/loginUser";
 import {
@@ -28,11 +28,18 @@ const PORT = process.env.PORT || 90;
 
 const app = express();
 
-/*app.use(cors({
+// Add this CORS middleware configuration
+app.use(cors({
+  origin: 'http://localhost:5173', // Your frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
+app.use(cors({
   origin: 'http://localhost:5173', // Nur Anfragen von Frontend erlauben
   methods: ['GET', 'POST'], // Nur bestimmte HTTP-Methoden erlauben
   credentials: true // Erlaubt das Senden von Cookies
-}));*/
+}));
 
 app.use(express.json());
 
