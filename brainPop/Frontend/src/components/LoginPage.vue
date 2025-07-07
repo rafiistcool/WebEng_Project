@@ -54,7 +54,6 @@ const login = async (event: Event) => {
         </router-link>
       </div>
     </form>
-    <a href="#" style="color: #6fB98F" class="forgot-password">Passwort vergessen?</a>
   </div>
 </template>
 
