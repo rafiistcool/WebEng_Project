@@ -11,6 +11,14 @@ const question = ref("");
 const answer = ref("");
 const category = ref("");
 
+interface Card {
+  id: number;
+  question: string;
+  answer: string;
+  category: string;
+  set_id: number;
+}
+
 // Load cards from backend
 const loadCards = async () => {
   try {
@@ -24,7 +32,7 @@ const loadCards = async () => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const cards = await response.json();
+    const cards = await response.json() as Card[];
     cardStore.cards = cards.map(card => ({
       id: card.id,
       question: card.question,
