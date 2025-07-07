@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import {useCardStore} from "@/script/store.js";
-import router from "@/router.js";
+import {useCardStore} from "@/script/store";
+import router from "@/router";
 
 const flipped = ref(false);
 
