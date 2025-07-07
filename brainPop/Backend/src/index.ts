@@ -303,7 +303,7 @@ app.get("/folders/hierarchy", async (req: Request, res: Response) => {
   }
 });
 
-app.get("cards/:setId", async (req: Request, res: Response) => {
+app.get("/sets/:setId/cards", async (req: Request, res: Response) => {
   try {
     const setId = parseInt(req.params.setId);
     const cards: Card[] = await getCards(setId);
