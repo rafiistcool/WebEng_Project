@@ -303,6 +303,16 @@ app.get("/folders/hierarchy", async (req: Request, res: Response) => {
   }
 });
 
+app.get("cards/:setId", async (req: Request, res: Response) => {
+  try {
+    const setId = parseInt(req.params.setId);
+    const cards: Card[] = await getCards(setId);
+    res.status(200).json(cards);
+  }catch (error){
+    res.status(500).json({ error: (error as Error).message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server läuft auf http://localhost:${PORT}`);
 }).on("error", (err) => {
