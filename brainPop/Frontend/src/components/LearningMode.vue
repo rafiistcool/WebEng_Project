@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, ref} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import {useCardStore, useSetStore} from "@/script/store.js";
 import router from "@/router.js";
 
@@ -22,10 +22,62 @@ interface Cards {
 }
 
 const cards = ref<Cards[]>([]);
+const cardQueue = ref<Cards[]>([]);
+const currentCard = ref<Cards | null>(null);
+const completedCards = ref<Set<number>>(new Set());
 
 onMounted(async () => {
   cards.value = await getCards();
 })
+
+const generateCardQueue = () => {
+  if (cards.value.length === 0) return;
+
+  // Karten nach Gewicht sortieren (niedrigeres Gewicht = höhere Priorität)
+  const sortedCards = [...cards.value].sort((a, b) => {
+    const weightA = a.weight || 10;
+    const weightB = b.weight || 10;
+    return weightA - weightB;
+  });
+
+  const queue: Cards[] = [];
+
+  sortedCards.forEach(card => {
+    const weight = card.weight || 10;
+
+    let frequency = 1;
+    if (weight <= 3) {
+      frequency = 4;
+    } else if (weight <= 6) {
+      frequency = 3;
+    } else if (weight <= 9) {
+      frequency = 2;
+    } else {
+      frequency = 1;
+    }
+
+    if (weight > 15) {
+      frequency = Math.max(1, Math.floor(frequency / 2));
+    }
+
+    for (let i = 0; i < frequency; i++) {
+      queue.push(card);
+    }
+  });
+
+  // Queue mischen für zufällige Reihenfolge bei gleichem Gewicht
+  cardQueue.value = shuffleArray(queue);
+};
+
+const shuffleArray = <T>(array: T[]): T[] => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
 
 const flip = () => {
   flipped.value = !flipped.value;
@@ -33,13 +85,13 @@ const flip = () => {
 
 const notKnown = () => {
   let weight = getWeightOfCard(currenCardId.value);
-  weight = Math.max(0, weight - 2);
+  weight = Math.max(1, weight - 2);
   updateWeightOfCard(currenCardId.value ,weight);
   showNextCard();
 }
 const hard = () => {
   let weight = getWeightOfCard(currenCardId.value);
-  weight = Math.max(0, weight - 1);
+  weight = Math.max(1, weight - 1);
   updateWeightOfCard(currenCardId.value ,weight);
   showNextCard();
 }
@@ -105,12 +157,62 @@ const getCards =async () : Promise<Cards[]> => {
 }
 
 const showNextCard = () => {
+  // Wenn Queue leer ist, neue generieren
+  if (cardQueue.value.length === 0) {
+    generateCardQueue();
+  }
 
-}
+  // Nächste Karte aus der Queue nehmen
+  if (cardQueue.value.length > 0) {
+    currentCard.value = cardQueue.value.shift()!;
+    currenCardId.value = currentCard.value.id;
 
-const endLearningMode = () => {
+    // Karteninhalt aktualisieren
+    userContentFront.value = currentCard.value.question;
+    userContentBack.value = currentCard.value.answer;
+
+    // Karte zurücksetzen (nicht geflippt)
+    flipped.value = false;
+
+    // Index aktualisieren (approximativ)
+    const totalCards = cards.value.length;
+    const processedCards = completedCards.value.size;
+    currentIndex.value = Math.min(processedCards, totalCards - 1);
+
+    console.log(`Showing card: ${currentCard.value.question} (Weight: ${currentCard.value.weight || 10})`);
+  } else {
+    // Alle Karten abgearbeitet
+    endLearningSession();
+  }
+};
+
+const progressPercentage = computed(() => {
+  if (cards.value.length === 0) return 0;
+  return Math.round((completedCards.value.size / cards.value.length) * 100);
+});
+
+// Statistiken
+const getSessionStats = computed(() => {
+  const totalCards = cards.value.length;
+  const completed = completedCards.value.size;
+  const remaining = totalCards - completed;
+
+  return {
+    total: totalCards,
+    completed,
+    remaining,
+    progress: progressPercentage.value
+  };
+});
+
+
+
+const endLearningSession = () => {
+  console.log('Learning session completed!');
+
   router.push("/cardcreation");
-}
+};
+
 getCards();
 </script>
 
@@ -122,7 +224,7 @@ getCards();
 
       <div class="end-button-container">
         <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class="end-button"
-             @click="endLearningMode">
+             @click="endLearningSession">
           <circle cx="30" cy="30" r="28" fill="#004445" stroke="#004445" stroke-width="4"/>
           <line x1="18" y1="18" x2="42" y2="42" stroke="#2C7873" stroke-width="4" stroke-linecap="round"/>
           <line x1="18" y1="42" x2="42" y2="18" stroke="#2C7873" stroke-width="4" stroke-linecap="round"/>
@@ -149,7 +251,10 @@ getCards();
     </div>
     <div class="content-below-flashcard">
       <div class="flashcard-counter">
-        <p class="counter"> ({{ currentIndex + 1 }})/({{ cards.length }})</p>
+        <p class="counter">{{ getSessionStats.completed }}/{{ getSessionStats.total }} ({{ progressPercentage }}%)</p>
+        <div class="progress-bar">
+          <div class="progress-fill" :style="{ width: progressPercentage + '%' }"></div>
+        </div>
       </div>
       <div class="button-container">
         <button class="baseButtonLayout" @click="notKnown" style="background-color: red">
