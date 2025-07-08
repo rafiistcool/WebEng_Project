@@ -73,7 +73,7 @@
 <script>
 import {reactive, ref, computed, onMounted, onUnmounted} from "vue";
 import {useRouter} from "vue-router";
-import {useCardStore} from "../../script/store";
+import {useCardStore, useSetStore} from "../../script/store";
 import {useAuthStore} from "../../script/auth";
 
 export default {
@@ -81,6 +81,7 @@ export default {
   setup() {
     const router = useRouter();
     const cardStore = useCardStore();
+    const setStore = useSetStore();
     const authStore = useAuthStore();
 
     const state = reactive({
@@ -107,6 +108,9 @@ export default {
           return;
         }
 
+        // Clear existing sets in the store
+        setStore.clearSets();
+
         const response = await fetch(import.meta.env.VITE_BACKEND_URL + `/folders/hierarchy?userId=${authStore.user.id}`, {
           credentials: 'include'
         });
@@ -115,6 +119,19 @@ export default {
         }
 
         const data = await response.json();
+
+        // Add all sets from folders to the set store
+        data.forEach(folder => {
+          if (folder.sets && folder.sets.length > 0) {
+            folder.sets.forEach(set => {
+              setStore.addSet({
+                id: set.id,
+                name: set.name,
+                userId: authStore.user?.id
+              });
+            });
+          }
+        });
 
         // Convert backend format to frontend format
         state.items = data.map(folder => convertFolderToFrontendFormat(folder));
@@ -133,13 +150,21 @@ export default {
 
           const rootSets = sets.filter(set => !folderSetIds.has(set.id));
 
-          // Add root sets to items
+          // Add root sets to items and to the set store
           rootSets.forEach(set => {
+            // Add to UI items
             state.items.push({
               id: set.id,
               name: set.name,
               icon: new URL('@/assets/icons/set.svg', import.meta.url).href,
               children: null
+            });
+
+            // Add to set store
+            setStore.addSet({
+              id: set.id,
+              name: set.name,
+              userId: authStore.user?.id
             });
           });
         }
@@ -230,7 +255,16 @@ export default {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        return await response.json();
+        const newSet = await response.json();
+
+        // Add the new set to the set store
+        setStore.addSet({
+          id: newSet.id,
+          name: newSet.name,
+          userId: authStore.user.id
+        });
+
+        return newSet;
       } catch (error) {
         console.error("Error creating set:", error);
         return null;
@@ -241,6 +275,7 @@ export default {
     const addSetToFolder = async (folderId, setId) => {
       try {
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/folders/${folderId}/sets/${setId}`,
+
 
             {
               method: 'POST',
@@ -264,7 +299,9 @@ export default {
     // Update folder name
     const updateFolder = async (id, name, parentId = null) => {
       try {
+
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/folders/${id}`, {
+
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -287,7 +324,9 @@ export default {
     // Update set name
     const updateSet = async (id, name) => {
       try {
+
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/sets/${id}`,
+
             {
               method: 'PUT',
               headers: {
@@ -300,7 +339,16 @@ export default {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        return await response.json();
+        const updatedSet = await response.json();
+
+        // Update the set in the set store
+        setStore.addSet({
+          id: updatedSet.id,
+          name: updatedSet.name,
+          userId: authStore.user?.id
+        });
+
+        return updatedSet;
       } catch (error) {
         console.error("Error updating set:", error);
         return null;
@@ -310,7 +358,9 @@ export default {
     // Delete folder
     const deleteFolder = async (id) => {
       try {
+
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/folders/${id}`,
+
 
             {
               method: 'DELETE',
@@ -331,7 +381,9 @@ export default {
     // Delete set
     const deleteSet = async (id) => {
       try {
+
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/sets/${id}`,
+
 
             {
               method: 'DELETE',
@@ -341,6 +393,9 @@ export default {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
+
+        // Remove the set from the set store
+        setStore.removeSet(id);
 
         return true;
       } catch (error) {
@@ -421,7 +476,21 @@ export default {
         state.navigation.push(item);
       } else {
         // It's a set, navigate to CardCreation
-        cardStore.setCurrentSet(item.id);
+        // Get the set from the set store
+        const set = setStore.getSetById(item.id);
+        if (set) {
+          // Set the current set in the set store
+          setStore.setCurrentSet(set);
+        } else {
+          // If the set is not in the store, add it and set it as current
+          const newSet = {
+            id: item.id,
+            name: item.name,
+            userId: authStore.user?.id
+          };
+          setStore.addSet(newSet);
+          setStore.setCurrentSet(newSet);
+        }
         router.push('/cardcreation');
       }
     };
@@ -608,7 +677,8 @@ export default {
       updateSet,
       deleteFolder,
       deleteSet,
-      addSetToFolder
+      addSetToFolder,
+      setStore
     };
   }
 };
