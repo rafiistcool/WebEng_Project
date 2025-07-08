@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue';
+import {onMounted, ref} from 'vue';
 import {useCardStore} from "@/script/store.js";
 import router from "@/router.js";
 
@@ -9,6 +9,7 @@ const userContentFront = ref("Vorderseite");
 const userContentBack = ref("Rückseite");
 const cardStore = useCardStore();
 const currentIndex = ref(0);
+const currenCardId = ref(0);
 
 interface Cards {
   id: number;
@@ -19,45 +20,59 @@ interface Cards {
   weight?: number;
 }
 
-const cards = computed(() => {getCards()})
+const cards = ref<Cards[]>([]);
+
+onMounted(async () => {
+  cards.value = await getCards();
+})
 
 const flip = () => {
   flipped.value = !flipped.value;
 }
 
-const updateContentOfFlashcard = () => {
-
-}
-
 const notKnown = () => {
-  let weight = getWeightOfCard();
+  let weight = getWeightOfCard(currenCardId.value);
   weight = Math.max(0, weight - 2);
-  updateWeightOfCard(,weight);
+  updateWeightOfCard(currenCardId.value ,weight);
   showNextCard();
 }
 const hard = () => {
-  let weight = getWeightOfCard();
+  let weight = getWeightOfCard(currenCardId.value);
   weight = Math.max(0, weight - 1);
-  updateWeightOfCard(,weight);
+  updateWeightOfCard(currenCardId.value ,weight);
   showNextCard();
 }
 const almostKnown = () => {
-  //No weight Changes because i would add 0 to the weight
   showNextCard();
 }
 const known = () => {
-  let weight = getWeightOfCard();
+  let weight = getWeightOfCard(currenCardId.value);
   weight = weight + 1;
-  updateWeightOfCard(,weight);
+  updateWeightOfCard(currenCardId.value,weight);
 
 }
 
 const updateWeightOfCard =async (cardID: number, newWeight: number) => {
-
+  try {
+    const response = await fetch(import.meta.env.VITE_URL_BACKEND + `/cards/${cardID}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        weight: newWeight
+      })
+    });
+    if (!response.ok) {
+      console.error(`HTTP error! status: ${response.status}`);
+    }
+  }catch (error){
+    console.error("Error updating card in backend:", error);
+  }
 }
-const getWeightOfCard =async (cardID: number): Promise<number> => {
-
-  return 1;
+const getWeightOfCard =(cardID: number) : number => {
+  const card = cards.value.find(card => card.id === cardID);
+  return card?.weight || 10;
 }
 
 const getCards =async () : Promise<Cards[]> => {
@@ -67,7 +82,12 @@ const getCards =async () : Promise<Cards[]> => {
       return [];
     }
 
-    const response = await fetch(import.meta.env.VITE_URL_BACKEND + `/sets/${cardStore.currentSetId}/cards`);
+    const response = await fetch(import.meta.env.VITE_URL_BACKEND + `/sets/${cardStore.currentSetId}/cards`,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
     if (!response.ok) {
       console.error(`HTTP error! status: ${response.status}`);
     }
@@ -77,8 +97,6 @@ const getCards =async () : Promise<Cards[]> => {
     console.error("Error loading cards from backend:", error);
     return [];
   }
-
-
 }
 
 const showNextCard = () => {
@@ -110,13 +128,6 @@ getCards();
 
     <div class="learning-mode-window-content">
       <div class="arrow-container">
-        <!--
-        <div class="arrow arrow-left" @click="notKnown">
-          <svg viewBox="0 0 24 24" class="arrow-svg">
-            <path d="M15 20l-8-8 8-8" stroke-width="3"/>
-          </svg>
-        </div>
-        -->
       </div>
       <div class="flashcard-container">
         <div class="flashcard" @click="flip" :class="{flipped: flipped}">
@@ -129,18 +140,11 @@ getCards();
         </div>
       </div>
       <div class="arrow-container">
-        <!--
-        <div class="arrow arrow-right" @click="known">
-          <svg viewBox="0 0 24 24" class="arrow-svg">
-            <path d="M9 20l8-8-8-8" stroke-width="3"/>
-          </svg>
-        </div>
-        -->
       </div>
     </div>
     <div class="content-below-flashcard">
       <div class="flashcard-counter">
-        <p class="counter"> ({{ currentIndex + 1 }})/({{ filteredCards.length }})</p>
+        <p class="counter"> ({{ currentIndex + 1 }})/({{ cards.length }})</p>
       </div>
       <div class="button-container">
         <button class="baseButtonLayout" @click="notKnown" style="background-color: red">
