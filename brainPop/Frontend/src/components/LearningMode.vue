@@ -25,16 +25,33 @@ const cards = ref<Cards[]>([]);
 const cardQueue = ref<Cards[]>([]);
 const currentCard = ref<Cards | null>(null);
 const completedCards = ref<Set<number>>(new Set());
+const cardsProcessed = ref(0);
 
 onMounted(async () => {
   cards.value = await getCards();
-})
+  if (cards.value.length > 0) {
+    generateCardQueue();
+    currentIndex.value = 0; // Fortschritt auf 0 setzen
+    cardsProcessed.value = 0; // Verarbeitete Karten zurücksetzen
+    completedCards.value.clear(); // Abgeschlossene Karten zurücksetzen
+    showNextCard();
+  }
+});
 
 const generateCardQueue = () => {
   if (cards.value.length === 0) return;
 
-  // Karten nach Gewicht sortieren (niedrigeres Gewicht = höhere Priorität)
-  const sortedCards = [...cards.value].sort((a, b) => {
+  // Nur Karten einschließen, die noch nicht gemeistert sind
+  const uncompletedCards = cards.value.filter(card => !completedCards.value.has(card.id));
+
+  if (uncompletedCards.length === 0) {
+    console.log("All cards completed!");
+    cardQueue.value = [];
+    return;
+  }
+
+  // Nach Gewicht sortieren
+  const sortedCards = [...uncompletedCards].sort((a, b) => {
     const weightA = a.weight || 10;
     const weightB = b.weight || 10;
     return weightA - weightB;
@@ -56,6 +73,7 @@ const generateCardQueue = () => {
       frequency = 1;
     }
 
+    // Karten mit höherem Gewicht seltener zeigen
     if (weight > 15) {
       frequency = Math.max(1, Math.floor(frequency / 2));
     }
@@ -65,9 +83,10 @@ const generateCardQueue = () => {
     }
   });
 
-  // Queue mischen für zufällige Reihenfolge bei gleichem Gewicht
   cardQueue.value = shuffleArray(queue);
+  console.log(`Generated queue with ${cardQueue.value.length} cards from ${uncompletedCards.length} uncompleted cards`);
 };
+
 
 const shuffleArray = <T>(array: T[]): T[] => {
   const shuffled = [...array];
@@ -83,31 +102,60 @@ const flip = () => {
   flipped.value = !flipped.value;
 }
 
-const notKnown = () => {
+const notKnown = async () => {
   let weight = getWeightOfCard(currenCardId.value);
   weight = Math.max(1, weight - 2);
-  updateWeightOfCard(currenCardId.value ,weight);
-  showNextCard();
-}
-const hard = () => {
+
+  const success = await updateWeightOfCard(currenCardId.value, weight);
+  if (success) {
+    trackProgress(currenCardId.value, 'notKnown');
+    showNextCard();
+  }
+};
+
+const hard = async () => {
   let weight = getWeightOfCard(currenCardId.value);
   weight = Math.max(1, weight - 1);
-  updateWeightOfCard(currenCardId.value ,weight);
-  showNextCard();
-}
-const almostKnown = () => {
-  showNextCard();
-}
-const known = () => {
+
+  const success = await updateWeightOfCard(currenCardId.value, weight);
+  if (success) {
+    trackProgress(currenCardId.value, 'hard');
+    showNextCard();
+  }
+};
+
+const almostKnown = async () => {
   let weight = getWeightOfCard(currenCardId.value);
-  weight = weight + 1;
-  updateWeightOfCard(currenCardId.value,weight);
+  weight = weight + 2; // Größere Gewichtssteigerung für "fast gewusst"
 
-}
+  const success = await updateWeightOfCard(currenCardId.value, weight);
+  if (success) {
+    trackProgress(currenCardId.value, 'almostKnown');
+    showNextCard();
+  }
+};
 
-const updateWeightOfCard =async (cardID: number, newWeight: number) => {
+const known = async () => {
+  let weight = getWeightOfCard(currenCardId.value);
+  weight = weight + 3; // Größere Gewichtssteigerung für "gewusst"
+
+  const success = await updateWeightOfCard(currenCardId.value, weight);
+  if (success) {
+    trackProgress(currenCardId.value, 'known');
+    showNextCard();
+  }
+};
+
+
+const updateWeightOfCard = async (cardID: number, newWeight: number) => {
   try {
-    const response = await fetch(import.meta.env.VITE_BACKEND_URL + `/cards/${cardID}`, {
+    const card = cards.value.find(c => c.id === cardID);
+    if (!card) {
+      console.error("Card not found");
+      return false;
+    }
+
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/cards/${cardID}`, {
       method: 'PUT',
       credentials: 'include',
       headers: {
@@ -115,16 +163,76 @@ const updateWeightOfCard =async (cardID: number, newWeight: number) => {
         'Accept': 'application/json'
       },
       body: JSON.stringify({
+        question: card.question,
+        answer: card.answer,
+        category: card.category,
         weight: newWeight
       })
     });
+
     if (!response.ok) {
-      console.error(`HTTP error! status: ${response.status}`);
+      const errorData = await response.json();
+      console.error(`HTTP error! status: ${response.status}`, errorData);
+      return false;
     }
-  }catch (error){
+
+    // Lokale Karte aktualisieren
+    card.weight = newWeight;
+    console.log(`Card ${cardID} weight updated to ${newWeight}`);
+
+    return true;
+
+  } catch (error) {
     console.error("Error updating card in backend:", error);
+    return false;
   }
 }
+
+
+const trackProgress = (cardId: number, difficulty: 'notKnown' | 'hard' | 'almostKnown' | 'known') => {
+  const card = cards.value.find(c => c.id === cardId);
+  if (!card) return;
+
+  // Karte als bearbeitet markieren
+  cardsProcessed.value++;
+
+  // Aktuelles Gewicht nach der Aktualisierung abrufen
+  const currentWeight = getWeightOfCard(cardId);
+
+  // Karte als gemeistert markieren basierend auf Gewicht UND Schwierigkeit
+  if (difficulty === 'known' && currentWeight >= 15) {
+    completedCards.value.add(cardId);
+    console.log(`Card ${cardId} marked as COMPLETED (weight: ${currentWeight})`);
+  } else if (difficulty === 'almostKnown' && currentWeight >= 18) {
+    completedCards.value.add(cardId);
+    console.log(`Card ${cardId} marked as COMPLETED (weight: ${currentWeight})`);
+  }
+
+  console.log(`Card ${cardId} marked as ${difficulty}. Processed: ${cardsProcessed.value}, Completed: ${completedCards.value.size}/${cards.value.length}`);
+};
+
+
+const progressPercentage = computed(() => {
+  if (cards.value.length === 0) return 0;
+  return Math.round((completedCards.value.size / cards.value.length) * 100);
+});
+
+
+const getSessionStats = computed(() => {
+  const totalCards = cards.value.length;
+  const completed = completedCards.value.size;
+  const remaining = totalCards - completed;
+
+  return {
+    total: totalCards,
+    completed,
+    remaining,
+    progress: progressPercentage.value
+  };
+});
+
+
+
 const getWeightOfCard =(cardID: number) : number => {
   const card = cards.value.find(card => card.id === cardID);
   return card?.weight || 10;
@@ -186,34 +294,17 @@ const showNextCard = () => {
   }
 };
 
-const progressPercentage = computed(() => {
-  if (cards.value.length === 0) return 0;
-  return Math.round((completedCards.value.size / cards.value.length) * 100);
-});
-
-// Statistiken
-const getSessionStats = computed(() => {
-  const totalCards = cards.value.length;
-  const completed = completedCards.value.size;
-  const remaining = totalCards - completed;
-
-  return {
-    total: totalCards,
-    completed,
-    remaining,
-    progress: progressPercentage.value
-  };
-});
-
-
-
 const endLearningSession = () => {
   console.log('Learning session completed!');
+  console.log(`Final stats: ${completedCards.value.size}/${cards.value.length} cards mastered`);
+
+  //OPTIONAL VLLT ENTERNEN
+  alert(`Lernsession beendet!\n${completedCards.value.size} von ${cards.value.length} Karten gemeistert.`);
 
   router.push("/cardcreation");
 };
 
-getCards();
+
 </script>
 
 <template>
