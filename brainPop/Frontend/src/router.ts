@@ -30,7 +30,13 @@ const router = createRouter({
 
 
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+  const authStore = useAuthStore();
+
+
+  if (!authStore.sessionChecked) {
+    await authStore.checkSession();
+  }
 
   if (to.meta.requiresAuth && !useAuthStore().isUserLoggedIn) {
     alert('Du musst dich zuerst anmelden!');

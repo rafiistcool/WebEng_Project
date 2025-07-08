@@ -3,7 +3,8 @@ import { defineStore} from "pinia";
 export const useAuthStore = defineStore("auth", {
     state: () => ({
         isLoggedIn: false,
-        user: null as null | { name: string, id: number }
+        user: null as null | { name: string, id: number },
+        sessionChecked: false
     }),
     actions: {
         async login(username: string, password: string): Promise<{ success: boolean; message: string }> {
@@ -13,6 +14,7 @@ export const useAuthStore = defineStore("auth", {
                     headers: {
                         'Content-Type': 'application/json',
                     },
+                    credentials: 'include',
                     body: JSON.stringify({ username, password }),
                 });
 
@@ -21,7 +23,7 @@ export const useAuthStore = defineStore("auth", {
                 if (data.success) {
                     this.isLoggedIn = true;
                     this.user = { 
-                        name: username, 
+                        name: username,
                         id: data.userId 
                     };
                     return { success: true, message: data.message };
@@ -47,11 +49,13 @@ export const useAuthStore = defineStore("auth", {
                     this.isLoggedIn = true;
                     this.user = {
                         id: data.userId,
-                        name: "Benutzer" // Oder hole den Namen vom Backend
+                        name: "Benutzer"
                     };
                 }
             } catch (error) {
                 console.error('Session check error:', error);
+            } finally {
+                this.sessionChecked = true;
             }
         },
 
