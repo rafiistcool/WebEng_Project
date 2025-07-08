@@ -299,7 +299,7 @@ export default {
 
     // Update folder name
     const updateFolder = async (id, name, parentId = null) => {
-
+try{
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/folders/${id}`, {
 
           method: 'PUT',
