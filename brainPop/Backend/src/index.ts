@@ -26,7 +26,7 @@ import { Card, Folder, Set } from "./types";
 import session from "express-session";
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 90;
 
 const app = express();
 

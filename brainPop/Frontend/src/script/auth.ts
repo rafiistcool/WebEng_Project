@@ -39,7 +39,10 @@ export const useAuthStore = defineStore("auth", {
         async checkSession() {
             try {
                 const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/session', {
-                    credentials: 'include'
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 });
                 const data = await response.json();
 
