@@ -23,6 +23,7 @@ import {
   getFolderHierarchy
 } from "./services/dataServices";
 import { Card, Folder, Set } from "./types";
+import session from "express-session";
 
 const PORT = process.env.PORT || 90;
 
@@ -32,7 +33,7 @@ app.use(cors({
   origin: process.env.FRONTEND_URL as string, // Nur Anfragen von Frontend erlauben
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Nur bestimmte HTTP-Methoden erlauben
   credentials: true // Erlaubt das Senden von Cookies
-}));*/
+}));
 
 app.use(express.json());
 

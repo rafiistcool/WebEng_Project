@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, computed} from 'vue';
+import {computed, ref} from 'vue';
 import {useCardStore} from "@/script/store.js";
 import router from "@/router.js";
 
@@ -10,27 +10,23 @@ const userContentBack = ref("Rückseite");
 const cardStore = useCardStore();
 const currentIndex = ref(0);
 
-// Get only cards from the current set
-const filteredCards = computed(() => cardStore.getCardsForCurrentSet());
+interface Cards {
+  id: number;
+  set_id: number;
+  question: string;
+  answer: string;
+  category?: string;
+  weight?: number;
+}
+
+const cards = computed(() => {getCards()})
 
 const flip = () => {
   flipped.value = !flipped.value;
 }
 
 const updateContentOfFlashcard = () => {
-  if (filteredCards.value.length > 0) {
-    // Make sure currentIndex is within bounds
-    if (currentIndex.value >= filteredCards.value.length) {
-      currentIndex.value = 0;
-    }
-    const currentCard = filteredCards.value[currentIndex.value];
-    userContentFront.value = currentCard.question;
-    userContentBack.value = currentCard.answer;
-  } else {
-    // No cards in the current set
-    userContentFront.value = "No cards in this set";
-    userContentBack.value = "Add cards to this set in the card creation page";
-  }
+
 }
 
 const notKnown = () => {
@@ -56,12 +52,33 @@ const known = () => {
 
 }
 
-const updateWeightOfCard = (cardID: number, newWeight: number) => {
+const updateWeightOfCard =async (cardID: number, newWeight: number) => {
 
 }
-const getWeightOfCard = (cardID: number): number => {
+const getWeightOfCard =async (cardID: number): Promise<number> => {
 
   return 1;
+}
+
+const getCards =async () : Promise<Cards[]> => {
+  try {
+    if (!cardStore.currentSetId) {
+      console.error("No set selected");
+      return [];
+    }
+
+    const response = await fetch(import.meta.env.VITE_URL_BACKEND + `/sets/${cardStore.currentSetId}/cards`);
+    if (!response.ok) {
+      console.error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json() as Cards[];
+
+  }catch (error){
+    console.error("Error loading cards from backend:", error);
+    return [];
+  }
+
+
 }
 
 const showNextCard = () => {
@@ -71,7 +88,7 @@ const showNextCard = () => {
 const endLearningMode = () => {
   router.push("/cardcreation");
 }
-updateContentOfFlashcard();
+getCards();
 </script>
 
 <template>
