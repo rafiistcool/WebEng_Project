@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import {ref, watch, onMounted, onUnmounted, computed} from 'vue';
-import {useCardStore} from '../script/store';
+import {useCardStore, useSetStore} from '../script/store';
 import {useRouter} from "vue-router";
 
 const cardStore = useCardStore();
+const setStore = useSetStore();
 const router = useRouter();
 
 const showPopup = ref(false);
@@ -22,12 +23,14 @@ interface Card {
 // Load cards from backend
 const loadCards = async () => {
   try {
-    if (!cardStore.currentSetId) {
+    // Get the current set from the set store
+    const currentSet = setStore.currentSet;
+    if (!currentSet) {
       console.error("No set selected");
       return;
     }
 
-    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/cards?setId=${cardStore.currentSetId}');
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL + `/cards?setId=${currentSet.id}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -40,6 +43,9 @@ const loadCards = async () => {
       category: card.category || '',
       setId: card.set_id
     }));
+
+    // Ensure the cardStore's currentSetId is set correctly
+    cardStore.setCurrentSet(currentSet.id);
   } catch (error) {
     console.error("Error loading cards from backend:", error);
   }
@@ -48,7 +54,9 @@ const loadCards = async () => {
 // Save a new card to backend
 const saveCardToBackend = async (question: string, answer: string, category: string) => {
   try {
-    if (!cardStore.currentSetId) {
+    // Get the current set from the set store
+    const currentSet = setStore.currentSet;
+    if (!currentSet) {
       console.error("No set selected");
       return null;
     }
@@ -59,7 +67,7 @@ const saveCardToBackend = async (question: string, answer: string, category: str
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        setId: cardStore.currentSetId,
+        setId: currentSet.id,
         question,
         answer,
         category
@@ -81,7 +89,7 @@ const saveCardToBackend = async (question: string, answer: string, category: str
 // Update a card in backend
 const updateCardInBackend = async (id: number, question: string, answer: string, category: string) => {
   try {
-    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/cards/${id}', {
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL + `/cards/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -107,7 +115,7 @@ const updateCardInBackend = async (id: number, question: string, answer: string,
 // Delete a card from backend
 const deleteCardFromBackend = async (id: number) => {
   try {
-    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/cards/${id}', {
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL + `/cards/${id}`, {
       method: 'DELETE'
     });
 
