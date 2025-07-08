@@ -21,7 +21,7 @@
           class="item-container"
           draggable="true"
           @dragstart="onDragStart(item)"
-          @dragover.prevent="onDragOver(item)"
+          @dragover.prevent="onDragOver($event, item)"
           @drop="onDrop(item)"
           @dblclick="onItemClick(item)"
           @contextmenu.prevent="openContextMenu($event, item)"
@@ -240,7 +240,7 @@ export default {
     // Add a set to a folder
     const addSetToFolder = async (folderId, setId) => {
       try {
-        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/folders/${folderId}/sets/${setId}',
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/folders/${folderId}/sets/${setId}`,
 
             {
               method: 'POST',
@@ -264,7 +264,7 @@ export default {
     // Update folder name
     const updateFolder = async (id, name, parentId = null) => {
       try {
-        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/folders/${id}', {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/folders/${id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -287,7 +287,7 @@ export default {
     // Update set name
     const updateSet = async (id, name) => {
       try {
-        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/sets/${id}',
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/sets/${id}`,
             {
               method: 'PUT',
               headers: {
@@ -310,7 +310,7 @@ export default {
     // Delete folder
     const deleteFolder = async (id) => {
       try {
-        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/folders/${id}',
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/folders/${id}`,
 
             {
               method: 'DELETE',
@@ -331,7 +331,7 @@ export default {
     // Delete set
     const deleteSet = async (id) => {
       try {
-        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/sets/${id}',
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/sets/${id}`,
 
             {
               method: 'DELETE',
@@ -524,7 +524,7 @@ export default {
       draggedItem.value = item;
     };
 
-    const onDragOver = (targetItem) => {
+    const onDragOver = (event, targetItem) => {
       // Allow drop only on folders
       if (targetItem.children) {
         event.preventDefault();
