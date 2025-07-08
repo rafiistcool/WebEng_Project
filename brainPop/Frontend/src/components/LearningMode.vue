@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {onMounted, ref} from 'vue';
-import {useCardStore} from "@/script/store.js";
+import {useCardStore, useSetStore} from "@/script/store.js";
 import router from "@/router.js";
 
 const flipped = ref(false);
@@ -8,6 +8,7 @@ const flipped = ref(false);
 const userContentFront = ref("Vorderseite");
 const userContentBack = ref("Rückseite");
 const cardStore = useCardStore();
+const setStore = useSetStore();
 const currentIndex = ref(0);
 const currenCardId = ref(0);
 
@@ -54,10 +55,12 @@ const known = () => {
 
 const updateWeightOfCard =async (cardID: number, newWeight: number) => {
   try {
-    const response = await fetch(import.meta.env.VITE_URL_BACKEND + `/cards/${cardID}`, {
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL + `/cards/${cardID}`, {
       method: 'PUT',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
       body: JSON.stringify({
         weight: newWeight
@@ -82,10 +85,12 @@ const getCards =async () : Promise<Cards[]> => {
       return [];
     }
 
-    const response = await fetch(import.meta.env.VITE_URL_BACKEND + `/sets/${cardStore.currentSetId}/cards`,{
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/sets/${setStore.currentSet?.id}/cards`, {
       method: 'GET',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json'
       }
     });
     if (!response.ok) {
