@@ -25,8 +25,7 @@ import {
 import { Card, Folder, Set } from "./types";
 import session from "express-session";
 
-
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 90;
 
 const app = express();
 
@@ -82,9 +81,11 @@ app.post("/login", async (req: Request, res: Response) => {
       req.session.userId = result.userId;
       res.status(200).json(result);
     } else {
+      console.error("Fehler bei der Anmeldung:", result.message);
       res.status(401).json(result);
     }
   } catch (error) {
+    console.error("Fehler bei der Anmeldung:", error);
     res.status(500).json({ success: false, message: (error as Error).message });
   }
 });
@@ -334,6 +335,17 @@ app.get("/folders/hierarchy", async (req: Request, res: Response) => {
     const hierarchy = await getFolderHierarchy(parseInt(userId));
     res.status(200).json(hierarchy);
   } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+});
+
+app.get("/sets/:setId/cards", async (req: Request, res: Response) => {
+  try {
+    console.log("request SETID"+req.params.setId);
+    const setId = parseInt(req.params.setId);
+    const cards: Card[] = await getCards(setId);
+    res.status(200).json(cards);
+  }catch (error){
     res.status(500).json({ error: (error as Error).message });
   }
 });
