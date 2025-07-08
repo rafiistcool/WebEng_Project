@@ -341,6 +341,7 @@ app.get("/folders/hierarchy", async (req: Request, res: Response) => {
 
 app.get("/sets/:setId/cards", async (req: Request, res: Response) => {
   try {
+    console.log("request SETID"+req.params.setId);
     const setId = parseInt(req.params.setId);
     const cards: Card[] = await getCards(setId);
     res.status(200).json(cards);
