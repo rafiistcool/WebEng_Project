@@ -17,7 +17,7 @@ const isNavOpen = ref(false);
 
     <div class="nav-brand">
 
-      <router-link to="/startscreen" class="nav-logo">
+      <router-link :to="authenticator.isUserLoggedIn ? '/explorer' : '/startscreen'" class="nav-logo">
 
         <i class="fa fa-home"></i>
         <img src="../assets/icons/Temp-Logo-Sebastian.png" alt="Startseite" id="home-icon">

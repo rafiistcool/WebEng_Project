@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {ref, watch, onMounted, onUnmounted, computed} from 'vue';
-import {useCardStore} from '../script/store.js';
+import {useCardStore} from '../script/store';
 import {useRouter} from "vue-router";
 
 const cardStore = useCardStore();
@@ -11,70 +11,120 @@ const question = ref("");
 const answer = ref("");
 const category = ref("");
 
-// Load cards from localStorage
-const loadCards = () => {
+interface Card {
+  id: number;
+  question: string;
+  answer: string;
+  category: string;
+  set_id: number;
+}
+
+// Load cards from backend
+const loadCards = async () => {
   try {
-    const savedCards = localStorage.getItem('cards');
-    if (savedCards) {
-      cardStore.cards = JSON.parse(savedCards);
+    if (!cardStore.currentSetId) {
+      console.error("No set selected");
+      return;
     }
+
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/cards?setId=${cardStore.currentSetId}');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const cards = await response.json() as Card[];
+    cardStore.cards = cards.map(card => ({
+      id: card.id,
+      question: card.question,
+      answer: card.answer,
+      category: card.category || '',
+      setId: card.set_id
+    }));
   } catch (error) {
-    console.error("Error loading cards from localStorage:", error);
+    console.error("Error loading cards from backend:", error);
   }
 };
 
-// Save all cards to localStorage
-const saveCardsToLocalStorage = () => {
+// Save a new card to backend
+const saveCardToBackend = async (question: string, answer: string, category: string) => {
   try {
-    localStorage.setItem('cards', JSON.stringify(cardStore.cards));
-  } catch (error) {
-    console.error("Error saving cards to localStorage:", error);
-  }
-};
+    if (!cardStore.currentSetId) {
+      console.error("No set selected");
+      return null;
+    }
 
-// Save a new card to localStorage
-const saveCardToBackend = (question: string, answer: string, category: string) => {
-  try {
-    // Generate a new ID for the card
-    const newId = Date.now();
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/cards', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        setId: cardStore.currentSetId,
+        question,
+        answer,
+        category
+      }),
+    });
 
-    // Return the new ID so it can be used by the caller
-    return newId;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const newCard = await response.json();
+    return newCard.id;
   } catch (error) {
-    console.error("Error saving card to localStorage:", error);
+    console.error("Error saving card to backend:", error);
     return null;
   }
 };
 
-// Update a card in localStorage
-const updateCardInBackend = (id: number, question: string, answer: string, category: string) => {
+// Update a card in backend
+const updateCardInBackend = async (id: number, question: string, answer: string, category: string) => {
   try {
-    // The actual update happens in the saveCard function
-    // We just need to save all cards to localStorage after the update
-    saveCardsToLocalStorage();
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/cards/${id}', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        question,
+        answer,
+        category
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     return true;
   } catch (error) {
-    console.error("Error updating card in localStorage:", error);
+    console.error("Error updating card in backend:", error);
     return false;
   }
 };
 
-// Delete a card from localStorage
-const deleteCardFromBackend = (id: number) => {
+// Delete a card from backend
+const deleteCardFromBackend = async (id: number) => {
   try {
-    // The actual deletion happens in the deleteCard function
-    // We just need to save all cards to localStorage after the deletion
-    saveCardsToLocalStorage();
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/cards/${id}', {
+      method: 'DELETE'
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     return true;
   } catch (error) {
-    console.error("Error deleting card from localStorage:", error);
+    console.error("Error deleting card from backend:", error);
     return false;
   }
 };
 
 // Load cards when component is mounted
-onMounted(() => {
-  loadCards();
+onMounted(async () => {
+  await loadCards();
   document.body.classList.add('left-aligned');
 });
 
@@ -99,29 +149,33 @@ const addCard = () => {
   showPopup.value = true;
 };
 
-const saveCard = () => {
+const saveCard = async () => {
   if (editMode.value && selectedCardIndex.value !== null) {
     const existingCard = cardStore.cards[selectedCardIndex.value];
 
-    // Update card in the store
-    cardStore.cards[selectedCardIndex.value] = {
-      id: existingCard.id,
-      question: question.value,
-      answer: answer.value,
-      category: category.value,
-      setId: existingCard.setId
-    };
-
-    // Save to localStorage
-    updateCardInBackend(
+    // Update card in the backend
+    const success = await updateCardInBackend(
         existingCard.id,
         question.value,
         answer.value,
         category.value
     );
+
+    if (success) {
+      // Update card in the store
+      cardStore.cards[selectedCardIndex.value] = {
+        id: existingCard.id,
+        question: question.value,
+        answer: answer.value,
+        category: category.value,
+        setId: existingCard.setId
+      };
+    } else {
+      alert("Failed to update card. Please try again.");
+    }
   } else {
-    // Generate new ID
-    const newCardId = saveCardToBackend(
+    // Create new card in the backend
+    const newCardId = await saveCardToBackend(
         question.value,
         answer.value,
         category.value
@@ -135,9 +189,8 @@ const saveCard = () => {
       if (lastIndex >= 0) {
         cardStore.cards[lastIndex].id = newCardId;
       }
-
-      // Save to localStorage
-      saveCardsToLocalStorage();
+    } else {
+      alert("Failed to create card. Please try again.");
     }
   }
 
@@ -184,18 +237,22 @@ const editCard = (index: number) => {
   activeMenuIndex.value = null;
 };
 
-const deleteCard = (index: number) => {
+const deleteCard = async (index: number) => {
   const filteredCards = cardStore.getCardsForCurrentSet();
   const card = filteredCards[index];
 
   // Find the actual index in the global cards array
   const globalIndex = cardStore.cards.findIndex(c => c.id === card.id);
 
-  // Delete card from the store
-  cardStore.cards.splice(globalIndex, 1);
+  // Delete card from the backend
+  const success = await deleteCardFromBackend(card.id);
 
-  // Save changes to localStorage
-  deleteCardFromBackend(card.id);
+  if (success) {
+    // Delete card from the store
+    cardStore.cards.splice(globalIndex, 1);
+  } else {
+    alert("Failed to delete card. Please try again.");
+  }
 
   activeMenuIndex.value = null;
 };

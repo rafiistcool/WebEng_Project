@@ -23,9 +23,25 @@ export const getCards = (setId: number): Promise<Card[]> => {
   return db.any<Card>("SELECT * FROM cards WHERE set_id = $1", [setId]);
 };
 
-export const createCard = (setId: number, question: string, answer: string, category?: string, weight?: number): Promise<Card> => {
-  return db.one<Card>("INSERT INTO cards (set_id, question, answer, category, weight) VALUES ($1, $2, $3, $4, $5) RETURNING *", [setId, question, answer, category, weight]);
-};
+export async function createCard(
+  setId: number,
+  question: string,
+  answer: string,
+  category?: string,
+  weight: number = 10  // Changed default weight to 10
+): Promise<Card> {
+  try {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const result = await db.one(
+      'INSERT INTO cards (set_id, question, answer, category, weight) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [setId, question, answer, category, weight]
+    );
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return result;
+  } catch (error) {
+    throw new Error(`Error creating card: ${(error as Error).message}`);
+  }
+}
 
 export const updateCard = (id: number, question: string, answer: string, category?: string, weight?: number): Promise<Card> => {
   return db.one<Card>("UPDATE cards SET question = $1, answer = $2, category = $3, weight = $4 WHERE id = $5 RETURNING *", [question, answer, category, weight, id]);

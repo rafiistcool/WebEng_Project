@@ -27,7 +27,7 @@
           @contextmenu.prevent="openContextMenu($event, item)"
       >
         <div class="icon-wrapper">
-          <img :src="item.icon" class="item-icon"  alt=""/>
+          <img :src="item.icon" class="item-icon" alt=""/>
         </div>
         <div class="item-text">{{ item.name }}</div>
       </div>
@@ -37,49 +37,51 @@
       </div>
     </div>
   </div>
-    <!-- Add Button -->
-    <img class="add" src="@/assets/icons/plus.svg" alt="Add" @click="openModal" />
+  <!-- Add Button -->
+  <img class="add" src="@/assets/icons/plus.svg" alt="Add" @click="openModal"/>
 
-    <!-- Modal -->
-    <div v-if="state.isModalOpen" class="modal-overlay" @click="closeModal">
-      <div class="modal" @click.stop>
-        <h2>Select what to add</h2>
-        <input type="checkbox" id="toggle" class="toggleCheckbox" v-model="state.isSetSelected" />
-        <label for="toggle" class="toggleContainer">
-          <div>Folder</div>
-          <div>Set</div>
-        </label>
-        <div class="input-container">
-          <label class="name" for="setName">Name:</label>
-          <input type="text" id="setName" v-model="state.setName" placeholder="Enter name" />
-        </div>
-        <div class="modal-buttons">
-          <button class="button confirm-button" @click="confirmSelection">Confirm</button>
-          <button class="button cancel-button" @click="closeModal">Cancel</button>
-        </div>
-
-
+  <!-- Modal -->
+  <div v-if="state.isModalOpen" class="modal-overlay" @click="closeModal">
+    <div class="modal" @click.stop>
+      <h2>Select what to add</h2>
+      <input type="checkbox" id="toggle" class="toggleCheckbox" v-model="state.isSetSelected"/>
+      <label for="toggle" class="toggleContainer">
+        <div>Folder</div>
+        <div>Set</div>
+      </label>
+      <div class="input-container">
+        <label class="name" for="setName">Name:</label>
+        <input type="text" id="setName" v-model="state.setName" placeholder="Enter name"/>
       </div>
-    </div>
+      <div class="modal-buttons">
+        <button class="button confirm-button" @click="confirmSelection">Confirm</button>
+        <button class="button cancel-button" @click="closeModal">Cancel</button>
+      </div>
 
-    <!-- Context Menu -->
-    <div v-if="state.contextMenu.visible" :style="contextMenuStyles" class="context-menu">
-      <button @click="renameItem">Rename</button>
-      <button @click="deleteItem">Delete</button>
+
     </div>
+  </div>
+
+  <!-- Context Menu -->
+  <div v-if="state.contextMenu.visible" :style="contextMenuStyles" class="context-menu">
+    <button @click="renameItem">Rename</button>
+    <button @click="deleteItem">Delete</button>
+  </div>
 
 </template>
 
 <script>
-import { reactive, ref, computed, onMounted, onUnmounted } from "vue";
-import { useRouter } from "vue-router";
-import { useCardStore } from "../../script/store";
+import {reactive, ref, computed, onMounted, onUnmounted} from "vue";
+import {useRouter} from "vue-router";
+import {useCardStore} from "../../script/store";
+import {useAuthStore} from "../../script/auth";
 
 export default {
   name: "Desktop",
   setup() {
     const router = useRouter();
     const cardStore = useCardStore();
+    const authStore = useAuthStore();
 
     const state = reactive({
       isModalOpen: false,
@@ -98,23 +100,252 @@ export default {
 
     const draggedItem = ref(null);
 
-    const loadSets = () => {
+    const loadFolderHierarchy = async () => {
       try {
-        const savedItems = localStorage.getItem('explorer_items');
-        if (savedItems) {
-          state.items = JSON.parse(savedItems);
+        if (!authStore.user?.id) {
+          console.error("User not logged in");
+          return;
+        }
+
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + `/folders/hierarchy?userId=${authStore.user.id}`, {
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Convert backend format to frontend format
+        state.items = data.map(folder => convertFolderToFrontendFormat(folder));
+
+        // Also load root-level sets (sets not in any folder)
+        const setsResponse = await fetch(import.meta.env.VITE_BACKEND_URL + `/sets?userId=${authStore.user.id}`, {
+          credentials: 'include'
+        });
+        if (setsResponse.ok) {
+          const sets = await setsResponse.json();
+          // Filter out sets that are already in folders
+          const folderSetIds = new Set();
+          data.forEach(folder => {
+            folder.sets.forEach(set => folderSetIds.add(set.id));
+          });
+
+          const rootSets = sets.filter(set => !folderSetIds.has(set.id));
+
+          // Add root sets to items
+          rootSets.forEach(set => {
+            state.items.push({
+              id: set.id,
+              name: set.name,
+              icon: new URL('@/assets/icons/set.svg', import.meta.url).href,
+              children: null
+            });
+          });
         }
       } catch (error) {
-        console.error("Error loading sets from localStorage:", error);
+        console.error("Error loading data from backend:", error);
       }
     };
 
-    // Save sets to localStorage
-    const saveSets = () => {
+    // Convert backend folder format to frontend format
+    const convertFolderToFrontendFormat = (folder) => {
+      const result = {
+        id: folder.id,
+        name: folder.name,
+        icon: new URL('@/assets/icons/folder.svg', import.meta.url).href,
+        children: folder.children.map(child => convertFolderToFrontendFormat(child))
+      };
+
+      // Add sets to the folder
+      if (folder.sets && folder.sets.length > 0) {
+        folder.sets.forEach(set => {
+          result.children.push({
+            id: set.id,
+            name: set.name,
+            icon: new URL('@/assets/icons/set.svg', import.meta.url).href,
+            children: null
+          });
+        });
+      }
+
+      return result;
+    };
+
+    // Create a new folder
+    const createFolder = async (name, parentId = null) => {
       try {
-        localStorage.setItem('explorer_items', JSON.stringify(state.items));
+        if (!authStore.user?.id) {
+          console.error("User not logged in");
+          return null;
+        }
+
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/folders',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include',
+              body: JSON.stringify({
+                userId: authStore.user.id,
+                name,
+                parentId
+              }),
+            });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
       } catch (error) {
-        console.error("Error saving sets to localStorage:", error);
+        console.error("Error creating folder:", error);
+        return null;
+      }
+    };
+
+    // Create a new set
+    const createSet = async (name) => {
+      try {
+        if (!authStore.user?.id) {
+          console.error("User not logged in");
+          return null;
+        }
+
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/sets',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include',
+              body: JSON.stringify({
+                userId: authStore.user.id,
+                name
+              }),
+            });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
+      } catch (error) {
+        console.error("Error creating set:", error);
+        return null;
+      }
+    };
+
+    // Add a set to a folder
+    const addSetToFolder = async (folderId, setId) => {
+      try {
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/folders/${folderId}/sets/${setId}',
+
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include',
+            });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return true;
+      } catch (error) {
+        console.error("Error adding set to folder:", error);
+        return false;
+      }
+    };
+
+    // Update folder name
+    const updateFolder = async (id, name, parentId = null) => {
+      try {
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/folders/${id}', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({name, parentId}),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
+      } catch (error) {
+        console.error("Error updating folder:", error);
+        return null;
+      }
+    };
+
+    // Update set name
+    const updateSet = async (id, name) => {
+      try {
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/sets/${id}',
+            {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include',
+              body: JSON.stringify({name}),
+            });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
+      } catch (error) {
+        console.error("Error updating set:", error);
+        return null;
+      }
+    };
+
+    // Delete folder
+    const deleteFolder = async (id) => {
+      try {
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/folders/${id}',
+
+            {
+              method: 'DELETE',
+              credentials: 'include',
+            });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return true;
+      } catch (error) {
+        console.error("Error deleting folder:", error);
+        return false;
+      }
+    };
+
+    // Delete set
+    const deleteSet = async (id) => {
+      try {
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/sets/${id}',
+
+            {
+              method: 'DELETE',
+              credentials: 'include',
+            });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return true;
+      } catch (error) {
+        console.error("Error deleting set:", error);
+        return false;
       }
     };
 
@@ -130,27 +361,57 @@ export default {
       state.setName = "";
     };
 
-    const confirmSelection = () => {
+    const confirmSelection = async () => {
       if (!state.setName.trim()) {
         alert("Please enter a name!");
         return;
       }
 
-      const newItem = {
-        id: Date.now() + Math.random(),
-        name: state.setName,
-        icon: state.isSetSelected
-            ? new URL('@/assets/icons/set.svg', import.meta.url).href
-            : new URL('@/assets/icons/folder.svg', import.meta.url).href,
-        children: state.isSetSelected ? null : []
-      };
+      let newItem;
+
+      if (state.isSetSelected) {
+        // Create a new set
+        const newSet = await createSet(state.setName);
+        if (!newSet) {
+          alert("Failed to create set. Please try again.");
+          return;
+        }
+
+        newItem = {
+          id: newSet.id,
+          name: newSet.name,
+          icon: new URL('@/assets/icons/set.svg', import.meta.url).href,
+          children: null
+        };
+
+        // If we're in a folder, add the set to the folder
+        if (state.currentDirectory) {
+          const success = await addSetToFolder(state.currentDirectory.id, newSet.id);
+          if (!success) {
+            alert("Failed to add set to folder. Please try again.");
+            return;
+          }
+        }
+      } else {
+        // Create a new folder
+        const parentId = state.currentDirectory?.id || null;
+        const newFolder = await createFolder(state.setName, parentId);
+        if (!newFolder) {
+          alert("Failed to create folder. Please try again.");
+          return;
+        }
+
+        newItem = {
+          id: newFolder.id,
+          name: newFolder.name,
+          icon: new URL('@/assets/icons/folder.svg', import.meta.url).href,
+          children: []
+        };
+      }
 
       const targetArray = state.currentDirectory?.children || state.items;
       targetArray.push(newItem);
       closeModal();
-
-      // Save sets to backend after adding a new item
-      saveSets();
     };
 
     const onItemClick = (item) => {
@@ -192,24 +453,63 @@ export default {
       left: `${state.contextMenu.x}px`
     }));
 
-    const renameItem = () => {
+    const renameItem = async () => {
       const newName = prompt("Enter new name:", state.contextMenu.targetItem.name);
-      if (newName) {
-        state.contextMenu.targetItem.name = newName;
-        // Save sets to backend after renaming an item
-        saveSets();
+      if (!newName) {
+        closeContextMenu();
+        return;
       }
+
+      const item = state.contextMenu.targetItem;
+      let success = false;
+
+      // Check if it's a folder or a set
+      if (item.children !== null) {
+        // It's a folder
+        const updatedFolder = await updateFolder(item.id, newName);
+        if (updatedFolder) {
+          item.name = updatedFolder.name;
+          success = true;
+        }
+      } else {
+        // It's a set
+        const updatedSet = await updateSet(item.id, newName);
+        if (updatedSet) {
+          item.name = updatedSet.name;
+          success = true;
+        }
+      }
+
+      if (!success) {
+        alert("Failed to rename item. Please try again.");
+      }
+
       closeContextMenu();
     };
 
-    const deleteItem = () => {
-      const items = state.currentDirectory?.children || state.items;
-      const index = items.findIndex(i => i.id === state.contextMenu.targetItem.id);
-      if (index !== -1) {
-        items.splice(index, 1);
-        // Save sets to backend after deleting an item
-        saveSets();
+    const deleteItem = async () => {
+      const item = state.contextMenu.targetItem;
+      let success = false;
+
+      // Check if it's a folder or a set
+      if (item.children !== null) {
+        // It's a folder
+        success = await deleteFolder(item.id);
+      } else {
+        // It's a set
+        success = await deleteSet(item.id);
       }
+
+      if (success) {
+        const items = state.currentDirectory?.children || state.items;
+        const index = items.findIndex(i => i.id === item.id);
+        if (index !== -1) {
+          items.splice(index, 1);
+        }
+      } else {
+        alert("Failed to delete item. Please try again.");
+      }
+
       closeContextMenu();
     };
 
@@ -231,15 +531,39 @@ export default {
       }
     };
 
-    const onDrop = (targetItem) => {
+    const onDrop = async (targetItem) => {
       if (!targetItem.children || !draggedItem.value || draggedItem.value.id === targetItem.id) return;
 
-      const fromArray = state.currentDirectory?.children || state.items;
-      const index = fromArray.findIndex(i => i.id === draggedItem.value.id);
-      if (index !== -1) {
-        const [moved] = fromArray.splice(index, 1);
-        targetItem.children.push(moved);
-        saveSets();
+      // If the dragged item is a set and the target is a folder
+      if (draggedItem.value.children === null && targetItem.children !== null) {
+        // Add the set to the folder in the backend
+        const success = await addSetToFolder(targetItem.id, draggedItem.value.id);
+        if (success) {
+          // Update the UI
+          const fromArray = state.currentDirectory?.children || state.items;
+          const index = fromArray.findIndex(i => i.id === draggedItem.value.id);
+          if (index !== -1) {
+            const [moved] = fromArray.splice(index, 1);
+            targetItem.children.push(moved);
+          }
+        } else {
+          alert("Failed to move set to folder. Please try again.");
+        }
+      } else if (draggedItem.value.children !== null && targetItem.children !== null) {
+        // If the dragged item is a folder and the target is a folder
+        // Update the folder's parent in the backend
+        const updatedFolder = await updateFolder(draggedItem.value.id, draggedItem.value.name, targetItem.id);
+        if (updatedFolder) {
+          // Update the UI
+          const fromArray = state.currentDirectory?.children || state.items;
+          const index = fromArray.findIndex(i => i.id === draggedItem.value.id);
+          if (index !== -1) {
+            const [moved] = fromArray.splice(index, 1);
+            targetItem.children.push(moved);
+          }
+        } else {
+          alert("Failed to move folder. Please try again.");
+        }
       }
 
       draggedItem.value = null;
@@ -252,7 +576,7 @@ export default {
     };
 
     onMounted(() => {
-      loadSets();
+      loadFolderHierarchy();
       document.body.classList.add('left-aligned');
       document.addEventListener('click', handleClickOutside);
     });
@@ -276,7 +600,15 @@ export default {
       currentItems,
       onDragStart,
       onDragOver,
-      onDrop
+      onDrop,
+      loadFolderHierarchy,
+      createFolder,
+      createSet,
+      updateFolder,
+      updateSet,
+      deleteFolder,
+      deleteSet,
+      addSetToFolder
     };
   }
 };

@@ -29,12 +29,23 @@ const PORT = process.env.PORT || 90;
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173', // Nur Anfragen von Frontend erlauben
-  methods: ['GET', 'POST'], // Nur bestimmte HTTP-Methoden erlauben
+  origin: process.env.FRONTEND_URL as string, // Nur Anfragen von Frontend erlauben
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Nur bestimmte HTTP-Methoden erlauben
   credentials: true // Erlaubt das Senden von Cookies
-}));
+}));*/
 
 app.use(express.json());
+
+app.use(session({
+  secret: process.env.SESSION_SECRET as string,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: false, // true für https
+    maxAge: 1000 * 60 * 60 * 0.5 // 30 Min
+  }
+}));
 
 app.get("/", (_req: Request, res: Response) => {
   res.send("Hello Express ✨");
@@ -56,7 +67,6 @@ app.post("/register", async (req: Request, res: Response) => {
     const result = await registerUser(username, password, repeatPassword);
     res.status(200).json({ message: result });
   } catch (error) {
-    console.error("Fehler bei der Registrierung:", error);
     res.status(500).json({ error: (error as Error).message });
   }
 });
@@ -66,7 +76,8 @@ app.post("/login", async (req: Request, res: Response) => {
 
   try {
     const result = await loginUser(username, password);
-    if (result.success) {
+    if (result.success && result.userId) {
+      req.session.userId = result.userId;
       res.status(200).json(result);
     } else {
       console.error("Fehler bei der Anmeldung:", result.message);
@@ -77,6 +88,30 @@ app.post("/login", async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: (error as Error).message });
   }
 });
+
+app.get("/session", (req: Request, res: Response) => {
+  if (req.session.userId) {
+    res.status(200).json({
+      loggedIn: true,
+      userId: req.session.userId
+    });
+  } else {
+    res.status(200).json({
+      loggedIn: false
+    });
+  }
+});
+
+app.post("/logout", (req: Request, res: Response) => {
+  req.session.destroy((err) => {
+    if (err) {
+      res.status(500).json({ success: false, message: "Fehler beim Abmelden" });
+    } else {
+      res.status(200).json({ success: true, message: "Erfolgreich abgemeldet" });
+    }
+  });
+});
+
 
 // @ts-ignore
 app.get("/sets", async (req: Request<{}, {}, {}, { userId?: string }>, res: Response) => {
