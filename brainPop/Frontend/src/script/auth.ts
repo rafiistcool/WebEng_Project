@@ -74,7 +74,7 @@ export const useAuthStore = defineStore("auth", {
 
                 const data = await response.json();
                 return { 
-                    success: response.ok, 
+                    success: (response.status) === 200,
                     message: data.message 
                 };
             } catch (error) {

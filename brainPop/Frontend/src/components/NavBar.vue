@@ -56,10 +56,19 @@ const isNavOpen = ref(false);
 
       </router-link>
 
+      <router-link
+          v-if="authenticator.isUserLoggedIn"
+          to="/explorer"
+          class="nav-link"
+      >
+        <i class="fa fa-explorer"></i>
+        <span class="icon-font">Explorer</span>
+        <img src="../assets/icons/explorerIcon.svg" alt="Explorer" class="icon">
+      </router-link>
 
       <router-link
           v-if="authenticator.isUserLoggedIn"
-          to="/logout"
+          to="/"
           class="nav-link"
           @click.native.prevent="authenticator.logout"
       >
@@ -69,9 +78,7 @@ const isNavOpen = ref(false);
       </router-link>
 
 
-      <button class="demo-toggle-button" @click="authenticator.login(email, password)">
-        Login (Demo)
-      </button>
+
     </div>
   </nav>
 </template>
