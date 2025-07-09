@@ -64,8 +64,10 @@ app.get("/test", async (_req: Request, res: Response) => {
   }
 });
 
-app.post("/register", async (req: Request, res: Response) => {
-  const { username, password, repeatPassword } = req.body as { username: string; password: string; repeatPassword: string };
+type MessageResponse = { message: string };
+app.post("/register", async (req: Request<Record<string, never>, MessageResponse | ErrorResponse, { username: string; password: string; repeatPassword: string }>, res: Response<MessageResponse | ErrorResponse>) => {
+  const { username, password, repeatPassword } = req.body;
+
   try {
     const result = await registerUser(username, password, repeatPassword);
     res.status(200).json({ message: result });
@@ -74,9 +76,9 @@ app.post("/register", async (req: Request, res: Response) => {
   }
 });
 
-app.post("/login", async (req: Request, res: Response) => {
-  const { username, password } = req.body as { username: string; password: string };
-
+type LoginResponse = { success: boolean; message: string; userId?: number };
+app.post("/login", async (req: Request<Record<string, never>, LoginResponse, { username: string; password: string }>, res: Response<LoginResponse>) => {
+  const { username, password } = req.body;
   try {
     const result = await loginUser(username, password);
     if (result.success && result.userId) {
@@ -92,7 +94,8 @@ app.post("/login", async (req: Request, res: Response) => {
   }
 });
 
-app.get("/session", (req: Request, res: Response) => {
+type SessionResponse = { loggedIn: boolean; userId?: number };
+app.get("/session", (req: Request, res: Response<SessionResponse>) => {
   if (req.session.userId) {
     res.status(200).json({
       loggedIn: true,
@@ -105,7 +108,8 @@ app.get("/session", (req: Request, res: Response) => {
   }
 });
 
-app.post("/logout", (req: Request, res: Response) => {
+type LogoutResponse = { success: boolean, message: string };
+app.post("/logout", (req: Request, res: Response<LogoutResponse>) => {
   req.session.destroy((err) => {
     if (err) {
       res.status(500).json({ success: false, message: "Fehler beim Abmelden" });
