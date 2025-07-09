@@ -22,6 +22,7 @@ export async function registerUser(
     }
 
     try {
+
         const userExists: { id: number } | null = await db.oneOrNone(
             "SELECT id FROM users WHERE username = $1",
             [username]
@@ -31,12 +32,15 @@ export async function registerUser(
             throw new Error("Ein Benutzer mit dieser E-Mail existiert bereits.");
         }
 
+
         const hashedPassword = await argon2.hash(password, {
             type: argon2.argon2id,
             memoryCost: 2 ** 16,
             timeCost: 3,
             parallelism: 1
         });
+
+
 
         await db.none(
             "INSERT INTO users (username, password) VALUES ($1, $2)",
