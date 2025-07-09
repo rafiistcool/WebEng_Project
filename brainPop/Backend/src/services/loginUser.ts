@@ -16,11 +16,9 @@ export async function loginUser(
             password: string;
         }
 
-        const normalizedUsername = username.toLowerCase();
-
         const user = await db.oneOrNone<DbUser>(
             "SELECT id, username, password FROM users WHERE username = $1",
-            [normalizedUsername]
+            [username]
         );
 
         if (!user) {

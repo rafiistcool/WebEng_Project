@@ -48,10 +48,10 @@ app.use(session({
   }
 }));
 
-type MessageResponse = { message: string };
+
 type ErrorResponse = { error: string };
 
-app.get("/", (_req: Request, res: Response<string>) => {
+app.get("/", (_req: Request, res: Response) => {
   res.send("Hello Express ✨");
 });
 
@@ -64,9 +64,8 @@ app.get("/test", async (_req: Request, res: Response) => {
   }
 });
 
-app.post("/register", async (req: Request<Record<string, never>, MessageResponse | ErrorResponse, { username: string; password: string; repeatPassword: string }>, res: Response<MessageResponse | ErrorResponse>) => {
-  const { username, password, repeatPassword } = req.body;
-
+app.post("/register", async (req: Request, res: Response) => {
+  const { username, password, repeatPassword } = req.body as { username: string; password: string; repeatPassword: string };
   try {
     const result = await registerUser(username, password, repeatPassword);
     res.status(200).json({ message: result });
@@ -75,9 +74,8 @@ app.post("/register", async (req: Request<Record<string, never>, MessageResponse
   }
 });
 
-type LoginResponse = { success: boolean; message: string; userId?: number };
-app.post("/login", async (req: Request<Record<string, never>, LoginResponse, { username: string; password: string }>, res: Response<LoginResponse>) => {
-  const { username, password } = req.body;
+app.post("/login", async (req: Request, res: Response) => {
+  const { username, password } = req.body as { username: string; password: string };
 
   try {
     const result = await loginUser(username, password);
@@ -94,8 +92,7 @@ app.post("/login", async (req: Request<Record<string, never>, LoginResponse, { u
   }
 });
 
-type SessionResponse = { loggedIn: boolean; userId?: number };
-app.get("/session", (req: Request, res: Response<SessionResponse>) => {
+app.get("/session", (req: Request, res: Response) => {
   if (req.session.userId) {
     res.status(200).json({
       loggedIn: true,
@@ -108,8 +105,7 @@ app.get("/session", (req: Request, res: Response<SessionResponse>) => {
   }
 });
 
-type LogoutResponse = { success: boolean, message: string };
-app.post("/logout", (req: Request, res: Response<LogoutResponse>) => {
+app.post("/logout", (req: Request, res: Response) => {
   req.session.destroy((err) => {
     if (err) {
       res.status(500).json({ success: false, message: "Fehler beim Abmelden" });

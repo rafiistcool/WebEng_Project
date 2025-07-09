@@ -8,7 +8,6 @@ export async function registerUser(
     password: string,
     repeatPassword: string
 ): Promise<string> {
-    // 1. Validierung der Eingaben
     if (!username || !password || !repeatPassword) {
         throw new Error("Alle Felder sind erforderlich.");
     }
@@ -23,7 +22,7 @@ export async function registerUser(
     }
 
     try {
-        // 2. Prüfen, ob die E-Mail bereits existiert
+
         const userExists: { id: number } | null = await db.oneOrNone(
             "SELECT id FROM users WHERE username = $1",
             [username]
@@ -33,7 +32,7 @@ export async function registerUser(
             throw new Error("Ein Benutzer mit dieser E-Mail existiert bereits.");
         }
 
-        // 3. Passwort hashen
+
         const hashedPassword = await argon2.hash(password, {
             type: argon2.argon2id,
             memoryCost: 2 ** 16,
@@ -42,7 +41,7 @@ export async function registerUser(
         });
 
 
-        // 4. Benutzer in die Datenbank einfügen
+
         await db.none(
             "INSERT INTO users (username, password) VALUES ($1, $2)",
             [username, hashedPassword]
