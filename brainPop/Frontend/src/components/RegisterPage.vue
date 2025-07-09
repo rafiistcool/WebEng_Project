@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import {onMounted, ref} from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../script/auth';
 
@@ -9,6 +9,10 @@ const passwordConfirm = ref('');
 const errorMessage = ref('');
 const router = useRouter();
 const authStore = useAuthStore();
+
+onMounted(() => {
+  document.body.classList.remove('left-aligned');
+});
 
 const register = async (event: Event) => {
   event.preventDefault();
@@ -30,6 +34,7 @@ const register = async (event: Event) => {
       alert(result.message);
       router.push('/login');
     } else {
+      alert(result.message);
       errorMessage.value = result.message;
     }
   } catch (error) {
@@ -43,11 +48,8 @@ const register = async (event: Event) => {
   <div class="login-container">
     <h2>Registrieren</h2>
     <form @submit.prevent="register">
-      <div v-if="errorMessage" class="error-message">
-        {{ errorMessage }}
-      </div>
       <div class="input-group">
-        <label for="username">Benutzername</label>
+        <label for="username">E-Mail</label>
         <input type="text" id="username" v-model="username" required>
       </div>
       <div class="input-group">

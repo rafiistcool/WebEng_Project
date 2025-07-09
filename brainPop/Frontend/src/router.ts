@@ -15,7 +15,6 @@ const routes = [
   { path: '/startscreen', component: StartScreen} ,
   { path: '/login', component: Login},
   { path: '/register', component: Register},
-  { path: '/logout', component: StartScreen},
   { path: '/explorer',component: Explorer,  meta: { requiresAuth: true }},
   { path: '/cardcreation', component: CardCreation,  meta: { requiresAuth: true }},
   { path: '/home', component: Explorer,  meta: { requiresAuth: true }}
