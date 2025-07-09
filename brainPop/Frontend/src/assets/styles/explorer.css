@@ -216,3 +216,54 @@ body.left-aligned {
     z-index: 1000;
 }
 
+
+/* --- CONTEXT MENU (RIGHT-CLICK EDIT POPUP) --- */
+:root {
+    --modal-background: #FFFFFF;
+    --border-color: #DEE2E6;
+    --item-hover-color: #E9ECEF;
+    --dark-text-color: #333333;
+    --danger-color: #D0021B;        /* A strong red for delete actions */
+    --danger-hover-bg: #F8D7DA; /* A light red background for delete hover */
+}
+
+.context-menu {
+    position: absolute;
+    z-index: 1001;
+    background: var(--modal-background);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border: 1px solid var(--border-color);
+    min-width: 160px;
+}
+
+.context-menu button {
+    background: none;
+    border: none;
+    padding: 8px 16px;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 6px;
+    color: var(--dark-text-color);
+    font-size: 0.95rem;
+    transition: background-color 0.2s, color 0.2s;
+    width: 100%;
+}
+
+.context-menu button:hover {
+    background-color: var(--item-hover-color);
+}
+
+/* Specific styling for the delete button */
+.context-menu .delete-button {
+    color: var(--danger-color);
+}
+
+.context-menu .delete-button:hover {
+    background-color: var(--danger-hover-bg);
+    color: var(--dark-text-color);
+}

@@ -63,7 +63,7 @@
   </div>
 
   <!-- Context Menu -->
-  <div v-if="state.contextMenu.visible" :style="contextMenuStyles" class="context-menu">
+  <div v-if="state.contextMenu.visible" :style="contextMenuStyles" class="context-menu" @click.stop>
     <button @click="renameItem">Rename</button>
     <button @click="deleteItem">Delete</button>
   </div>

@@ -138,9 +138,8 @@ onMounted(async () => {
 
 onUnmounted(() => {
   document.body.classList.remove('left-aligned');
+  closeMenu(); // Cleanup listeners
 });
-const handleClickOutside = () => {
-}
 
 const editMode = ref(false);
 const selectedCardIndex = ref<number | null>(null);
@@ -148,6 +147,29 @@ const selectedCardIndex = ref<number | null>(null);
 // Menü-Status
 const activeMenuIndex = ref<number | null>(null);
 const menuPosition = ref({top: 0, left: 0});
+
+const closeMenu = () => {
+  activeMenuIndex.value = null;
+  document.removeEventListener('click', closeMenu);
+  document.removeEventListener('contextmenu', closeMenu);
+};
+
+const openContextMenu = (event: MouseEvent, index: number) => {
+  if (activeMenuIndex.value !== null) {
+    closeMenu();
+  }
+
+  activeMenuIndex.value = index;
+  menuPosition.value = {
+    top: event.clientY,
+    left: event.clientX
+  };
+
+  setTimeout(() => {
+    document.addEventListener('click', closeMenu);
+    document.addEventListener('contextmenu', closeMenu);
+  }, 0);
+};
 
 const addCard = () => {
   question.value = "";
@@ -216,18 +238,6 @@ const startLearningmode = () => {
   router.push("/card");
 };
 
-const toggleMenu = (event: MouseEvent, index: number) => {
-  if (activeMenuIndex.value === index) {
-    activeMenuIndex.value = null;
-  } else {
-    activeMenuIndex.value = index;
-    menuPosition.value = {
-      top: event.clientY + 5,
-      left: event.clientX - 60
-    };
-  }
-};
-
 const editCard = (index: number) => {
   const filteredCards = cardStore.getCardsForCurrentSet();
   const card = filteredCards[index];
@@ -242,7 +252,7 @@ const editCard = (index: number) => {
   selectedCardIndex.value = globalIndex;
   editMode.value = true;
   showPopup.value = true;
-  activeMenuIndex.value = null;
+  closeMenu();
 };
 
 const deleteCard = async (index: number) => {
@@ -262,7 +272,7 @@ const deleteCard = async (index: number) => {
     alert("Failed to delete card. Please try again.");
   }
 
-  activeMenuIndex.value = null;
+  closeMenu();
 };
 
 const selectedCategory = ref<string>("");
@@ -310,11 +320,11 @@ const filteredCards = computed(() => {
       </div>
 
       <div class="card-contents">
-        <div v-for="(card, index) in filteredCards" :key="index" class="card-item">
+        <div v-for="(card, index) in filteredCards" :key="index" class="card-item"
+             @contextmenu.prevent="openContextMenu($event, index)">
           <div class="card-header">
             <div class="card-header">
               <h3>{{ card.question }}</h3>
-              <button class="menu-button" @click="toggleMenu($event, index)">&#8226;&#8226;&#8226;</button>
             </div>
             <p>{{ card.answer }}</p>
             <small>{{ card.category }}</small>
@@ -326,7 +336,7 @@ const filteredCards = computed(() => {
 
     <!-- Menü Popup -->
     <div v-if="activeMenuIndex !== null" class="menu-popup"
-         :style="{ top: menuPosition.top + 'px', left: menuPosition.left + 'px' }">
+         :style="{ top: menuPosition.top + 'px', left: menuPosition.left + 'px' }" @click.stop @contextmenu.stop>
       <button @click="editCard(activeMenuIndex)">Bearbeiten</button>
       <button @click="deleteCard(activeMenuIndex)">Löschen</button>
     </div>
