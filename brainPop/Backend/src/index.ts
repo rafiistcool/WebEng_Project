@@ -48,7 +48,10 @@ app.use(session({
   }
 }));
 
-app.get("/", (_req: Request, res: Response) => {
+type MessageResponse = { message: string };
+type ErrorResponse = { error: string };
+
+app.get("/", (_req: Request, res: Response<string>) => {
   res.send("Hello Express ✨");
 });
 
@@ -61,8 +64,8 @@ app.get("/test", async (_req: Request, res: Response) => {
   }
 });
 
-app.post("/register", async (req: Request, res: Response) => {
-  const { username, password, repeatPassword } = req.body as { username: string; password: string; repeatPassword: string };
+app.post("/register", async (req: Request<Record<string, never>, MessageResponse | ErrorResponse, { username: string; password: string; repeatPassword: string }>, res: Response<MessageResponse | ErrorResponse>) => {
+  const { username, password, repeatPassword } = req.body;
 
   try {
     const result = await registerUser(username, password, repeatPassword);
@@ -72,8 +75,9 @@ app.post("/register", async (req: Request, res: Response) => {
   }
 });
 
-app.post("/login", async (req: Request, res: Response) => {
-  const { username, password } = req.body as { username: string; password: string };
+type LoginResponse = { success: boolean; message: string; userId?: number };
+app.post("/login", async (req: Request<Record<string, never>, LoginResponse, { username: string; password: string }>, res: Response<LoginResponse>) => {
+  const { username, password } = req.body;
 
   try {
     const result = await loginUser(username, password);
@@ -90,7 +94,8 @@ app.post("/login", async (req: Request, res: Response) => {
   }
 });
 
-app.get("/session", (req: Request, res: Response) => {
+type SessionResponse = { loggedIn: boolean; userId?: number };
+app.get("/session", (req: Request, res: Response<SessionResponse>) => {
   if (req.session.userId) {
     res.status(200).json({
       loggedIn: true,
@@ -103,7 +108,8 @@ app.get("/session", (req: Request, res: Response) => {
   }
 });
 
-app.post("/logout", (req: Request, res: Response) => {
+type LogoutResponse = { success: boolean, message: string };
+app.post("/logout", (req: Request, res: Response<LogoutResponse>) => {
   req.session.destroy((err) => {
     if (err) {
       res.status(500).json({ success: false, message: "Fehler beim Abmelden" });
@@ -113,51 +119,50 @@ app.post("/logout", (req: Request, res: Response) => {
   });
 });
 
-
-// @ts-ignore
-app.get("/sets", async (req: Request<{}, {}, {}, { userId?: string }>, res: Response) => {
+app.get("/sets", async (req: Request<Record<string, never>, Set[] | ErrorResponse, undefined, { userId?: string }>, res: Response<Set[] | ErrorResponse>) => {
   try {
     const { userId } = req.query;
     if (!userId) {
-      return res.status(400).json({ error: "User ID is required" });
+      res.status(400).json({ error: "User ID is required" });
+    } else {
+      const sets: Set[] = await getSets(parseInt(userId));
+      res.status(200).json(sets);
     }
-    const sets: Set[] = await getSets(parseInt(userId));
-    return res.status(200).json(sets);
-  } catch (error) {
-    return res.status(500).json({ error: (error as Error).message });
-  }
-});
-
-// @ts-ignore
-app.post("/sets", async (req: Request, res: Response) => {
-  try {
-    const { userId, name } = req.body as { userId: number; name: string };
-    if (!userId || !name) {
-      return res.status(400).json({ error: "User ID and name are required" });
-    }
-    const newSet: Set = await createSet(userId, name);
-    res.status(201).json(newSet);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
   }
 });
 
-// @ts-ignore
-app.put("/sets/:id", async (req: Request, res: Response) => {
+app.post("/sets", async (req: Request<Record<string, never>, Set | ErrorResponse, { userId: number; name: string }>, res: Response<Set | ErrorResponse>) => {
+  try {
+    const { userId, name } = req.body;
+    if (!userId || !name) {
+      res.status(400).json({ error: "User ID and name are required" });
+    } else {
+      const newSet: Set = await createSet(userId, name);
+      res.status(201).json(newSet);
+    }
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+});
+
+app.put("/sets/:id", async (req: Request<{ id: string }, Set | ErrorResponse, { name: string }>, res: Response<Set | ErrorResponse>) => {
   try {
     const setId = parseInt(req.params.id);
-    const { name } = req.body as { name: string };
+    const { name } = req.body;
     if (!name) {
-      return res.status(400).json({ error: "Name is required" });
+      res.status(400).json({ error: "Name is required" });
+    } else {
+      const updatedSet: Set = await updateSet(setId, name);
+      res.status(200).json(updatedSet);
     }
-    const updatedSet: Set = await updateSet(setId, name);
-    res.status(200).json(updatedSet);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
   }
 });
 
-app.delete("/sets/:id", async (req: Request, res: Response) => {
+app.delete("/sets/:id", async (req: Request<{ id: string }, void | ErrorResponse>, res: Response<void | ErrorResponse>) => {
   try {
     const setId = parseInt(req.params.id);
     await deleteSet(setId);
@@ -167,61 +172,50 @@ app.delete("/sets/:id", async (req: Request, res: Response) => {
   }
 });
 
-// @ts-ignore
-app.get("/cards", async (req: Request, res: Response) => {
+app.get("/cards", async (req: Request<Record<string, never>, Card[] | ErrorResponse, undefined, { setId: string }>, res: Response<Card[] | ErrorResponse>) => {
   try {
-    const { setId } = req.query as { setId: string };
+    const { setId } = req.query;
     if (!setId) {
-      return res.status(400).json({ error: "Set ID is required" });
+      res.status(400).json({ error: "Set ID is required" });
+    } else {
+      const cards: Card[] = await getCards(parseInt(setId));
+      res.status(200).json(cards);
     }
-    const cards: Card[] = await getCards(parseInt(setId));
-    res.status(200).json(cards);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
   }
 });
 
-// @ts-ignore
-app.post("/cards", async (req: Request, res: Response) => {
+app.post("/cards", async (req: Request<Record<string, never>, Card | ErrorResponse, { setId: number; question: string; answer: string; category?: string; weight?: number; }>, res: Response<Card | ErrorResponse>) => {
   try {
-    const { setId, question, answer, category, weight } = req.body as {
-      setId: number;
-      question: string;
-      answer: string;
-      category?: string;
-      weight?: number;
-    };
+    const { setId, question, answer, category, weight } = req.body;
     if (!setId || !question || !answer) {
-      return res.status(400).json({ error: "Set ID, question, and answer are required" });
+      res.status(400).json({ error: "Set ID, question, and answer are required" });
+    } else {
+      const newCard: Card = await createCard(setId, question, answer, category, weight);
+      res.status(201).json(newCard);
     }
-    const newCard: Card = await createCard(setId, question, answer, category, weight);
-    res.status(201).json(newCard);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
   }
 });
 
-// @ts-ignore
-app.put("/cards/:id", async (req: Request, res: Response) => {
+app.put("/cards/:id", async (req: Request<{ id: string }, Card | ErrorResponse, { question: string; answer: string; category?: string; weight?: number; }>, res: Response<Card | ErrorResponse>) => {
   try {
     const cardId = parseInt(req.params.id);
-    const { question, answer, category, weight } = req.body as {
-      question: string;
-      answer: string;
-      category?: string;
-      weight?: number;
-    };
+    const { question, answer, category, weight } = req.body;
     if (!question || !answer) {
-      return res.status(400).json({ error: "Question and answer are required" });
+      res.status(400).json({ error: "Question and answer are required" });
+    } else {
+      const updatedCard: Card = await updateCard(cardId, question, answer, category, weight);
+      res.status(200).json(updatedCard);
     }
-    const updatedCard: Card = await updateCard(cardId, question, answer, category, weight);
-    res.status(200).json(updatedCard);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
   }
 });
 
-app.delete("/cards/:id", async (req: Request, res: Response) => {
+app.delete("/cards/:id", async (req: Request<{ id: string }, void | ErrorResponse>, res: Response<void | ErrorResponse>) => {
   try {
     const cardId = parseInt(req.params.id);
     await deleteCard(cardId);
@@ -231,57 +225,50 @@ app.delete("/cards/:id", async (req: Request, res: Response) => {
   }
 });
 
-// @ts-ignore
-app.get("/folders", async (req: Request, res: Response) => {
+app.get("/folders", async (req: Request<Record<string, never>, Folder[] | ErrorResponse, undefined, { userId: string; parentId?: string }>, res: Response<Folder[] | ErrorResponse>) => {
   try {
-    const { userId, parentId } = req.query as { userId: string; parentId?: string };
+    const { userId, parentId } = req.query;
     if (!userId) {
-      return res.status(400).json({ error: "User ID is required" });
+      res.status(400).json({ error: "User ID is required" });
+    } else {
+      const folders: Folder[] = await getFolders(parseInt(userId), parentId ? parseInt(parentId) : undefined);
+      res.status(200).json(folders);
     }
-    const folders: Folder[] = await getFolders(parseInt(userId), parentId ? parseInt(parentId) : undefined);
-    res.status(200).json(folders);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
   }
 });
 
-// @ts-ignore
-app.post("/folders", async (req: Request, res: Response) => {
+app.post("/folders", async (req: Request<Record<string, never>, Folder | ErrorResponse, { userId: number; name: string; parentId?: number; }>, res: Response<Folder | ErrorResponse>) => {
   try {
-    const { userId, name, parentId } = req.body as {
-      userId: number;
-      name: string;
-      parentId?: number;
-    };
+    const { userId, name, parentId } = req.body;
     if (!userId || !name) {
-      return res.status(400).json({ error: "User ID and name are required" });
+      res.status(400).json({ error: "User ID and name are required" });
+    } else {
+      const newFolder: Folder = await createFolder(userId, name, parentId);
+      res.status(201).json(newFolder);
     }
-    const newFolder: Folder = await createFolder(userId, name, parentId);
-    res.status(201).json(newFolder);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
   }
 });
 
-// @ts-ignore
-app.put("/folders/:id", async (req: Request, res: Response) => {
+app.put("/folders/:id", async (req: Request<{ id: string }, Folder | ErrorResponse, { name: string; parentId?: number }>, res: Response<Folder | ErrorResponse>) => {
   try {
     const folderId = parseInt(req.params.id);
-    const { name, parentId } = req.body as {
-      name: string;
-      parentId?: number;
-    };
+    const { name, parentId } = req.body;
     if (!name) {
-      return res.status(400).json({ error: "Name is required" });
+      res.status(400).json({ error: "Name is required" });
+    } else {
+      const updatedFolder: Folder = await updateFolder(folderId, name, parentId);
+      res.status(200).json(updatedFolder);
     }
-    const updatedFolder: Folder = await updateFolder(folderId, name, parentId);
-    res.status(200).json(updatedFolder);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
   }
 });
 
-app.delete("/folders/:id", async (req: Request, res: Response) => {
+app.delete("/folders/:id", async (req: Request<{ id: string }, void | ErrorResponse>, res: Response<void | ErrorResponse>) => {
   try {
     const folderId = parseInt(req.params.id);
     await deleteFolder(folderId);
@@ -291,8 +278,7 @@ app.delete("/folders/:id", async (req: Request, res: Response) => {
   }
 });
 
-// Folder-Set relationship endpoints
-app.post("/folders/:folderId/sets/:setId", async (req: Request, res: Response) => {
+app.post("/folders/:folderId/sets/:setId", async (req: Request<{ folderId: string; setId: string }, void | ErrorResponse>, res: Response<void | ErrorResponse>) => {
   try {
     const folderId = parseInt(req.params.folderId);
     const setId = parseInt(req.params.setId);
@@ -303,7 +289,7 @@ app.post("/folders/:folderId/sets/:setId", async (req: Request, res: Response) =
   }
 });
 
-app.delete("/folders/:folderId/sets/:setId", async (req: Request, res: Response) => {
+app.delete("/folders/:folderId/sets/:setId", async (req: Request<{ folderId: string; setId: string }, void | ErrorResponse>, res: Response<void | ErrorResponse>) => {
   try {
     const folderId = parseInt(req.params.folderId);
     const setId = parseInt(req.params.setId);
@@ -314,8 +300,7 @@ app.delete("/folders/:folderId/sets/:setId", async (req: Request, res: Response)
   }
 });
 
-// Additional helper endpoints
-app.get("/folders/:folderId/sets", async (req: Request, res: Response) => {
+app.get("/folders/:folderId/sets", async (req: Request<{ folderId: string }, Set[] | ErrorResponse>, res: Response<Set[] | ErrorResponse>) => {
   try {
     const folderId = parseInt(req.params.folderId);
     const sets: Set[] = await getFolderSets(folderId);
@@ -325,21 +310,21 @@ app.get("/folders/:folderId/sets", async (req: Request, res: Response) => {
   }
 });
 
-// @ts-ignore
-app.get("/folders/hierarchy", async (req: Request, res: Response) => {
+app.get("/folders/hierarchy", async (req: Request<Record<string, never>, unknown[] | ErrorResponse, undefined, { userId: string }>, res: Response<unknown[] | ErrorResponse>) => {
   try {
-    const { userId } = req.query as { userId: string };
+    const { userId } = req.query;
     if (!userId) {
-      return res.status(400).json({ error: "User ID is required" });
+      res.status(400).json({ error: "User ID is required" });
+    } else {
+      const hierarchy = await getFolderHierarchy(parseInt(userId));
+      res.status(200).json(hierarchy);
     }
-    const hierarchy = await getFolderHierarchy(parseInt(userId));
-    res.status(200).json(hierarchy);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
   }
 });
 
-app.get("/sets/:setId/cards", async (req: Request, res: Response) => {
+app.get("/sets/:setId/cards", async (req: Request<{ setId: string }, Card[] | ErrorResponse>, res: Response<Card[] | ErrorResponse>) => {
   try {
     console.log("request SETID"+req.params.setId);
     const setId = parseInt(req.params.setId);
