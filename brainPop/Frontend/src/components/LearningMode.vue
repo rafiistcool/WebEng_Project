@@ -31,9 +31,9 @@ onMounted(async () => {
   cards.value = await getCards();
   if (cards.value.length > 0) {
     generateCardQueue();
-    currentIndex.value = 0; // Fortschritt auf 0 setzen
-    cardsProcessed.value = 0; // Verarbeitete Karten zurücksetzen
-    completedCards.value.clear(); // Abgeschlossene Karten zurücksetzen
+    currentIndex.value = 0;
+    cardsProcessed.value = 0;
+    completedCards.value.clear();
     showNextCard();
   }
 });
@@ -126,7 +126,7 @@ const hard = async () => {
 
 const almostKnown = async () => {
   let weight = getWeightOfCard(currenCardId.value);
-  weight = weight + 2; // Größere Gewichtssteigerung für "fast gewusst"
+  weight = weight + 2;
 
   const success = await updateWeightOfCard(currenCardId.value, weight);
   if (success) {
@@ -137,7 +137,7 @@ const almostKnown = async () => {
 
 const known = async () => {
   let weight = getWeightOfCard(currenCardId.value);
-  weight = weight + 3; // Größere Gewichtssteigerung für "gewusst"
+  weight = weight + 3;
 
   const success = await updateWeightOfCard(currenCardId.value, weight);
   if (success) {
@@ -282,7 +282,7 @@ const showNextCard = () => {
     // Karte zurücksetzen (nicht geflippt)
     flipped.value = false;
 
-    // Index aktualisieren (approximativ)
+    // Index aktualisieren
     const totalCards = cards.value.length;
     const processedCards = completedCards.value.size;
     currentIndex.value = Math.min(processedCards, totalCards - 1);
@@ -298,7 +298,6 @@ const endLearningSession = () => {
   console.log('Learning session completed!');
   console.log(`Final stats: ${completedCards.value.size}/${cards.value.length} cards mastered`);
 
-  //OPTIONAL VLLT ENTERNEN
   alert(`Lernsession beendet!\n${completedCards.value.size} von ${cards.value.length} Karten gemeistert.`);
 
   router.push("/cardcreation");
