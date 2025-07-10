@@ -64,59 +64,59 @@ app.get("/test", async (_req: Request, res: Response) => {
     }
 });
 
-app.post("/register", async (req: Request, res: Response) => {
-    const {username, password, repeatPassword} = req.body as {
-        username: string;
-        password: string;
-        repeatPassword: string
-    };
-    try {
-        const result = await registerUser(username, password, repeatPassword);
-        res.status(200).json({message: result});
-    } catch (error) {
-        res.status(500).json({message: (error as Error).message});
-    }
+
+type MessageResponse = { message: string };
+app.post("/register", async (req: Request<Record<string, never>, MessageResponse | ErrorResponse, { username: string; password: string; repeatPassword: string }>, res: Response<MessageResponse | ErrorResponse>) => {
+  const { username, password, repeatPassword } = req.body;
+
+  try {
+    const result = await registerUser(username, password, repeatPassword);
+    res.status(200).json({ message: result });
+  } catch (error) {
+    res.status(500).json({ message: (error as Error).message });
+  }
 });
 
-app.post("/login", async (req: Request, res: Response) => {
-    const {username, password} = req.body as { username: string; password: string };
-
-    try {
-        const result = await loginUser(username, password);
-        if (result.success && result.userId) {
-            req.session.userId = result.userId;
-            res.status(200).json(result);
-        } else {
-            console.error("Fehler bei der Anmeldung:", result.message);
-            res.status(401).json(result);
-        }
-    } catch (error) {
-        console.error("Fehler bei der Anmeldung:", error);
-        res.status(500).json({success: false, message: (error as Error).message});
-    }
-});
-
-app.get("/session", (req: Request, res: Response) => {
-    if (req.session.userId) {
-        res.status(200).json({
-            loggedIn: true,
-            userId: req.session.userId
-        });
+type LoginResponse = { success: boolean; message: string; userId?: number };
+app.post("/login", async (req: Request<Record<string, never>, LoginResponse, { username: string; password: string }>, res: Response<LoginResponse>) => {
+  const { username, password } = req.body;
+  try {
+    const result = await loginUser(username, password);
+    if (result.success && result.userId) {
+      req.session.userId = result.userId;
+      res.status(200).json(result);
     } else {
-        res.status(200).json({
-            loggedIn: false
-        });
+      console.error("Fehler bei der Anmeldung:", result.message);
+      res.status(401).json(result);
+
     }
 });
 
-app.post("/logout", (req: Request, res: Response) => {
-    req.session.destroy((err) => {
-        if (err) {
-            res.status(500).json({success: false, message: "Fehler beim Abmelden"});
-        } else {
-            res.status(200).json({success: true, message: "Erfolgreich abgemeldet"});
-        }
+
+type SessionResponse = { loggedIn: boolean; userId?: number };
+app.get("/session", (req: Request, res: Response<SessionResponse>) => {
+  if (req.session.userId) {
+    res.status(200).json({
+      loggedIn: true,
+      userId: req.session.userId
     });
+  } else {
+    res.status(200).json({
+      loggedIn: false
+    });
+  }
+});
+
+type LogoutResponse = { success: boolean, message: string };
+app.post("/logout", (req: Request, res: Response<LogoutResponse>) => {
+  req.session.destroy((err) => {
+    if (err) {
+      res.status(500).json({ success: false, message: "Fehler beim Abmelden" });
+    } else {
+      res.status(200).json({ success: true, message: "Erfolgreich abgemeldet" });
+    }
+  });
+
 });
 
 app.get("/sets", async (req: Request<Record<string, never>, Set[] | ErrorResponse, undefined, {
