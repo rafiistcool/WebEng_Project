@@ -13,7 +13,7 @@
       </span>
     </div>
 
-    <!-- Folder Contents-->
+    <!-- Folder Contents (gehört innerhalb von .desktop-3!) -->
     <div class="items-container">
       <div
           v-for="item in currentItems"
@@ -471,17 +471,18 @@ export default {
 
     const onItemClick = (item) => {
       if (item.children) {
-
+        // It's a folder, navigate into it
         state.currentDirectory = item;
         state.navigation.push(item);
       } else {
-
+        // It's a set, navigate to CardCreation
+        // Get the set from the set store
         const set = setStore.getSetById(item.id);
         if (set) {
-
+          // Set the current set in the set store
           setStore.setCurrentSet(set);
         } else {
-
+          // If the set is not in the store, add it and set it as current
           const newSet = {
             id: item.id,
             name: item.name,
@@ -531,16 +532,16 @@ export default {
       const item = state.contextMenu.targetItem;
       let success = false;
 
-
+      // Check if it's a folder or a set
       if (item.children !== null) {
-
+        // It's a folder
         const updatedFolder = await updateFolder(item.id, newName);
         if (updatedFolder) {
           item.name = updatedFolder.name;
           success = true;
         }
       } else {
-
+        // It's a set
         const updatedSet = await updateSet(item.id, newName);
         if (updatedSet) {
           item.name = updatedSet.name;
@@ -561,10 +562,10 @@ export default {
 
       // Check if it's a folder or a set
       if (item.children !== null) {
-
+        // It's a folder
         success = await deleteFolder(item.id);
       } else {
-
+        // It's a set
         success = await deleteSet(item.id);
       }
 
@@ -602,12 +603,12 @@ export default {
     const onDrop = async (targetItem) => {
       if (!targetItem.children || !draggedItem.value || draggedItem.value.id === targetItem.id) return;
 
-
+      // If the dragged item is a set and the target is a folder
       if (draggedItem.value.children === null && targetItem.children !== null) {
-
+        // Add the set to the folder in the backend
         const success = await addSetToFolder(targetItem.id, draggedItem.value.id);
         if (success) {
-
+          // Update the UI
           const fromArray = state.currentDirectory?.children || state.items;
           const index = fromArray.findIndex(i => i.id === draggedItem.value.id);
           if (index !== -1) {
@@ -618,10 +619,11 @@ export default {
           alert("Failed to move set to folder. Please try again.");
         }
       } else if (draggedItem.value.children !== null && targetItem.children !== null) {
-
+        // If the dragged item is a folder and the target is a folder
+        // Update the folder's parent in the backend
         const updatedFolder = await updateFolder(draggedItem.value.id, draggedItem.value.name, targetItem.id);
         if (updatedFolder) {
-
+          // Update the UI
           const fromArray = state.currentDirectory?.children || state.items;
           const index = fromArray.findIndex(i => i.id === draggedItem.value.id);
           if (index !== -1) {
