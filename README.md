@@ -1,3 +1,5 @@
-# Welcome
+# BrainPop
 
-https://rafiistcool.github.io/WebEng_Project/
+## Link to the Website
+
+https://brainpopfrontend.vercel.app/
