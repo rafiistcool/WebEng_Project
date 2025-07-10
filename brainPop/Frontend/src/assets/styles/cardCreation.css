@@ -6,7 +6,7 @@
 }
 
 .content-wrapper {
-    flex: 1;           /* fills remaining width inside .card-creation */
+    flex: 1;
     display: flex;
     text-align: center;
     margin-top: 50px;
@@ -123,14 +123,14 @@
     right: 0;
 }
 
-/* --- CONTEXT MENU (RIGHT-CLICK EDIT POPUP) --- */
+/* --- CONTEXT MENU  --- */
 :root {
     --modal-background: #FFFFFF;
     --border-color: #DEE2E6;
     --item-hover-color: #E9ECEF;
     --dark-text-color: #333333;
-    --danger-color: #D0021B;        /* A strong red for delete actions */
-    --danger-hover-bg: #F8D7DA; /* A light red background for delete hover */
+    --danger-color: #D0021B;
+    --danger-hover-bg: #F8D7DA;
 }
 
 .menu-popup {
@@ -165,7 +165,7 @@
     background-color: var(--item-hover-color);
 }
 
-/* Specific styling for the delete button */
+
 .menu-popup .delete-button {
     color: var(--danger-color);
 }
