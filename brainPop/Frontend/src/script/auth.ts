@@ -1,4 +1,4 @@
-import {defineStore} from "pinia";
+import { defineStore} from "pinia";
 
 export const useAuthStore = defineStore("auth", {
     state: () => ({
@@ -15,26 +15,26 @@ export const useAuthStore = defineStore("auth", {
                         'Content-Type': 'application/json',
                     },
                     credentials: 'include',
-                    body: JSON.stringify({username, password}),
+                    body: JSON.stringify({ username, password }),
                 });
 
                 const data = await response.json();
 
                 if (data.success) {
                     this.isLoggedIn = true;
-                    this.user = {
+                    this.user = { 
                         name: username,
-                        id: data.userId
+                        id: data.userId 
                     };
-                    return {success: true, message: data.message};
+                    return { success: true, message: data.message };
                 } else {
-                    return {success: false, message: data.message};
+                    return { success: false, message: data.message };
                 }
             } catch (error) {
                 console.error('Login error:', error);
-                return {
-                    success: false,
-                    message: 'Verbindungsfehler. Bitte versuchen Sie es später erneut.'
+                return { 
+                    success: false, 
+                    message: 'Verbindungsfehler. Bitte versuchen Sie es später erneut.' 
                 };
             }
         },
@@ -62,29 +62,26 @@ export const useAuthStore = defineStore("auth", {
             }
         },
 
-        async register(username: string, password: string, repeatPassword: string): Promise<{
-            success: boolean;
-            message: string
-        }> {
+        async register(username: string, password: string, repeatPassword: string): Promise<{ success: boolean; message: string }> {
             try {
                 const response = await fetch(import.meta.env.VITE_BACKEND_URL as string + '/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({username, password, repeatPassword}),
+                    body: JSON.stringify({ username, password, repeatPassword }),
                 });
 
                 const data = await response.json();
-                return {
+                return { 
                     success: (response.status) === 200,
-                    message: data.message
+                    message: data.message 
                 };
             } catch (error) {
                 console.error('Registration error:', error);
-                return {
-                    success: false,
-                    message: 'Verbindungsfehler. Bitte versuchen Sie es später erneut.'
+                return { 
+                    success: false, 
+                    message: 'Verbindungsfehler. Bitte versuchen Sie es später erneut.' 
                 };
             }
         },

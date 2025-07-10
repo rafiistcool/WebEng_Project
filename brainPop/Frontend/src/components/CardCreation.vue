@@ -144,7 +144,7 @@ onUnmounted(() => {
 const editMode = ref(false);
 const selectedCardIndex = ref<number | null>(null);
 
-// Menu-Status
+// Menü-Status
 const activeMenuIndex = ref<number | null>(null);
 const menuPosition = ref({top: 0, left: 0});
 
@@ -334,14 +334,14 @@ const filteredCards = computed(() => {
     </div>
 
 
-    <!-- Menu Popup -->
+    <!-- Menü Popup -->
     <div v-if="activeMenuIndex !== null" class="menu-popup"
          :style="{ top: menuPosition.top + 'px', left: menuPosition.left + 'px' }" @click.stop @contextmenu.stop>
       <button @click="editCard(activeMenuIndex)">Bearbeiten</button>
       <button @click="deleteCard(activeMenuIndex)">Löschen</button>
     </div>
 
-
+    <!-- Popup zum Erstellen/Bearbeiten einer Karte -->
     <div v-if="showPopup" class="card-creation-popup">
       <div class="popup-content">
         <h2 class="popup-title">{{ editMode ? 'Karte bearbeiten' : 'Karte erstellen' }}</h2>
