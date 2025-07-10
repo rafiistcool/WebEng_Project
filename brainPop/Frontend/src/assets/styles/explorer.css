@@ -1,4 +1,4 @@
-.desktop-3{
+.desktop-3 {
     display: flex;
     justify-content: left;
     flex-direction: column;
@@ -24,7 +24,8 @@ body.left-aligned {
     cursor: pointer;
     margin: 0 5px;
 }
-.back-button{
+
+.back-button {
     background-color: var(--primary-color);
     color: var(--background-color1);
     border: none;
@@ -57,6 +58,7 @@ body.left-aligned {
     justify-content: center;
     align-items: center;
 }
+
 .toggleContainer {
     position: relative;
     display: grid;
@@ -71,41 +73,49 @@ body.left-aligned {
 
 
 }
+
 .toggleContainer::before {
     content: '';
     position: absolute;
     width: 50%;
     height: 100%;
     left: 0;
-    border-radius:20px;
+    border-radius: 20px;
     background: var(--primary-color);
     transition: all 0.3s;
 }
+
 .toggleCheckbox:checked + .toggleContainer::before {
     left: 50%;
 }
+
 .toggleContainer div {
     font-family: 'Arial', sans-serif;
     padding: 6px;
     text-align: center;
     z-index: 1;
 }
+
 .toggleCheckbox {
     display: none;
 }
-.toggleCheckbox:checked + .toggleContainer div:first-child{
+
+.toggleCheckbox:checked + .toggleContainer div:first-child {
     color: var(--primary-color);
     transition: color 0.3s;
 }
-.toggleCheckbox:checked + .toggleContainer div:last-child{
+
+.toggleCheckbox:checked + .toggleContainer div:last-child {
     color: var(--toggleContainer);
     transition: color 0.3s;
 }
-.toggleCheckbox + .toggleContainer div:first-child{
+
+.toggleCheckbox + .toggleContainer div:first-child {
     color: var(--toggleContainer);
     transition: color 0.3s;
 }
-.toggleCheckbox + .toggleContainer div:last-child{
+
+.toggleCheckbox + .toggleContainer div:last-child {
     color: var(--primary-color);
     transition: color 0.3s;
 }
@@ -129,10 +139,12 @@ body.left-aligned {
     justify-content: center;
     gap: 50px;
 }
-.name{
+
+.name {
     font-size: 1.2rem;
 }
-.name-input{
+
+.name-input {
     padding: 6px 12px;
     font-size: 16px;
     font-weight: 400;
@@ -143,8 +155,9 @@ body.left-aligned {
     border: 1px solid #ced4da;
     appearance: none;
     border-radius: 4px;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-    :focus{
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
+    :focus {
         color: #212529;
         background-color: #fff;
         border-color: #86b7fe;
@@ -153,7 +166,7 @@ body.left-aligned {
     }
 }
 
-.input-container{
+.input-container {
     margin-top: 30px;
     gap: 20px;
 }
@@ -184,6 +197,7 @@ body.left-aligned {
     width: 150px;
     height: auto;
 }
+
 .icon-wrapper {
     display: flex;
     justify-content: center;
@@ -194,7 +208,8 @@ body.left-aligned {
     width: 100%;
     height: 100%;
 }
-.item-container:hover{
+
+.item-container:hover {
     transform: scale(1.05);
 }
 

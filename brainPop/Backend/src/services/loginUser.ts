@@ -6,7 +6,7 @@ export async function loginUser(
     password: string
 ): Promise<{ success: boolean; message: string; userId?: number }> {
     if (!username || !password) {
-        return { success: false, message: "Benutzername und Passwort sind erforderlich." };
+        return {success: false, message: "Benutzername und Passwort sind erforderlich."};
     }
 
     try {
@@ -22,22 +22,22 @@ export async function loginUser(
         );
 
         if (!user) {
-            return { success: false, message: "Ungültiger Benutzername oder Passwort." };
+            return {success: false, message: "Ungültiger Benutzername oder Passwort."};
         }
 
         const passwordValid = await argon2.verify(user.password, password);
-        
+
         if (!passwordValid) {
-            return { success: false, message: "Ungültiger Benutzername oder Passwort." };
+            return {success: false, message: "Ungültiger Benutzername oder Passwort."};
         }
 
-        return { 
-            success: true, 
+        return {
+            success: true,
             message: "Anmeldung erfolgreich!",
             userId: user.id
         };
     } catch (error) {
         console.error("Fehler bei der Anmeldung:", error);
-        return { success: false, message: "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut." };
+        return {success: false, message: "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut."};
     }
 }
