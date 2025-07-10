@@ -41,7 +41,6 @@ export async function registerUser(
         });
 
 
-
         await db.none(
             "INSERT INTO users (username, password) VALUES ($1, $2)",
             [username, hashedPassword]
@@ -50,6 +49,6 @@ export async function registerUser(
         return "Registrierung erfolgreich!";
     } catch (error) {
         console.error("Fehler bei der Registrierung:", error);
-        throw new Error ((error as Error).message);
+        throw new Error((error as Error).message);
     }
 }

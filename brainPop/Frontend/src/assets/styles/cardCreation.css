@@ -6,21 +6,21 @@
 }
 
 .content-wrapper {
-    flex: 1;           /* fills remaining width inside .card-creation */
+    flex: 1;
     display: flex;
     text-align: center;
     margin-top: 50px;
     margin-left: 10px;
 }
-.content-buttons{
+
+.content-buttons {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
 
-
-.card-creation-popup{
+.card-creation-popup {
     position: fixed;
     top: 0;
     left: 0;
@@ -33,7 +33,7 @@
 
 }
 
-.popup-content{
+.popup-content {
     background: linear-gradient(to bottom right, var(--background-color2), var(--secondary-color));
     padding: 20px;
     border-radius: 10px;
@@ -44,10 +44,12 @@
     justify-content: center;
 
 }
-.popup-title{
+
+.popup-title {
     font-size: 2rem;
 }
-.popup-buttons{
+
+.popup-buttons {
 
     bottom: 30%;
     justify-content: center;
@@ -55,7 +57,8 @@
     gap: 10%;
     width: 100%;
 }
-.form-wrapper{
+
+.form-wrapper {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -64,13 +67,13 @@
 }
 
 
-
-.popup-label{
+.popup-label {
 
     font-size: 1.2rem;
 
 }
-.popup-text-input{
+
+.popup-text-input {
     padding: 6px 12px;
     font-size: 16px;
     font-weight: 400;
@@ -81,8 +84,9 @@
     border: 1px solid #ced4da;
     appearance: none;
     border-radius: 4px;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-    :focus{
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
+    :focus {
         color: #212529;
         background-color: #fff;
         border-color: #86b7fe;
@@ -90,7 +94,8 @@
         box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
     }
 }
-.close-button, .save-button{
+
+.close-button, .save-button {
     padding: 10px;
 }
 
@@ -112,7 +117,7 @@
     min-width: 170px;
 }
 
-.menu-button{
+.menu-button {
     position: absolute;
     background: none;
     border: none;
@@ -123,14 +128,14 @@
     right: 0;
 }
 
-/* --- CONTEXT MENU (RIGHT-CLICK EDIT POPUP) --- */
+/* --- CONTEXT MENU  --- */
 :root {
     --modal-background: #FFFFFF;
     --border-color: #DEE2E6;
     --item-hover-color: #E9ECEF;
     --dark-text-color: #333333;
-    --danger-color: #D0021B;        /* A strong red for delete actions */
-    --danger-hover-bg: #F8D7DA; /* A light red background for delete hover */
+    --danger-color: #D0021B;
+    --danger-hover-bg: #F8D7DA;
 }
 
 .menu-popup {
@@ -165,7 +170,7 @@
     background-color: var(--item-hover-color);
 }
 
-/* Specific styling for the delete button */
+
 .menu-popup .delete-button {
     color: var(--danger-color);
 }
@@ -181,9 +186,11 @@
     top: 5%;
     gap: 10px;
 }
+
 .category-filters button {
     padding: 10px;
 }
+
 .filter-button.clear {
     background-color: #888;
 }
